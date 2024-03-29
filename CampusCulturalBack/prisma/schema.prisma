@@ -12,3 +12,37 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Usuario{
+  id_usuario Int @id @default(autoincrement())
+  nome_usuario String 
+  login_usuario String @unique 
+  senha_usuario String 
+  curso_usuario String 
+  is_professor Boolean
+  eventos Evento[]
+  inscricao Evento_Inscricao[]
+  @@map("usuario")
+}
+
+model Evento {
+  id_evento Int @id @default(autoincrement())
+  professor Usuario @relation(fields: [professor_evento], references: [id_usuario])
+  professor_evento Int
+  nome_evento String 
+  sub_evento String
+  data_evento DateTime
+  descricao_evento String 
+  inscricao Evento_Inscricao[]
+  @@map("evento")
+}
+
+model Evento_Inscricao{
+  id_evento_inscricao Int @id @default(autoincrement())
+  inscricao_usuario Usuario @relation(fields: [id_inscricao_usuario], references: [id_usuario])
+  id_inscricao_usuario Int
+  inscricao_evento Evento @relation(fields: [id_inscricao_evento], references: [id_evento])
+  id_inscricao_evento Int
+  notificacao Boolean
+  @@map("evento_inscricao")
+}
