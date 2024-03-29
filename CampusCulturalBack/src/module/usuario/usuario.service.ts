@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsuarioDTO } from './usuario.dto';
 import { PrismaService } from '../../database/PrismaSerice'
+import { error } from 'console';
 
 
 @Injectable()
@@ -32,20 +33,51 @@ export class UsuarioService {
     }
   }
 
-   async findAll() {
+  async findAll() {
     const usuario = await this.prisma.usuario.findMany();
     return usuario;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async Login(login_usuario: string , senha_usuario: string) {
+    const usuario = await this.prisma.usuario.findMany({
+      where: {
+        login_usuario,
+        senha_usuario,
+      },
+    });
+    return usuario;
   }
 
-  update(id: number, usuarioDTO: UsuarioDTO) {
-    return `This action updates a #${id} usuario`;
+  async update(id_usuario: number, usuarioDTO: UsuarioDTO) {
+    const userExists = await this.prisma.usuario.findUnique({
+      where: {
+        id_usuario,
+      },
+    });
+
+    if(!userExists){
+      throw new error('Usuario não existe!');
+    }
+    const update_usuario = await this.prisma.usuario.update({
+      data: {
+          nome_usuario: usuarioDTO.nome_usuario,
+          login_usuario: usuarioDTO.login_usuario,
+          senha_usuario: usuarioDTO.senha_usuario,
+          curso_usuario: usuarioDTO.curso_usuario,
+          is_professor: usuarioDTO.is_professor,
+      },
+      where: {
+        id_usuario,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id_usuario: number) {
+    const userExists = await this.prisma.usuario.delete({
+      where: {
+        id_usuario,
+      },
+    });
+    return userExists
   }
 }

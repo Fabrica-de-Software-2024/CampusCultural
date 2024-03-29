@@ -16,9 +16,9 @@ export class UsuarioController {
     return this.usuarioService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usuarioService.findOne(+id);
+  @Post()
+  Login(@Body() login_usuario: string , senha_usuario) {
+    return this.usuarioService.Login(login_usuario,senha_usuario);
   }
 
   @Patch(':id')

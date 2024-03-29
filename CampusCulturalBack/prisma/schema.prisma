@@ -19,7 +19,7 @@ model Usuario {
   login_usuario String             @unique
   senha_usuario String
   curso_usuario String
-  is_professor  Boolean
+  is_professor  Boolean             @default(false)
   eventos       Evento[]
   inscricao     Evento_Inscricao[]
 
