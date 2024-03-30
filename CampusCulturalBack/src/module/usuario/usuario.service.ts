@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsuarioDTO } from './usuario.dto';
-import { PrismaService } from '../../database/PrismaSerice'
+import { PrismaService } from '../../database/PrismaService'
 import { error } from 'console';
 
 
@@ -14,7 +14,7 @@ export class UsuarioService {
       }
      });
     if(userExists) {
-      throw new Error('Usario ja existe');
+      throw new Error('Usuário já existe!');
     }
     else if(!userExists){
       const novo_usuario = await this.prisma.usuario.create({

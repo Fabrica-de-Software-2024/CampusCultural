@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../database/PrismaSerice';
+import { PrismaService } from '../../database/PrismaService';
 import { EventoDTO } from './evento.dto';
 import { error } from 'console';
 
@@ -16,7 +16,7 @@ export class EventoService {
                 id_evento
             }
         })
-        return evento
+        return evento;
     }
     async create(data: EventoDTO) {
         const novo_evento = await this.prisma.evento.create({
@@ -40,6 +40,7 @@ export class EventoService {
         if (!eventoExists) {
             throw new error('Evento não existe!');
         }
+        else{
         const update_evento = await this.prisma.evento.update({
             data: {
                 professor_evento: data.professor_evento,
@@ -54,12 +55,13 @@ export class EventoService {
         });
         return update_evento;
     }
+    }
     async remove(id_evento: number) {
         const eventoExists = await this.prisma.evento.delete({
             where: {
                 id_evento,
             },
         });
-        return eventoExists
+        return eventoExists;
     }
 }
