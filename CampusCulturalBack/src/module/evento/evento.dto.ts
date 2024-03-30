@@ -3,6 +3,6 @@ export class EventoDTO {
     "professor_evento": number;
     "nome_evento": string;
     "sub_evento": string;
-    "data_evento": Date;
+    "data_evento"?: Date;
     "descricao_evento": string;
 }
