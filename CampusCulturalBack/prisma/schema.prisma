@@ -32,7 +32,7 @@ model Evento {
   professor_evento Int
   nome_evento      String
   sub_evento       String
-  data_evento      DateTime
+  data_evento      DateTime           @default(now())
   descricao_evento String
   inscricao        Evento_Inscricao[]
 

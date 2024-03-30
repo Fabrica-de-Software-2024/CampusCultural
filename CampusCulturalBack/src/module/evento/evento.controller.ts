@@ -28,6 +28,6 @@ export class EventoController {
 
   @Delete(':id')
   remove(@Param('id') id: number){
-    return this.eventoService.remove(id);
+    return this.eventoService.remove(+id);
   }
 }
