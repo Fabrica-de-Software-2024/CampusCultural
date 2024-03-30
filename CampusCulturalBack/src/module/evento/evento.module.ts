@@ -7,4 +7,4 @@ import { PrismaService } from '../../database/PrismaService';
   controllers: [EventoController],
   providers: [EventoService, PrismaService],
 })
-export class EventoModule {}
+export class EventoModule { }

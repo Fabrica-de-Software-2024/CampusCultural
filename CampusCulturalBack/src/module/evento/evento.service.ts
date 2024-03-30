@@ -40,21 +40,21 @@ export class EventoService {
         if (!eventoExists) {
             throw new error('Evento não existe!');
         }
-        else{
-        const update_evento = await this.prisma.evento.update({
-            data: {
-                professor_evento: data.professor_evento,
-                nome_evento: data.nome_evento,
-                sub_evento: data.sub_evento,
-                data_evento: data.data_evento,
-                descricao_evento: data.descricao_evento
-            },
-            where: {
-                id_evento,
-            },
-        });
-        return update_evento;
-    }
+        else {
+            const update_evento = await this.prisma.evento.update({
+                data: {
+                    professor_evento: data.professor_evento,
+                    nome_evento: data.nome_evento,
+                    sub_evento: data.sub_evento,
+                    data_evento: data.data_evento,
+                    descricao_evento: data.descricao_evento
+                },
+                where: {
+                    id_evento,
+                },
+            });
+            return update_evento;
+        }
     }
     async remove(id_evento: number) {
         const eventoExists = await this.prisma.evento.delete({
