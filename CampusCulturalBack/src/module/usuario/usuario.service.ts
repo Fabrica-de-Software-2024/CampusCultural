@@ -70,6 +70,7 @@ export class UsuarioService {
         id_usuario,
       },
     });
+    return update_usuario;
   }
 
   async remove(id_usuario: number) {
