@@ -16,6 +16,16 @@ export class EventoInscricaoController {
     return this.eventoInscricaoService.findOne(+id);
   }
 
+  @Get('/evento/:id')
+  findEvento(@Param('id') id: number) {
+    return this.eventoInscricaoService.findEvento(+id);
+  }
+
+  @Get('/usuario/:id')
+  findUsuario(@Param('id') id: number) {
+    return this.eventoInscricaoService.findUsuario(+id);
+  }
+
   @Post()
   create(@Body() data: Evento_InscricaoDTO) {
     return this.eventoInscricaoService.create(data);

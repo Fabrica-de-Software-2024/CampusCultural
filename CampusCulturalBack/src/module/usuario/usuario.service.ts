@@ -33,16 +33,11 @@ export class UsuarioService {
     }
   }
 
-  async findAll() {
-    const usuario = await this.prisma.usuario.findMany();
-    return usuario;
-  }
-
-  async Login(login_usuario: string, senha_usuario: string) {
-    const usuario = await this.prisma.usuario.findMany({
+  async Login(data: { login_usuario: string, senha_usuario: string }) {
+    const usuario = await this.prisma.usuario.findFirst({
       where: {
-        login_usuario,
-        senha_usuario,
+        login_usuario: data.login_usuario,
+        senha_usuario: data.senha_usuario,
       },
     });
     return usuario;
