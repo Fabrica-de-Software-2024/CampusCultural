@@ -7,7 +7,7 @@ export default function Index(){
         <>
             <Navbar />
             <Text>teste</Text>
-            <Button title="teste" onPress={()=>router.navigate("/teste")}></Button>
+            <Button title="login" onPress={()=>router.navigate("/login")}></Button>
         </>
     )
 }
