@@ -2,9 +2,11 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function Navbar(props: { title: string, selecionado: number, setSelecionado: React.Dispatch<React.SetStateAction<number>> }) {
+export default function Navbar(props: { title: string, links: boolean, selecionado?: number, setSelecionado?: React.Dispatch<React.SetStateAction<number>> }) {
   const logo = require("../../assets/logo.png");
   const lupa = require("../../assets/lupa.png");
+
+  console.log(typeof(props.selecionado))
 
   return (
     <>
@@ -15,7 +17,7 @@ export default function Navbar(props: { title: string, selecionado: number, setS
           <Image style={styles.lupa} source={lupa} />
         </TouchableOpacity>
       </View>
-      <View style={styles.barra}>
+      <View style={props.links === false? styles.naobarra : styles.barra}>
         <TouchableOpacity onPress={()=> props.setSelecionado(0)}>
           <Text style={props.selecionado===0? styles.selecionado: styles.link}>Próximos Eventos</Text>
         </TouchableOpacity>
@@ -61,6 +63,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 10,
     paddingVertical: 2
+  },
+  naobarra: {
+    display: "none"
   },
   link: {
     color: "#8A60FF",

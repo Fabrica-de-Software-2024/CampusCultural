@@ -9,7 +9,7 @@ export default function Index(){
 
     return(
         <>
-            <Navbar title={"Início"} selecionado={selecionado} setSelecionado={setSelecionado} />
+            <Navbar title={"Início"} links={true} selecionado={selecionado} setSelecionado={setSelecionado} />
             <Text>teste</Text>
             <Button title="login" onPress={()=>router.navigate("/login")}></Button>
         </>

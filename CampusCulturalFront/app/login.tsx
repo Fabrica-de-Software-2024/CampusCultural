@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#6B3BF4",
         paddingTop: 0,
         margin: 0,
     },
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     imagem: {
         width: '100%',
         height: windowHeight * 0.45,
+        opacity: 0.36
     },
     //Container branco da parte inferior
     bottomContainer: {
