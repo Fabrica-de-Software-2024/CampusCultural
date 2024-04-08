@@ -1,20 +1,43 @@
 import { router } from "expo-router"
-import { Button, StatusBar, Text } from "react-native"
-import Navbar from "./components/Navbar"
-import { useState } from "react";
-import Rodape from "./components/Rodape";
+import { useEffect } from "react"
+import { ScrollView, StyleSheet, TouchableOpacity, Text } from "react-native"
+
 
 export default function Index() {
 
-    const [eventosSelecionado, setEventosSelecionado] = useState(0);
-
+    /*
+    useEffect(()=>{
+        router.replace("/home")
+    })
+    */
     return (
-        <>
-            <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
-            <Text>teste</Text>
-            <Button title="login" onPress={() => router.navigate("/login")}></Button>
-            <Button title="cadastrar" onPress={() => router.navigate("/cadastro")}></Button>
-            <Rodape selecionado={0}/>
-        </>
+        <ScrollView style={styles.container}>
+            <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/login")}><Text style={styles.texto}>Login</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/cadastro")}><Text style={styles.texto}>Cadastro</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/home")}><Text style={styles.texto}>Home</Text></TouchableOpacity>
+        </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        width: "100%",
+        padding: "20%",
+        height: "100%",
+    },
+    botao: {
+        display: "flex",
+        backgroundColor: "#8A60FF",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 20,
+        borderRadius: 9999,
+        height: 50
+    },
+    texto: {
+        color: "#FFF",
+        fontWeight: "bold",
+        fontSize: 24,
+    }
+})
