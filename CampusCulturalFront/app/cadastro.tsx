@@ -4,10 +4,12 @@ import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity 
 export default function Cadastro(){
     const cadastro = require("../assets/cadastro.png");
     const logocadastro = require("../assets/logocadastro.png");
+    const linha1 = require("../assets/linha1.png");
     return(
         <View style={styles.container}>
             <Image style={styles.imagem}source={cadastro} resizeMode="cover"/>
             <Image style={styles.imagem2}source={logocadastro} resizeMode="cover"/>
+            <Image style={styles.imagem3}source={linha1} resizeMode="cover"/>
             <View style={styles.bottomContainer}/>
                 <View style={styles.textContainer}>
                     <Text style={styles.purpleText}>CADASTRO</Text>
@@ -60,6 +62,12 @@ const styles = StyleSheet.create({
     imagem2:{
         width: '30%',
         top: '2%',
+        position: 'absolute', // Ajuste para centralizar horizontalmente
+    },
+    imagem3:{
+        width: '30%',
+        top: '0%',
+        right:'0%',
         position: 'absolute', // Ajuste para centralizar horizontalmente
     },
     bottomContainer: {
@@ -117,7 +125,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         borderRadius: 30,
         alignItems: 'center',
-        width: '70%', 
+        width: '70%',
+        zIndex: 100, 
     },
     buttonText: {
         color: '#FFFFFF',
