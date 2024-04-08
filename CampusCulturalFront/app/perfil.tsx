@@ -1,5 +1,10 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { router } from "expo-router"
+import { Button, StatusBar, Text, View, Image, StyleSheet } from "react-native"
+import Navbar from "./components/Navbar"
+import { useState } from "react";
+import Rodape from "./components/Rodape";
+
 
 const ProfileScreen = () => {
   const userData = {
