@@ -4,7 +4,6 @@ import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity 
 export default function Login() {
     const login = require("../assets/login.png");
     const logo = require("../assets/logo.png");
-    const logo = require("../assets/logo.png");
 
     return (
         <View style={styles.container}>
