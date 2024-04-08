@@ -3,10 +3,12 @@ import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity 
 
 export default function Login() {
     const login = require("../assets/login.png");
+    const logo = require("../assets/logo.png");
 
     return (
         <View style={styles.container}>
             <Image style={styles.imagem} source={login} resizeMode="cover" />
+            <Image style={styles.logo} source={logo} />
             <View style={styles.bottomContainer} />
             <View style={styles.textContainer}>
                 <Text style={styles.purpleText}>BEM-VINDO(A) AO NOSSO</Text>
@@ -52,6 +54,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: windowHeight * 0.45,
         opacity: 0.36
+    },
+    logo: {
+        position: 'absolute',
+        width: "50%",
+        top: "5%",
+        resizeMode: "contain",
+        zIndex: 10
     },
     //Container branco da parte inferior
     bottomContainer: {
