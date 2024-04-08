@@ -38,19 +38,19 @@ const Perfil = ({ navigation }) => { // Recebendo a propriedade de navegação
         </View>
         <View style={styles.options}>
           <TouchableOpacity style={styles.optionContainer} onPress={navigateToNotifications}>
-            <FontAwesome name="bell" size={24} color="#333" style={styles.icon} />
+            <FontAwesome name="bell" size={24} color="#8A60FF" style={styles.icon} />
             <Text style={styles.option}>Notificações</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.optionContainer} onPress={navigateToSettings}>
-            <FontAwesome name="cog" size={24} color="#333" style={styles.icon} />
+            <FontAwesome name="cog" size={24} color="#8A60FF" style={styles.icon} />
             <Text style={styles.option}>Configurações</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.optionContainer} onPress={navigateToCertificates}>
-            <FontAwesome name="certificate" size={24} color="#333" style={styles.icon} />
+            <FontAwesome name="certificate" size={24} color="#8A60FF" style={styles.icon} />
             <Text style={styles.option}>Meus Certificados</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.optionContainer} onPress={navigateToContact}>
-            <FontAwesome name="envelope" size={24} color="#333" style={styles.icon} />
+            <FontAwesome name="envelope" size={24} color="#8A60FF" style={styles.icon} />
             <Text style={styles.option}>Fale Conosco</Text>
           </TouchableOpacity>
         </View>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   option: {
     fontSize: 18,
-    color: "#333",
+    color: "#8A60FF",
   },
 });
 
