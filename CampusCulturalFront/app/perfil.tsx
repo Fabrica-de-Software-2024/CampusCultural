@@ -5,8 +5,7 @@ const ProfileScreen = () => {
   const userData = {
     name: "Lucas dos Santos",
     course: "Engenharia de Software",
-   
-    photo: "https://via.placeholder.com/150", 
+    photo: "https://via.placeholder.com/150",
   };
 
   return (
@@ -14,6 +13,10 @@ const ProfileScreen = () => {
       <Image source={{ uri: userData.photo }} style={styles.photo} />
       <Text style={styles.name}>{userData.name}</Text>
       <Text style={styles.course}>{userData.course}</Text>
+      <Text style={styles.option}>Notificações</Text>
+      <Text style={styles.option}>Configurações</Text>
+      <Text style={styles.option}>Meus Certificados</Text>
+      <Text style={styles.option}>Fale Conosco</Text>
     </View>
   );
 };
@@ -39,6 +42,12 @@ const styles = StyleSheet.create({
   course: {
     fontSize: 18,
     fontStyle: "italic",
+    marginBottom: 10,
+  },
+  option: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: "#333",
   },
 });
 
