@@ -1,17 +1,20 @@
 import { router } from "expo-router"
-import { Button, Text } from "react-native"
+import { Button, StatusBar, Text } from "react-native"
 import Navbar from "./components/Navbar"
 import { useState } from "react";
+import Rodape from "./components/Rodape";
 
-export default function Index(){
+export default function Index() {
 
-    const [selecionado, setSelecionado] = useState(0);
+    const [eventosSelecionado, setEventosSelecionado] = useState(0);
 
-    return(
+    return (
         <>
-            <Navbar title={"Início"} links={true} selecionado={selecionado} setSelecionado={setSelecionado} />
+            <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
             <Text>teste</Text>
-            <Button title="login" onPress={()=>router.navigate("/login")}></Button>
+            <Button title="login" onPress={() => router.navigate("/login")}></Button>
+            <Button title="cadastrar" onPress={() => router.navigate("/cadastro")}></Button>
+            <Rodape selecionado={0}/>
         </>
     )
 }

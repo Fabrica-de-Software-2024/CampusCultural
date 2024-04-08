@@ -1,15 +1,15 @@
-import { Link } from "expo-router";
-import { useState } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
 
 export default function Navbar(props: { title: string, links: boolean, selecionado?: number, setSelecionado?: React.Dispatch<React.SetStateAction<number>> }) {
   const logo = require("../../assets/logo.png");
   const lupa = require("../../assets/lupa.png");
 
-  console.log(typeof(props.selecionado))
-
   return (
     <>
+      <StatusBar
+        backgroundColor="#8A60FF"
+        barStyle="light-content"
+      />
       <View style={styles.container}>
         <Image style={styles.imagem} source={logo} />
         <Text style={styles.titulo}>{props?.title}</Text>
@@ -17,15 +17,15 @@ export default function Navbar(props: { title: string, links: boolean, seleciona
           <Image style={styles.lupa} source={lupa} />
         </TouchableOpacity>
       </View>
-      <View style={props.links === false? styles.naobarra : styles.barra}>
-        <TouchableOpacity onPress={()=> props.setSelecionado(0)}>
-          <Text style={props.selecionado===0? styles.selecionado: styles.link}>Próximos Eventos</Text>
+      <View style={props.links === false ? styles.naobarra : styles.barra}>
+        <TouchableOpacity onPress={() => props.setSelecionado(0)}>
+          <Text style={props.selecionado === 0 ? styles.selecionado : styles.link}>Próximos Eventos</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=> props.setSelecionado(1)}>
-          <Text style={props.selecionado===1? styles.selecionado: styles.link}>Eventos Inscritos</Text>
+        <TouchableOpacity onPress={() => props.setSelecionado(1)}>
+          <Text style={props.selecionado === 1 ? styles.selecionado : styles.link}>Eventos Inscritos</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=> props.setSelecionado(2)}>
-          <Text style={props.selecionado===2? styles.selecionado: styles.link}>Eventos Finalizados</Text>
+        <TouchableOpacity onPress={() => props.setSelecionado(2)}>
+          <Text style={props.selecionado === 2 ? styles.selecionado : styles.link}>Eventos Finalizados</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     color: "#8A60FF",
     fontSize: 12
   },
-  selecionado:{
+  selecionado: {
     color: "#FFF",
     fontSize: 12
   }
