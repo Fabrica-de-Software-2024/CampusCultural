@@ -3,22 +3,24 @@ import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity 
 
 export default function Login() {
     const login = require("../assets/login.png");
+    const logo = require("../assets/logo.png");
 
     return (
         <View style={styles.container}>
             <Image style={styles.imagem} source={login} resizeMode="cover" />
+            <Image style={styles.logo} source={logo} />
             <View style={styles.bottomContainer} />
             <View style={styles.textContainer}>
                 <Text style={styles.purpleText}>BEM-VINDO(A) AO NOSSO</Text>
                 <Text style={styles.purpleText2}>CAMPUS CULTURAL!</Text>
                 <Text style={styles.grayText}>Quer ter acesso ao calendário de eventos em tempo real? <Text style={styles.purpleText3}>Efetue o login!</Text></Text>
                 <View style={styles.inputContainer}>
-                    <Text style={styles.inputLabel}>e-mail</Text>
+                    <Text style={styles.inputLabel}>e-mail:</Text>
                     <TextInput
                         style={styles.input}
                         placeholderTextColor="#8A60FF"
                     />
-                    <Text style={styles.inputLabel}>senha</Text>
+                    <Text style={styles.inputLabel}>senha:</Text>
                     <TextInput
                         style={styles.input}
                         placeholderTextColor="#8A60FF"
@@ -52,6 +54,14 @@ const styles = StyleSheet.create({
         width: '100%',
         height: windowHeight * 0.45,
         opacity: 0.36
+    },
+    // Logo acima da imagem de login
+    logo: {
+        position: 'absolute',
+        alignSelf: 'center', 
+        top: windowHeight * 0.200 - 100, // Posição a partir do topo da tela
+        width: 200, 
+        height: 200, 
     },
     //Container branco da parte inferior
     bottomContainer: {
@@ -118,8 +128,8 @@ const styles = StyleSheet.create({
     },
     //Expecificações botão 'ENTRAR'
     buttonContainer: {
-        alignItems: 'center', 
-        marginTop: 35, 
+        alignItems: 'center',
+        marginTop: 35,
     },
     button: {
         backgroundColor: '#6B3BF4',
@@ -127,7 +137,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         borderRadius: 30,
         alignItems: 'center',
-        width: '50%', 
+        width: '50%',
     },
     buttonText: {
         color: '#FFFFFF',
