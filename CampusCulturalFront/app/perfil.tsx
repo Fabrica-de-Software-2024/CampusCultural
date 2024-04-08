@@ -3,31 +3,31 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 
 const Perfil = () => {
   const usuario = require('../../assets/usuario.png');
+  const editar = require('../../assets/editar.png');
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Image style={styles.imagem} source={usuario} />
-        <Text style={styles.nome}>Lucas dos Santos</Text>
+        <Text style={styles.nome}>Cláudio UTFPR</Text>
+        <TouchableOpacity style={styles.botaoEditar}>
+          <Image style={styles.icone} source={editar} />
+        </TouchableOpacity>
       </View>
       <View style={styles.conteudo}>
-        <Text style={styles.titulo}>Engenharia de Software</Text>
+        <Text style={styles.titulo}>Sobre mim</Text>
         <Text style={styles.descricao}>
-          teste
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
+          risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec,
+          ultricies sed, dolor.
         </Text>
       </View>
       <View style={styles.rodape}>
-        <TouchableOpacity style={styles.botao} onPress={() => alert('Notificações')}>
-          <Text style={styles.textoBotao}>Notificações</Text>
+        <TouchableOpacity style={styles.botao}>
+          <Text style={styles.textoBotao}>Editar perfil</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.botao} onPress={() => alert('Configurações')}>
-          <Text style={styles.textoBotao}>Configurações</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.botao} onPress={() => alert('Meus certificados')}>
-          <Text style={styles.textoBotao}>Meus certificados</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.botao} onPress={() => alert('Fale conosco')}>
-          <Text style={styles.textoBotao}>Fale conosco</Text>
+        <TouchableOpacity style={styles.botao}>
+          <Text style={styles.textoBotao}>Sair</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -57,6 +57,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     flex: 1,
   },
+  botaoEditar: {
+    width: 24,
+    height: 24,
+  },
+  icone: {
+    width: 24,
+    height: 24,
+  },
   conteudo: {
     paddingHorizontal: 20,
     paddingVertical: 24,
@@ -74,7 +82,6 @@ const styles = StyleSheet.create({
   },
   rodape: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 24,
@@ -82,12 +89,10 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   },
   botao: {
-    width: '48%',
     backgroundColor: '#8A60FF',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 4,
-    marginBottom: 16,
   },
   textoBotao: {
     color: '#fff',
