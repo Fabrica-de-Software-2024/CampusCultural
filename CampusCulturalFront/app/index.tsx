@@ -13,6 +13,7 @@ export default function Index() {
             <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
             <Text>teste</Text>
             <Button title="login" onPress={() => router.navigate("/login")}></Button>
+            <Button title="cadastrar" onPress={() => router.navigate("/cadastro")}></Button>
             <Rodape selecionado={0}/>
         </>
     )
