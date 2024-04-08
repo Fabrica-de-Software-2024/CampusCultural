@@ -1,12 +1,9 @@
 import React from "react";
-import { router } from "expo-router"
-import { Button, StatusBar, Text, View, Image, StyleSheet } from "react-native"
-import Navbar from "./components/Navbar"
-import { useState } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import Navbar from "./components/Navbar";
 import Rodape from "./components/Rodape";
 
-
-const ProfileScreen = () => {
+const Perfil = () => {
   const userData = {
     name: "Lucas dos Santos",
     course: "Engenharia de Software",
@@ -14,15 +11,19 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: userData.photo }} style={styles.photo} />
-      <Text style={styles.name}>{userData.name}</Text>
-      <Text style={styles.course}>{userData.course}</Text>
-      <Text style={styles.option}>Notificações</Text>
-      <Text style={styles.option}>Configurações</Text>
-      <Text style={styles.option}>Meus Certificados</Text>
-      <Text style={styles.option}>Fale Conosco</Text>
-    </View>
+    <>
+      <Navbar title="Perfil" links={false} />
+      <View style={styles.container}>
+        <Image source={{ uri: userData.photo }} style={styles.photo} />
+        <Text style={styles.name}>{userData.name}</Text>
+        <Text style={styles.course}>{userData.course}</Text>
+        <Text style={styles.option}>Notificações</Text>
+        <Text style={styles.option}>Configurações</Text>
+        <Text style={styles.option}>Meus Certificados</Text>
+        <Text style={styles.option}>Fale Conosco</Text>
+      </View>
+      <Rodape selecionado={3} />
+    </>
   );
 };
 
@@ -56,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default Perfil;
