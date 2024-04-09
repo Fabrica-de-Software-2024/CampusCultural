@@ -25,13 +25,32 @@ export default function Home() {
     return (
         <>
             <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
-            <ScrollView style={{marginBottom: 40}}>
+            <ScrollView style={{ marginBottom: 40 }}>
                 {
-                    eventos.map((i, index) => {
-                        return (
-                            <EventoCard key={index} data={i} />
-                        )
-                    })
+                    eventosSelecionado === 0 ?
+                        eventos.map((i, index) => {
+                            if (Date.now() <= new Date(i.data_evento).getDate())
+                                return (
+                                    <EventoCard key={index} data={i} />
+                                )
+                        })
+                        :
+                        eventosSelecionado === 1 ?
+                            eventos.map((i, index) => {
+                                if (Date.now() > new Date(i.data_evento).getDate())
+                                    return (
+                                        <EventoCard key={index} data={i} />
+                                    )
+                            })
+                            :
+                            eventosSelecionado === 2 ?
+                                eventos.map((i, index) => {
+                                    return (
+                                        <EventoCard key={index} data={i} />
+                                    )
+                                })
+                                :
+                                <></>
                 }
             </ScrollView>
             <Rodape selecionado={1} />

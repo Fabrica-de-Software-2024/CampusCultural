@@ -12,7 +12,7 @@ export default function Cadastro() {
                 backgroundColor="#6B3BF4"
                 barStyle="light-content"
             />
-        <View style={styles.container}>
+            <View style={styles.container}>
                 <Image style={styles.imagem} source={cadastro} resizeMode="cover" />
                 <Image style={styles.imagem2} source={logocadastro} resizeMode="contain" />
                 <Image style={styles.imagem3} source={figura2} resizeMode="cover" />
@@ -25,21 +25,21 @@ export default function Cadastro() {
                     <Text style={styles.grayText}>Cadastre-se e tenha acesso aos eventos da UTFPR.</Text>
                     <View style={styles.inputContainer}>
                         <Text style={styles.inputLabel}>Nome completo:</Text>
-                        <TextInput 
-                        style={styles.input}
+                        <TextInput
+                            style={styles.input}
                             placeholderTextColor="#8A60FF" />
                         <Text style={styles.inputLabel}>Curso:</Text>
                         <TextInput
-                        style={styles.input}
+                            style={styles.input}
                             placeholderTextColor="#8A60FF" />
                         <Text style={styles.inputLabel}>E-mail:</Text>
                         <TextInput
-                        style={styles.input}
+                            style={styles.input}
                             placeholderTextColor="#8A60FF" />
                         <Text style={styles.inputLabel}>Senha:</Text>
                         <TextInput
-                        style={styles.input}
-                        placeholderTextColor="#8A60FF"
+                            style={styles.input}
+                            placeholderTextColor="#8A60FF"
                             secureTextEntry={true} />
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity style={styles.button}>
@@ -48,7 +48,7 @@ export default function Cadastro() {
                         </View>
                     </View>
                 </View>
-        </View>
+            </View>
         </>
     );
 }
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     buttonContainer: {
-        alignItems: 'center', 
-        marginTop: 35, 
+        alignItems: 'center',
+        marginTop: 35,
     },
     button: {
         backgroundColor: '#6B3BF4',

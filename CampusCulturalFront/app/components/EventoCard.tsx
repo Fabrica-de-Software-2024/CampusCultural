@@ -19,7 +19,7 @@ export default function EventoCard(props: { data: Evento }) {
   const data2 = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { weekday: "short", dateStyle: "full", timeStyle: "short" });
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity onPress={()=>router.replace(`/evento/${props.data.id_evento}`)} style={styles.container}>
       <View style={styles.container_nome}>
         <Image source={icone} />
         <Text style={styles.titulo}>{props.data.nome_evento}</Text>
