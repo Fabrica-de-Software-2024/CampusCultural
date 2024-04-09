@@ -20,7 +20,7 @@ const Perfil = ({ navigation }) => {
 
   return (
     <>
-      <Navbar title="Perfil" links={false} />
+      <Navbar title="Minha Conta" links={false} />
 
       <View style={styles.container}>
         <View style={styles.userInfo}>
@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     top: "15%",
+    width: "70%",
+    marginHorizontal: "15%"
   },
   userInfo: {
     alignItems: "center",
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: "5%",
     marginLeft:"0%",
+    alignItems: "center"
   },
   buttonText: {
     fontSize: 20,
