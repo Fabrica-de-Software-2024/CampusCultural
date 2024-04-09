@@ -5,11 +5,15 @@ export default function Cadastro(){
     const cadastro = require("../assets/cadastro.png");
     const logocadastro = require("../assets/logocadastro.png");
     const figura2 = require("../assets/figura2.png");
+    const figura4 = require("../assets/figura4.png");
     return(
         <View style={styles.container}>
             <Image style={styles.imagem}source={cadastro} resizeMode="cover"/>
             <Image style={styles.imagem2}source={logocadastro} resizeMode="cover"/>
             <Image style={styles.imagem3}source={figura2} resizeMode="cover"/>
+            <Image style={styles.imagem4}source={figura4} resizeMode="cover"/>
+
+
             <View style={styles.bottomContainer}/>
                 <View style={styles.textContainer}>
                     <Text style={styles.purpleText}>CADASTRO</Text>
@@ -70,6 +74,14 @@ const styles = StyleSheet.create({
         right:'0%',
         position: 'absolute', // Ajuste para centralizar horizontalmente
     },
+    imagem4: {
+        bottom: 0,
+        left: 0,
+        position: 'absolute',
+        width: 200,
+        height: 200,
+        zIndex: 1,
+    },
     bottomContainer: {
         position: 'absolute',
         bottom: 0,
@@ -86,12 +98,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     purpleText: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 25,
+        fontWeight: '700',
         color: '#8A60FF',
     },
     grayText: {
-        fontSize: 14,
+        fontSize: 12,
         color: '#838181',
         marginTop: "5%",
         marginBottom: "10%",
@@ -110,7 +122,7 @@ const styles = StyleSheet.create({
         marginTop: "5%",
         borderBottomWidth: 1,
         borderBottomColor: '#8A60FF',
-        fontSize: 16,
+        fontSize: 12,
         color: '#8A60FF',
         paddingBottom: 5,
         marginBottom: 30,
@@ -126,11 +138,10 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         alignItems: 'center',
         width: '70%',
-        zIndex: 100, 
     },
     buttonText: {
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 12,
         fontWeight: 'bold',
     },
 })
