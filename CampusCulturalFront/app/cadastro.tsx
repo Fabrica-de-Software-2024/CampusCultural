@@ -3,13 +3,13 @@ import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity 
 
 export default function Cadastro(){
     const cadastro = require("../assets/cadastro.png");
-    const logocadastro = require("../assets/logocadastro.png");
+    const logo = require("../assets/logo.png");
     const figura2 = require("../assets/figura2.png");
     const figura4 = require("../assets/figura4.png");
     return(
         <View style={styles.container}>
             <Image style={styles.imagem}source={cadastro} resizeMode="cover"/>
-            <Image style={styles.imagem2}source={logocadastro} resizeMode="cover"/>
+            <Image style={styles.imagem2}source={logo} resizeMode="cover"/>
             <Image style={styles.imagem3}source={figura2} resizeMode="cover"/>
             <Image style={styles.imagem4}source={figura4} resizeMode="cover"/>
 
