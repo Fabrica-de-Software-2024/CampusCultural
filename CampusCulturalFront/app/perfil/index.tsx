@@ -7,21 +7,22 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import Navbar from "./components/Navbar";
-import Rodape from "./components/Rodape";
+import Navbar from "../components/Navbar";
+import Rodape from "../components/Rodape";
 
 const Perfil = ({ navigation }) => {
-  const logo = require("../assets/logo.png");
-  const sino = require("../assets/sino.png");
-  const engrenagem = require("../assets/engrenagem.png");
-  const certificado = require("../assets/certificado.png");
-  const chat = require("../assets/chat.png");
-
-
+  const logo = require("../../assets/logo.png");
+  const sino = require("../../assets/sino.png");
+  const engrenagem = require("../../assets/engrenagem.png");
+  const certificado = require("../../assets/certificado.png");
+  const chat = require("../../assets/chat.png");
+  const figura1 = require("../../assets/figura7.png");
+  const figura2 = require("../../assets/figura8.png");
+  const figura3 = require("../../assets/figura9.png");
+  const figura4 = require("../../assets/figura10.png");
   return (
     <>
       <Navbar title="Minha Conta" links={false} />
-
       <View style={styles.container}>
         <View style={styles.userInfo}>
           <Image source={logo} style={styles.imagem} resizeMode="cover" />
@@ -47,6 +48,10 @@ const Perfil = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <Image style={styles.figura1} source={figura1} />
+      <Image style={styles.figura2} source={figura2} />
+      <Image style={styles.figura3} source={figura3} />
+      <Image style={styles.figura4} source={figura4} />
       <Rodape selecionado={3} />
     </>
   );
@@ -97,6 +102,24 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginRight: 10,
+  },
+  figura1: {
+    position: "absolute",
+    top: "25%"
+  },
+  figura2: {
+    position: "absolute",
+    right: 0,
+    top: "25%"
+  },
+  figura3: {
+    position: "absolute",
+    bottom: "10%"
+  },
+  figura4: {
+    position: "absolute",
+    right: 0,
+    bottom: "10%"
   },
 });
 

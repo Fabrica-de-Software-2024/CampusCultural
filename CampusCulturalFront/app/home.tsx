@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
 import EventoCard, { Evento } from "./components/EventoCard";
 
-async function puxaEventos(id?: number) {
+export async function puxaEventos(id?: number) {
     const resp = await fetch("https://campus-cultural.vercel.app/evento");
     const resp2 = await resp.json();
     return resp2;
