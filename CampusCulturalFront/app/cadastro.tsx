@@ -1,20 +1,25 @@
 import { router } from "expo-router"
-import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 
-export default function Cadastro(){
+export default function Cadastro() {
     const cadastro = require("../assets/cadastro.png");
     const logocadastro = require("../assets/logocadastro.png");
     const figura2 = require("../assets/figura2.png");
     const figura4 = require("../assets/figura4.png");
-    return(
+    return (
+        <>
+            <StatusBar
+                backgroundColor="#6B3BF4"
+                barStyle="light-content"
+            />
         <View style={styles.container}>
-            <Image style={styles.imagem}source={cadastro} resizeMode="cover"/>
-            <Image style={styles.imagem2}source={logocadastro} resizeMode="cover"/>
-            <Image style={styles.imagem3}source={figura2} resizeMode="cover"/>
-            <Image style={styles.imagem4}source={figura4} resizeMode="cover"/>
+                <Image style={styles.imagem} source={cadastro} resizeMode="cover" />
+                <Image style={styles.imagem2} source={logocadastro} resizeMode="contain" />
+                <Image style={styles.imagem3} source={figura2} resizeMode="cover" />
+                <Image style={styles.imagem4} source={figura4} resizeMode="cover" />
 
 
-            <View style={styles.bottomContainer}/>
+                <View style={styles.bottomContainer} />
                 <View style={styles.textContainer}>
                     <Text style={styles.purpleText}>CADASTRO</Text>
                     <Text style={styles.grayText}>Cadastre-se e tenha acesso aos eventos da UTFPR.</Text>
@@ -22,28 +27,29 @@ export default function Cadastro(){
                         <Text style={styles.inputLabel}>Nome completo:</Text>
                         <TextInput 
                         style={styles.input}
-                        placeholderTextColor="#8A60FF"/>
+                            placeholderTextColor="#8A60FF" />
                         <Text style={styles.inputLabel}>Curso:</Text>
                         <TextInput
                         style={styles.input}
-                        placeholderTextColor="#8A60FF"/>
+                            placeholderTextColor="#8A60FF" />
                         <Text style={styles.inputLabel}>E-mail:</Text>
                         <TextInput
                         style={styles.input}
-                        placeholderTextColor="#8A60FF"/>
+                            placeholderTextColor="#8A60FF" />
                         <Text style={styles.inputLabel}>Senha:</Text>
                         <TextInput
                         style={styles.input}
                         placeholderTextColor="#8A60FF"
-                        secureTextEntry={true}/>
+                            secureTextEntry={true} />
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity style={styles.button}>
-                                <Text  style={styles.buttonText}>CADASTRAR</Text>
+                                <Text style={styles.buttonText}>CADASTRAR</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
         </View>
+        </>
     );
 }
 
@@ -63,15 +69,15 @@ const styles = StyleSheet.create({
         height: windowHeight * 0.45,
         opacity: 0.36
     },
-    imagem2:{
+    imagem2: {
         width: '30%',
         top: '2%',
         position: 'absolute', // Ajuste para centralizar horizontalmente
     },
-    imagem3:{
+    imagem3: {
         width: '30%',
         top: '0%',
-        right:'0%',
+        right: '0%',
         position: 'absolute', // Ajuste para centralizar horizontalmente
     },
     imagem4: {
@@ -138,6 +144,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         alignItems: 'center',
         width: '70%',
+        zIndex: 10
     },
     buttonText: {
         color: '#FFFFFF',
