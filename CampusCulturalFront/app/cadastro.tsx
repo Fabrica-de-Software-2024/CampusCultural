@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#838181',
         marginTop: "5%",
-        marginBottom: "10%",
+        marginBottom: "5%",
         alignSelf: 'flex-start',
     },
     inputContainer: {
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     input: {
-        marginTop: "5%",
+        marginTop: "0%",
         borderBottomWidth: 1,
         borderBottomColor: '#8A60FF',
         fontSize: 12,
