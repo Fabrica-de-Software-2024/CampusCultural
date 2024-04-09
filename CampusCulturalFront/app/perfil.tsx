@@ -1,57 +1,49 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { FontAwesome } from '@expo/vector-icons'; // Importando ícones FontAwesome
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import Navbar from "./components/Navbar";
 import Rodape from "./components/Rodape";
 
-const Perfil = ({ navigation }) => { // Recebendo a propriedade de navegação
-  const userData = {
-    name: "Lucas dos Santos",
-    course: "Engenharia de Software",
-    photo: "https://via.placeholder.com/150",
-  };
+const Perfil = ({ navigation }) => {
+  const logo = require("../assets/logo.png");
+  const sino = require("../assets/sino.png");
+  const engrenagem = require("../assets/engrenagem.png");
+  const certificado = require("../assets/certificado.png");
+  const chat = require("../assets/chat.png");
 
-  const navigateToNotifications = () => {
-    navigation.navigate('NotificationsScreen'); // Navegar para a tela de notificações
-  };
-
-  const navigateToSettings = () => {
-    navigation.navigate('SettingsScreen'); // Navegar para a tela de configurações
-  };
-
-  const navigateToCertificates = () => {
-    navigation.navigate('CertificatesScreen'); // Navegar para a tela de certificados
-  };
-
-  const navigateToContact = () => {
-    navigation.navigate('ContactScreen'); // Navegar para a tela de contato
-  };
 
   return (
     <>
       <Navbar title="Perfil" links={false} />
+
       <View style={styles.container}>
         <View style={styles.userInfo}>
-          <Image source={{ uri: userData.photo }} style={styles.photo} />
-          <Text style={styles.name}>{userData.name}</Text>
-          <Text style={styles.course}>{userData.course}</Text>
+          <Image source={logo} style={styles.imagem} resizeMode="cover" />
+          <Text style={styles.nome}>sla</Text>
+          <Text style={styles.curso}>sla</Text>
         </View>
-        <View style={styles.options}>
-          <TouchableOpacity style={styles.optionContainer} onPress={navigateToNotifications}>
-            <FontAwesome name="bell" size={24} color="#8A60FF" style={styles.icon} />
-            <Text style={styles.option}>Notificações</Text>
+        <View style={styles.textContainer}>
+          <TouchableOpacity style={styles.button}>
+            <Image source={sino} style={styles.icon} resizeMode="cover" />
+            <Text style={styles.buttonText}>Notificações</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.optionContainer} onPress={navigateToSettings}>
-            <FontAwesome name="cog" size={24} color="#8A60FF" style={styles.icon} />
-            <Text style={styles.option}>Configurações</Text>
+          <TouchableOpacity style={styles.button}>
+            <Image source={engrenagem} style={styles.icon} resizeMode="cover" />
+            <Text style={styles.buttonText}>Configurações</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.optionContainer} onPress={navigateToCertificates}>
-            <FontAwesome name="certificate" size={24} color="#8A60FF" style={styles.icon} />
-            <Text style={styles.option}>Meus Certificados</Text>
+          <TouchableOpacity style={styles.button}>
+            <Image source={certificado} style={styles.icon} resizeMode="cover" />
+            <Text style={styles.buttonText}>Meus certificados</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.optionContainer} onPress={navigateToContact}>
-            <FontAwesome name="envelope" size={24} color="#8A60FF" style={styles.icon} />
-            <Text style={styles.option}>Fale Conosco</Text>
+          <TouchableOpacity style={styles.button}>
+            <Image source={chat} style={styles.icon} resizeMode="cover" />
+            <Text style={styles.buttonText}>Fale conosco</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -60,47 +52,48 @@ const Perfil = ({ navigation }) => { // Recebendo a propriedade de navegação
   );
 };
 
+const windowHeight = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    backgroundColor: "#fff",
+    top: "5%",
+  },
+  textContainer: {
+    top: "15%",
   },
   userInfo: {
     alignItems: "center",
-    marginBottom: 20,
   },
-  photo: {
+  imagem: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 10,
+    backgroundColor: "#8A60FF",
   },
-  name: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  course: {
-    fontSize: 18,
-    fontStyle: "italic",
-    marginBottom: 10,
-  },
-  options: {
-    alignItems: "flex-start", // Ajuste para alinhar as opções à esquerda
-  },
-  optionContainer: {
+  button: {
+    color: "#8A60FF",
     flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
+    marginTop: "5%",
+    marginLeft:"0%",
+  },
+  buttonText: {
+    fontSize: 20,
+    color: "#8A60FF",
+    textDecorationLine: "underline",
+  },
+  nome: {
+    fontSize: 21,
+    textAlign: "center",
+    fontWeight: "500",
+  },
+  curso: {
+    fontSize: 19,
+    textAlign: "center",
   },
   icon: {
+    width: 20,
+    height: 20,
     marginRight: 10,
-  },
-  option: {
-    fontSize: 18,
-    color: "#8A60FF",
   },
 });
 
