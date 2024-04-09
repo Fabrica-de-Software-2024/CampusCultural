@@ -8,14 +8,14 @@ export default function Login() {
     const figura2 = require("../assets/figura2.png");
     const figura3 = require("../assets/figura3.png");
     const figura4 = require("../assets/figura4.png");
+    const pessoaIcon = require("../assets/pessoa.png");
+    const cadeadoIcon = require("../assets/cadeado.png");
+    const olhoFechadoIcon = require("../assets/olho_fechado.png");
+    const olhoAbertoIcon = require("../assets/olho_aberto.png");
 
     return (
         <>
-            <StatusBar
-                backgroundColor="#6B3BF4"
-                barStyle="light-content"
-            />
-
+            <StatusBar backgroundColor="#6B3BF4" barStyle="light-content" />
             <View style={styles.container}>
                 <Image style={styles.imagem} source={login} resizeMode="cover" />
                 <Image style={styles.logo} source={logo} />
@@ -24,22 +24,36 @@ export default function Login() {
                 <Image style={styles.figura3} source={figura3} resizeMode="cover" />
                 <Image style={styles.figura4} source={figura4} resizeMode="cover" />
 
-                <View style={styles.bottomContainer} />
-                <View style={styles.textContainer}>
-                    <Text style={styles.purpleText}>BEM-VINDO(A) AO NOSSO</Text>
-                    <Text style={styles.purpleText2}>CAMPUS CULTURAL!</Text>
-                    <Text style={styles.grayText}>
-                        Quer ter acesso ao calendário de eventos em tempo real? <Text style={styles.purpleText3}>Efetue o login!</Text>
-                    </Text>
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.inputLabel}>e-mail:</Text>
-                        <TextInput style={styles.input} placeholderTextColor="#8A60FF" />
-                        <Text style={styles.inputLabel}>senha:</Text>
-                        <TextInput style={styles.input} placeholderTextColor="#8A60FF" secureTextEntry={true} />
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.button}>
-                                <Text style={styles.buttonText}>ENTRAR</Text>
-                            </TouchableOpacity>
+                <View style={styles.bottomContainer}>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.purpleText}>BEM-VINDO(A) AO NOSSO</Text>
+                        <Text style={styles.purpleText2}>CAMPUS CULTURAL!</Text>
+                        <Text style={styles.grayText}>
+                            Quer ter acesso ao calendário de eventos em tempo real?{' '}
+                            <Text style={styles.purpleText3}>Efetue o login!</Text>
+                        </Text>
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.inputLabelEmail}>e-mail:</Text>
+                            <View style={styles.fieldWithLine}>
+                                <View style={styles.lineUnderInput}></View>
+                                <Image source={pessoaIcon} style={styles.inputIcon} />
+                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" />
+                            </View>
+                            <Text style={styles.inputLabelSenha}>senha:</Text>
+                            <View style={styles.fieldWithLine}>
+                                <View style={styles.lineUnderInput}></View>
+                                <Image source={cadeadoIcon} style={styles.inputIcon} />
+                                <TextInput
+                                    style={styles.input2}
+                                    placeholderTextColor="#8A60FF"
+                                    secureTextEntry={true}
+                                />
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity style={styles.button}>
+                                    <Text style={styles.buttonText}>ENTRAR</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -71,7 +85,7 @@ const styles = StyleSheet.create({
     logo: {
         position: 'absolute',
         alignSelf: 'center',
-        top: windowHeight * 0.200 - 100, // Posição a partir do topo da tela
+        top: windowHeight * 0.200 - 100,
         width: 190,
         height: 190,
     },
@@ -95,7 +109,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
         position: 'absolute',
-        width: "10%",
+        width: "15%",
         height: "20%",
         zIndex: 1,
     },
@@ -122,7 +136,7 @@ const styles = StyleSheet.create({
     //Container envolvendo os textos
     textContainer: {
         position: 'absolute',
-        top: "45%",
+        top: "10%",
         alignItems: 'center',
     },
     //Definições para a frase "BEM-VINDO(A) AO NOSSO"
@@ -139,7 +153,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginLeft: 35,
     },
-    //Definições para a frase "Quer ter acesso ao calendário de eventos em tempo real?"" 
+    //Definições para a frase "Quer ter acesso ao calendário de eventos em tempo real?"
     grayText: {
         fontSize: 14,
         color: '#838181',
@@ -158,9 +172,14 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     //Usado nas escritas: e-mail e senha
-    inputLabel: {
+    inputLabelEmail: {
         color: '#838181',
         marginBottom: 5,
+    },
+    inputLabelSenha: {
+        color: '#838181',
+        marginBottom: 5,
+        marginTop: 20, 
     },
     input: {
         borderBottomWidth: 1,
@@ -170,10 +189,44 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         marginBottom: 20,
     },
+    //Expecificações icones PESSOA E CADEADO
+    fieldWithLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'relative',
+    },
+    lineUnderInput: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: 1,
+        backgroundColor: '#8A60FF',
+        zIndex: 1, // Garante que a linha fique sob os outros elementos
+    },
+    inputIcon: {
+        width: 25,
+        height: 25,
+        marginRight: 10,
+        marginBottom: 5,
+        zIndex: 2, 
+    },
+    input2: {
+        flex: 1,
+        paddingBottom: 5,
+        fontSize: 16,
+        color: '#8A60FF',
+        backgroundColor: 'transparent', // Importante para que o fundo do TextInput não oculte a linha
+        zIndex: 2, 
+    },
+    inputWithLine: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#8A60FF',
+    },
     //Expecificações botão 'ENTRAR'
     buttonContainer: {
         alignItems: 'center',
-        marginTop: 35,
+        marginTop: "18%",
     },
     button: {
         backgroundColor: '#6B3BF4',
@@ -185,7 +238,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
     },
 });
