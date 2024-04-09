@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-type Evento = {
+export type Evento = {
   "id_evento": number,
   "professor_evento": number,
   "nome_evento": string,

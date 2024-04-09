@@ -1,14 +1,13 @@
 import { router } from "expo-router"
-import { Button, ScrollView, StatusBar, Text } from "react-native"
+import { Button, ScrollView, StatusBar, Text, TouchableOpacity, Image } from "react-native"
 import Navbar from "./components/Navbar"
 import { useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
-import EventoCard from "./components/EventoCard";
+import EventoCard, { Evento } from "./components/EventoCard";
 
 async function puxaEventos(id?: number) {
     const resp = await fetch("https://campus-cultural.vercel.app/evento");
     const resp2 = await resp.json();
-    console.log(resp2)
     return resp2;
 }
 
@@ -16,6 +15,7 @@ export default function Home() {
 
     const [eventosSelecionado, setEventosSelecionado] = useState(0);
     const [eventos, setEventos] = useState([]);
+    const filtro = require("../assets/filtro.png")
 
     useEffect(() => {
         puxaEventos().then((resp) => setEventos(resp));
@@ -25,29 +25,35 @@ export default function Home() {
     return (
         <>
             <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
-            <ScrollView style={{ marginBottom: 40 }}>
+            <TouchableOpacity style={{ position: "absolute", right: "3%", top: "20%" }}>
+                <Image source={filtro} />
+            </TouchableOpacity>
+            <ScrollView style={{ marginVertical: 50 }}>
                 {
                     eventosSelecionado === 0 ?
-                        eventos.map((i, index) => {
-                            if (Date.now() <= new Date(i.data_evento).getDate())
+                        eventos.map((i: Evento, index: number) => {
+                            if (Date.now() <= Date.parse(i.data_evento)) {
                                 return (
                                     <EventoCard key={index} data={i} />
                                 )
+                            }
                         })
                         :
                         eventosSelecionado === 1 ?
                             eventos.map((i, index) => {
-                                if (Date.now() > new Date(i.data_evento).getDate())
-                                    return (
-                                        <EventoCard key={index} data={i} />
-                                    )
+                                return (
+                                    <EventoCard key={index} data={i} />
+                                )
                             })
                             :
                             eventosSelecionado === 2 ?
+
                                 eventos.map((i, index) => {
-                                    return (
-                                        <EventoCard key={index} data={i} />
-                                    )
+                                    if (Date.now() > Date.parse(i.data_evento)) {
+                                        return (
+                                            <EventoCard key={index} data={i} />
+                                        )
+                                    }
                                 })
                                 :
                                 <></>
