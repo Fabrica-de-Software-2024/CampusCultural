@@ -1,4 +1,5 @@
 import { router } from "expo-router"
+import { useState } from "react";
 import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 
 export default function Cadastro() {
@@ -6,6 +7,13 @@ export default function Cadastro() {
     const logo = require("../assets/logo.png");
     const figura2 = require("../assets/figura2.png");
     const figura4 = require("../assets/figura4.png");
+    const cadeadoIcon = require("../assets/cadeado.png");
+    const olhoFechadoIcon = require("../assets/olho_fechado.png");
+    const olhoAbertoIcon = require("../assets/olho_aberto.png");
+
+    const [mostrarSenha, setMostrarSenha] = useState(false);
+
+
     return (
         <>
             <StatusBar
@@ -37,10 +45,18 @@ export default function Cadastro() {
                             style={styles.input}
                             placeholderTextColor="#8A60FF" />
                         <Text style={styles.inputLabel}>Senha:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholderTextColor="#8A60FF"
-                            secureTextEntry={true} />
+                        <View style={styles.fieldWithLine}>
+                                <View style={styles.lineUnderInput}></View>
+                                <Image source={cadeadoIcon} style={styles.inputIcon} />
+                                <TextInput
+                                    style={styles.input2}
+                                    placeholderTextColor="#8A60FF"
+                                    secureTextEntry={!mostrarSenha}
+                                />
+                                <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
+                                    <Image source={mostrarSenha ? olhoAbertoIcon : olhoFechadoIcon} style={styles.eyeIcon} />
+                                </TouchableOpacity>
+                            </View>
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity style={styles.button}>
                                 <Text style={styles.buttonText}>CADASTRAR</Text>
@@ -150,5 +166,42 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 12,
         fontWeight: 'bold',
+    },
+    eyeIcon: {
+        width: 25,
+        height: 25,
+        marginRight: 10,
+        marginBottom: 5,
+        zIndex: 2,
+    },
+
+    fieldWithLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'relative',
+    },
+    lineUnderInput: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: 1,
+        backgroundColor: '#8A60FF',
+        zIndex: 1, 
+    },
+    inputIcon: {
+        width: 25,
+        height: 25,
+        marginRight: 10,
+        marginBottom: 5,
+        zIndex: 2,
+    },
+    input2: {
+        flex: 1,
+        paddingBottom: 5,
+        fontSize: 16,
+        color: '#8A60FF',
+        backgroundColor: 'transparent', 
+        zIndex: 2,
     },
 })
