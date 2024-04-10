@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: "10%",
         alignItems: 'center',
+        left: "2%",
     },
     //Definições para a frase "BEM-VINDO(A) AO NOSSO"
     purpleText: {
