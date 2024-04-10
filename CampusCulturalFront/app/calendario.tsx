@@ -142,12 +142,12 @@ export default function Calendario() {
                                 if (Date.parse(data) <= Date.parse(i.data_evento)) {
                                     index2++;
                                     return (
-                                        <>
+                                        <View key={index}>
                                             <TouchableOpacity onPress={() => router.replace(`/evento/${i.id_evento}`)}>
                                                 <Text style={index2 < 2 ? styles.textEventoRoxo : styles.textEvento}>{`${new Date(i.data_evento).getDate() + 1} - ${dias_da_semana[new Date(i.data_evento).getDay() + 1]} - ${i.nome_evento.length > 30? i.nome_evento.substring(0,25)+"..." : i.nome_evento}`}</Text>
                                             </TouchableOpacity>
                                             <Image source={risco} />
-                                        </>
+                                        </View>
                                     )
                                 }
                             })

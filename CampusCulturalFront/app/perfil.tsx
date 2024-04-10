@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,22 +6,45 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Modal,
 } from "react-native";
-import Navbar from "../components/Navbar";
-import Rodape from "../components/Rodape";
+import Navbar from "./components/Navbar";
+import Rodape from "./components/Rodape";
+import NotificacoesCard from "./components/NotificacoesPopup";
+import ConfiguracoesCard from "./components/ConfiguracoesPopup";
+import CertificadosCard from "./components/CertificadosPopup";
+import AjudaCard from "./components/AjudaPopup";
 
 const Perfil = ({ navigation }) => {
-  const logo = require("../../assets/logo.png");
-  const sino = require("../../assets/sino.png");
-  const engrenagem = require("../../assets/engrenagem.png");
-  const certificado = require("../../assets/certificado.png");
-  const chat = require("../../assets/chat.png");
-  const figura1 = require("../../assets/figura7.png");
-  const figura2 = require("../../assets/figura8.png");
-  const figura3 = require("../../assets/figura9.png");
-  const figura4 = require("../../assets/figura10.png");
+  const logo = require("../assets/logo.png");
+  const sino = require("../assets/sino.png");
+  const engrenagem = require("../assets/engrenagem.png");
+  const certificado = require("../assets/certificado.png");
+  const chat = require("../assets/chat.png");
+  const figura1 = require("../assets/figura7.png");
+  const figura2 = require("../assets/figura8.png");
+  const figura3 = require("../assets/figura9.png");
+  const figura4 = require("../assets/figura10.png");
+
+  const [modalNotificacoes, setModalNotificacoes] = useState(false);
+  const [modalConfig, setModalConfig] = useState(false);
+  const [modalCertificados, setModalCertificados] = useState(false);
+  const [modalChat, setModalChat] = useState(false);
+
   return (
     <>
+      <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalNotificacoes} onRequestClose={() => setModalNotificacoes(false)} >
+        <NotificacoesCard setAberto={setModalNotificacoes}/>
+      </Modal>
+      <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalConfig} onRequestClose={() => setModalConfig(false)} >
+        <ConfiguracoesCard setAberto={setModalConfig}/>
+      </Modal>
+      <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalCertificados} onRequestClose={() => setModalCertificados(false)} >
+        <CertificadosCard setAberto={setModalCertificados}/>
+      </Modal>
+      <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalChat} onRequestClose={() => setModalChat(false)} >
+        <AjudaCard setAberto={setModalChat}/>
+      </Modal>
       <Navbar title="Minha Conta" links={false} />
       <View style={styles.container}>
         <View style={styles.userInfo}>
@@ -30,19 +53,19 @@ const Perfil = ({ navigation }) => {
           <Text style={styles.curso}>sla</Text>
         </View>
         <View style={styles.textContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={()=>setModalNotificacoes(true)} style={styles.button}>
             <Image source={sino} style={styles.icon} resizeMode="cover" />
             <Text style={styles.buttonText}>Notificações</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={()=>setModalConfig(true)} style={styles.button}>
             <Image source={engrenagem} style={styles.icon} resizeMode="cover" />
             <Text style={styles.buttonText}>Configurações</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={()=>setModalCertificados(true)} style={styles.button}>
             <Image source={certificado} style={styles.icon} resizeMode="cover" />
             <Text style={styles.buttonText}>Meus certificados</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={()=>setModalChat(true)} style={styles.button}>
             <Image source={chat} style={styles.icon} resizeMode="cover" />
             <Text style={styles.buttonText}>Fale conosco</Text>
           </TouchableOpacity>
@@ -121,6 +144,9 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: "10%"
   },
+  modal: {
+    width: "90%"
+  }
 });
 
 export default Perfil;
