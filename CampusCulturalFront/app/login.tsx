@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 
 export default function Login() {
+
     const login = require("../assets/login.png");
     const logo = require("../assets/logo.png");
     const figura1 = require("../assets/figura1.png");
@@ -12,6 +13,9 @@ export default function Login() {
     const cadeadoIcon = require("../assets/cadeado.png");
     const olhoFechadoIcon = require("../assets/olho_fechado.png");
     const olhoAbertoIcon = require("../assets/olho_aberto.png");
+
+    //Estado de controle da visibilidade da senha
+    const [mostrarSenha, setMostrarSenha] = useState(false);
 
     return (
         <>
@@ -46,12 +50,10 @@ export default function Login() {
                                 <TextInput
                                     style={styles.input2}
                                     placeholderTextColor="#8A60FF"
-                                    secureTextEntry={true}
+                                    secureTextEntry={!mostrarSenha}
                                 />
-                            </View>
-                            <View style={styles.buttonContainer}>
-                                <TouchableOpacity style={styles.button}>
-                                    <Text style={styles.buttonText}>ENTRAR</Text>
+                                <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
+                                    <Image source={mostrarSenha ? olhoAbertoIcon : olhoFechadoIcon} style={styles.eyeIcon} />
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -72,8 +74,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#6B3BF4",
         paddingTop: 0,
         margin: 0,
-        width: '100%', // Garante que a view ocupe toda a largura
-        height: '100%', // Garante que a view ocupe toda a altura
+        width: '100%', 
+        height: '100%', 
     },
     //Imagem grande do topo
     imagem: {
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
         height: windowHeight * 0.45,
         opacity: 0.36
     },
-    // Logo acima da imagem de login
+    //Logo acima da imagem de login
     logo: {
         position: 'absolute',
         alignSelf: 'center',
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
     inputLabelSenha: {
         color: '#838181',
         marginBottom: 5,
-        marginTop: 20, 
+        marginTop: 20,
     },
     input: {
         borderBottomWidth: 1,
@@ -189,7 +191,15 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         marginBottom: 20,
     },
-    //Expecificações icones PESSOA E CADEADO
+    //Expecificações ícone olho_aberto e olho_fechado
+    eyeIcon: {
+        width: 25,
+        height: 25,
+        marginRight: 10,
+        marginBottom: 5,
+        zIndex: 2,
+    },
+    //Expecificações ícones PESSOA E CADEADO
     fieldWithLine: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -209,7 +219,7 @@ const styles = StyleSheet.create({
         height: 25,
         marginRight: 10,
         marginBottom: 5,
-        zIndex: 2, 
+        zIndex: 2,
     },
     input2: {
         flex: 1,
@@ -217,7 +227,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#8A60FF',
         backgroundColor: 'transparent', // Importante para que o fundo do TextInput não oculte a linha
-        zIndex: 2, 
+        zIndex: 2,
     },
     inputWithLine: {
         borderBottomWidth: 1,
