@@ -4,8 +4,9 @@ import Navbar from "./components/Navbar"
 import { useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
 import EventoCard, { Evento } from "./components/EventoCard";
+import BotaoAddEvento from "./components/BotaoAddEvento";
 
-export async function puxaEventos(id?: number) {
+export async function puxaEventos() {
     const resp = await fetch("https://campus-cultural.vercel.app/evento");
     const resp2 = await resp.json();
     return resp2;
@@ -25,6 +26,7 @@ export default function Home() {
     return (
         <>
             <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
+            <BotaoAddEvento />
             <TouchableOpacity style={{ position: "absolute", right: "3%", top: "20%" }}>
                 <Image source={filtro} />
             </TouchableOpacity>
@@ -34,7 +36,7 @@ export default function Home() {
                         eventos.map((i: Evento, index: number) => {
                             if (Date.now() <= Date.parse(i.data_evento)) {
                                 return (
-                                    <EventoCard key={index} data={i} />
+                                    <EventoCard key={index} data={i} previa={false} />
                                 )
                             }
                         })
@@ -42,7 +44,7 @@ export default function Home() {
                         eventosSelecionado === 1 ?
                             eventos.map((i, index) => {
                                 return (
-                                    <EventoCard key={index} data={i} />
+                                    <EventoCard key={index} data={i} previa={false} />
                                 )
                             })
                             :
@@ -51,7 +53,7 @@ export default function Home() {
                                 eventos.map((i, index) => {
                                     if (Date.now() > Date.parse(i.data_evento)) {
                                         return (
-                                            <EventoCard key={index} data={i} />
+                                            <EventoCard key={index} data={i} previa={false} />
                                         )
                                     }
                                 })

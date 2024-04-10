@@ -14,6 +14,7 @@ import NotificacoesCard from "./components/NotificacoesPopup";
 import ConfiguracoesCard from "./components/ConfiguracoesPopup";
 import CertificadosCard from "./components/CertificadosPopup";
 import AjudaCard from "./components/AjudaPopup";
+import BotaoAddEvento from "./components/BotaoAddEvento";
 
 const Perfil = ({ navigation }) => {
   const logo = require("../assets/logo.png");
@@ -33,6 +34,7 @@ const Perfil = ({ navigation }) => {
 
   return (
     <>
+      <BotaoAddEvento />
       <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalNotificacoes} onRequestClose={() => setModalNotificacoes(false)} >
         <NotificacoesCard setAberto={setModalNotificacoes}/>
       </Modal>

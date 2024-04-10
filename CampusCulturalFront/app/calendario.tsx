@@ -5,6 +5,7 @@ import { ReactNode, useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
 import { puxaEventos } from "./home";
 import { Evento } from "./components/EventoCard";
+import BotaoAddEvento from "./components/BotaoAddEvento";
 
 
 export default function Calendario() {
@@ -97,6 +98,7 @@ export default function Calendario() {
     return (
         <>
             <Navbar title={"Calendário"} links={false} />
+            <BotaoAddEvento />
             <View style={styles.container}>
                 <View style={styles.calendarioContainer}>
                     <View style={styles.calendarioContainerTitulo}>
