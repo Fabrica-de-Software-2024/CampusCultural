@@ -14,6 +14,21 @@ export default function Login() {
     const olhoFechadoIcon = require("../assets/olho_fechado.png");
     const olhoAbertoIcon = require("../assets/olho_aberto.png");
 
+    const [loginDados, setLoginDados] = useState({
+        login: "",
+        senha: ""
+    })
+
+    async function fazLogin(data) {
+        fetch("https://campus-cultural.vercel.app/usuario/login", {
+            method: "POST",
+            body: JSON.stringify(data)
+        }).then(async(resp) => {
+            console.log(await resp.json())
+            return await resp.json()
+        })
+    }
+
     //Estado de controle da visibilidade da senha
     const [mostrarSenha, setMostrarSenha] = useState(false);
 
@@ -41,7 +56,7 @@ export default function Login() {
                             <View style={styles.fieldWithLine}>
                                 <View style={styles.lineUnderInput}></View>
                                 <Image source={pessoaIcon} style={styles.inputIcon} />
-                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" />
+                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" value={loginDados.login} onChange={(e) => setLoginDados({ ...loginDados, login: e.nativeEvent.text })} />
                             </View>
                             <Text style={styles.inputLabelSenha}>senha:</Text>
                             <View style={styles.fieldWithLine}>
@@ -51,9 +66,16 @@ export default function Login() {
                                     style={styles.input2}
                                     placeholderTextColor="#8A60FF"
                                     secureTextEntry={!mostrarSenha}
+                                    value={loginDados.senha}
+                                    onChange={(e) => setLoginDados({ ...loginDados, senha: e.nativeEvent.text })}
                                 />
                                 <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
                                     <Image source={mostrarSenha ? olhoAbertoIcon : olhoFechadoIcon} style={styles.eyeIcon} />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity style={styles.button} onPress={()=>{fazLogin(loginDados)}}>
+                                    <Text style={styles.buttonText}>ENTRAR</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -74,8 +96,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#6B3BF4",
         paddingTop: 0,
         margin: 0,
-        width: '100%', 
-        height: '100%', 
+        width: '100%',
+        height: '100%',
     },
     //Imagem grande do topo
     imagem: {
@@ -246,6 +268,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         alignItems: 'center',
         width: '50%',
+        zIndex: 100
     },
     buttonText: {
         color: '#FFFFFF',
