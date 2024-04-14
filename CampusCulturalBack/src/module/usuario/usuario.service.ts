@@ -7,6 +7,21 @@ import { error } from 'console';
 @Injectable()
 export class UsuarioService {
   constructor(private prisma: PrismaService) { }
+
+  async findOne(id_usuario: number) {
+    const usuario = await this.prisma.usuario.findUnique({
+      where: {
+        id_usuario
+      }
+    })
+    return {
+      "id_usuario": usuario.id_usuario,
+      "nome_usuario": usuario.nome_usuario,
+      "curso_usuario": usuario.curso_usuario,
+      "is_professor": usuario.is_professor
+    };
+  }
+
   async create(usuarioDTO: UsuarioDTO) {
     const userExists = await this.prisma.usuario.findFirst({
       where: {

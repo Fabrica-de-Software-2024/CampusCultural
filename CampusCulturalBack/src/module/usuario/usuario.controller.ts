@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param, Delete, Get } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { UsuarioDTO } from './usuario.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -7,6 +7,15 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @Controller('usuario')
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) { }
+
+  @ApiOperation({
+    summary: "Busca Usuario pelo ID.",
+    description: "Busca Usuario pelo ID."
+  })
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.usuarioService.findOne(+id);
+  }
 
   @ApiOperation({
     summary: "Registra um usuário",

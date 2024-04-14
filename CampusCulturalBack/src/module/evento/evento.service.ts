@@ -8,7 +8,8 @@ export class EventoService {
     constructor(private prisma: PrismaService) { }
     async findAll() {
         const eventos = await this.prisma.evento.findMany();
-        return eventos;
+        const eventos2 = await eventos.sort((a,b)=> {return (a.data_evento.getTime() - b.data_evento.getTime())})
+        return eventos2;
     }
     async findOne(id_evento: number) {
         const evento = await this.prisma.evento.findUnique({
