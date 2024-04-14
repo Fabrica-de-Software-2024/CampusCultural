@@ -31,4 +31,4 @@ async function bootstrap() {
 
   await app.listen(3000);
 }
-export default bootstrap();
+bootstrap();
