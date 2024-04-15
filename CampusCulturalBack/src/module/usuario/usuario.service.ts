@@ -55,7 +55,7 @@ export class UsuarioService {
         senha_usuario: data.senha_usuario,
       },
     });
-    return usuario[0];
+    return usuario;
   }
 
   async update(id_usuario: number, usuarioDTO: UsuarioDTO) {
