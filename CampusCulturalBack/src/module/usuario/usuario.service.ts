@@ -49,13 +49,13 @@ export class UsuarioService {
   }
 
   async Login(data: LoginDTO) {
-    const usuario = await this.prisma.usuario.findFirst({
+    const usuario = await this.prisma.usuario.findMany({
       where: {
         login_usuario: data.login_usuario,
         senha_usuario: data.senha_usuario,
       },
     });
-    return usuario;
+    return usuario[0];
   }
 
   async update(id_usuario: number, usuarioDTO: UsuarioDTO) {

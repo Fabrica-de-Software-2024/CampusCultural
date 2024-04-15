@@ -19,7 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from "expo-router";
 
 
-async function pegaLogin() {
+async function pegaLogin(setDados) {
 	const logindados = await AsyncStorage.getItem('login');
 	const logindados2 = await JSON.parse(logindados);
 	return logindados2;
@@ -34,7 +34,7 @@ export type Usuario = {
 	"is_professor": boolean, 
 }
 
-const Perfil = ({ navigation }) => {
+export default function Perfil() {
 	const logo = require("../assets/logo.png");
 	const sino = require("../assets/sino.png");
 	const engrenagem = require("../assets/engrenagem.png");
@@ -52,10 +52,9 @@ const Perfil = ({ navigation }) => {
 	const [dados, setDados] = useState<Usuario>()
 
 	useEffect(() => {
-		AsyncStorage.getItem('login').then((resp) => {
-			return JSON.parse(resp)
-		}).then((resp2) => {setDados(resp2)});
-	})
+		pegaLogin(setDados);
+		console.log(dados)
+	},[dados])
 
 
 		return (
@@ -97,7 +96,7 @@ const Perfil = ({ navigation }) => {
 							<Image source={chat} style={styles.icon} resizeMode="cover" />
 							<Text style={styles.buttonText}>Fale conosco</Text>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => {AsyncStorage.removeItem('login').then(()=>router.replace("/login"))}} style={styles.button}>
+						<TouchableOpacity onPress={() => {AsyncStorage.setItem('login',"\0").then(()=>router.replace("/"))}} style={styles.button}>
 							<Text style={styles.buttonText}>Logout</Text>
 						</TouchableOpacity>
 					</View>
@@ -180,5 +179,3 @@ const Perfil = ({ navigation }) => {
 			width: "90%"
 		}
 	});
-
-	export default Perfil;
