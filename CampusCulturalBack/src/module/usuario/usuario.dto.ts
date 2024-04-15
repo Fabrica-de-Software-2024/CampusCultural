@@ -37,3 +37,17 @@ export class UsuarioDTO {
     })
     is_professor: boolean;
 }
+
+export class LoginDTO { 
+    @ApiProperty({
+        description: "Email de Login do Usuário.",
+        example: "joaosilva@gmail.com"
+    })
+    login_usuario: string;
+    
+    @ApiProperty({
+        description: "Senha de Login do Usuário.",
+        example: "joao123"
+    })
+    senha_usuario: string;
+}
