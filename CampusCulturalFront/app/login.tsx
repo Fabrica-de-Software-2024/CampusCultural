@@ -18,8 +18,8 @@ export default function Login() {
     const olhoAbertoIcon = require("../assets/olho_aberto.png");
 
     const [loginDados, setLoginDados] = useState({
-        "login_usuario": "joaosilva@gmail.com",
-        "senha_usuario": "joao123"
+        "login_usuario": "",
+        "senha_usuario": ""
     })
 
     async function fazLogin(data) {
@@ -63,6 +63,7 @@ export default function Login() {
                             Quer ter acesso ao calendário de eventos em tempo real?{' '}
                             <Text style={styles.purpleText3}>Efetue o login!</Text>
                         </Text>
+                        
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputLabelEmail}>e-mail:</Text>
                             <View style={styles.fieldWithLine}>
@@ -85,6 +86,7 @@ export default function Login() {
                                     <Image source={mostrarSenha ? olhoAbertoIcon : olhoFechadoIcon} style={styles.eyeIcon} />
                                 </TouchableOpacity>
                             </View>
+                            
                             <View style={styles.buttonContainer}>
                                 <TouchableOpacity style={styles.button} onPress={() => { fazLogin(loginDados) }}>
                                     <Text style={styles.buttonText}>ENTRAR</Text>
@@ -225,6 +227,7 @@ const styles = StyleSheet.create({
         color: '#8A60FF',
         paddingBottom: 5,
         marginBottom: 20,
+        zIndex: 20
     },
     //Expecificações ícone olho_aberto e olho_fechado
     eyeIcon: {

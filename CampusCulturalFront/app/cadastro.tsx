@@ -2,6 +2,17 @@ import { router } from "expo-router"
 import { useState } from "react";
 import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 
+async function cadastrar(data) {
+    fetch("https://campus-cultural.vercel.app/usuario/register", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+}
+
 export default function Cadastro() {
     const cadastro = require("../assets/cadastro.png");
     const logo = require("../assets/logo.png");
@@ -12,7 +23,13 @@ export default function Cadastro() {
     const olhoAbertoIcon = require("../assets/olho_aberto.png");
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
-
+    const [dados, setDados] = useState({
+        "nome_usuario": "João Silva",
+        "login_usuario": "joaosilva@gmail.com",
+        "senha_usuario": "joao123",
+        "curso_usuario": "Bach Engenharia de Software",
+        "is_professor": false
+    })
 
     return (
         <>
@@ -46,17 +63,17 @@ export default function Cadastro() {
                             placeholderTextColor="#8A60FF" />
                         <Text style={styles.inputLabel}>Senha:</Text>
                         <View style={styles.fieldWithLine}>
-                                <View style={styles.lineUnderInput}></View>
-                                <Image source={cadeadoIcon} style={styles.inputIcon} />
-                                <TextInput
-                                    style={styles.input2}
-                                    placeholderTextColor="#8A60FF"
-                                    secureTextEntry={!mostrarSenha}
-                                />
-                                <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
-                                    <Image source={mostrarSenha ? olhoAbertoIcon : olhoFechadoIcon} style={styles.eyeIcon} />
-                                </TouchableOpacity>
-                            </View>
+                            <View style={styles.lineUnderInput}></View>
+                            <Image source={cadeadoIcon} style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.input2}
+                                placeholderTextColor="#8A60FF"
+                                secureTextEntry={!mostrarSenha}
+                            />
+                            <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
+                                <Image source={mostrarSenha ? olhoAbertoIcon : olhoFechadoIcon} style={styles.eyeIcon} />
+                            </TouchableOpacity>
+                        </View>
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity style={styles.button}>
                                 <Text style={styles.buttonText}>CADASTRAR</Text>
@@ -187,7 +204,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         height: 1,
         backgroundColor: '#8A60FF',
-        zIndex: 1, 
+        zIndex: 1,
     },
     inputIcon: {
         width: 25,
@@ -201,7 +218,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         fontSize: 16,
         color: '#8A60FF',
-        backgroundColor: 'transparent', 
+        backgroundColor: 'transparent',
         zIndex: 2,
     },
 })

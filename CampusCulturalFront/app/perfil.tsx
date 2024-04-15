@@ -19,19 +19,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from "expo-router";
 
 
-async function pegaLogin(setDados) {
-	const logindados = await AsyncStorage.getItem('login');
-	const logindados2 = await JSON.parse(logindados);
-	return logindados2;
-}
-
 export type Usuario = {
-	"id_usuario": number, 
-	"nome_usuario": string, 
-	"curso_usuario": string, 
-	"login_usuario": string, 
+	"id_usuario": number,
+	"nome_usuario": string,
+	"curso_usuario": string,
+	"login_usuario": string,
 	"senha_usuario": string
-	"is_professor": boolean, 
+	"is_professor": boolean,
 }
 
 export default function Perfil() {
@@ -52,130 +46,130 @@ export default function Perfil() {
 	const [dados, setDados] = useState<Usuario>()
 
 	useEffect(() => {
-		pegaLogin(setDados);
-		console.log(dados)
-	},[dados])
+		AsyncStorage.getItem('login').then((resp) => {
+			setDados(JSON.parse(resp));
+		})
+	},[])
 
-
-		return (
-			<>
-				<BotaoAddEvento />
-				<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalNotificacoes} onRequestClose={() => setModalNotificacoes(false)} >
-					<NotificacoesCard setAberto={setModalNotificacoes} />
-				</Modal>
-				<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalConfig} onRequestClose={() => setModalConfig(false)} >
-					<ConfiguracoesCard setAberto={setModalConfig} />
-				</Modal>
-				<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalCertificados} onRequestClose={() => setModalCertificados(false)} >
-					<CertificadosCard setAberto={setModalCertificados} />
-				</Modal>
-				<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalChat} onRequestClose={() => setModalChat(false)} >
-					<AjudaCard setAberto={setModalChat} />
-				</Modal>
-				<Navbar title="Minha Conta" links={false} />
-				<View style={styles.container}>
-					<View style={styles.userInfo}>
-						<Image source={logo} style={styles.imagem} resizeMode="cover" />
-						<Text style={styles.nome}>{dados?.nome_usuario}</Text>
-						<Text style={styles.curso}>{dados?.curso_usuario}</Text>
-					</View>
-					<View style={styles.textContainer}>
-						<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>
-							<Image source={sino} style={styles.icon} resizeMode="cover" />
-							<Text style={styles.buttonText}>Notificações</Text>
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => setModalConfig(true)} style={styles.button}>
-							<Image source={engrenagem} style={styles.icon} resizeMode="cover" />
-							<Text style={styles.buttonText}>Configurações</Text>
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => setModalCertificados(true)} style={styles.button}>
-							<Image source={certificado} style={styles.icon} resizeMode="cover" />
-							<Text style={styles.buttonText}>Meus certificados</Text>
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => setModalChat(true)} style={styles.button}>
-							<Image source={chat} style={styles.icon} resizeMode="cover" />
-							<Text style={styles.buttonText}>Fale conosco</Text>
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => {AsyncStorage.setItem('login',"\0").then(()=>router.replace("/"))}} style={styles.button}>
-							<Text style={styles.buttonText}>Logout</Text>
-						</TouchableOpacity>
-					</View>
+	return (
+		<>
+			<BotaoAddEvento />
+			<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalNotificacoes} onRequestClose={() => setModalNotificacoes(false)} >
+				<NotificacoesCard setAberto={setModalNotificacoes} />
+			</Modal>
+			<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalConfig} onRequestClose={() => setModalConfig(false)} >
+				<ConfiguracoesCard setAberto={setModalConfig} />
+			</Modal>
+			<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalCertificados} onRequestClose={() => setModalCertificados(false)} >
+				<CertificadosCard setAberto={setModalCertificados} />
+			</Modal>
+			<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalChat} onRequestClose={() => setModalChat(false)} >
+				<AjudaCard setAberto={setModalChat} />
+			</Modal>
+			<Navbar title="Minha Conta" links={false} />
+			<View style={styles.container}>
+				<View style={styles.userInfo}>
+					<Image source={logo} style={styles.imagem} resizeMode="cover" />
+					<Text style={styles.nome}>{dados?.nome_usuario}</Text>
+					<Text style={styles.curso}>{dados?.curso_usuario}</Text>
 				</View>
-				<Image style={styles.figura1} source={figura1} />
-				<Image style={styles.figura2} source={figura2} />
-				<Image style={styles.figura3} source={figura3} />
-				<Image style={styles.figura4} source={figura4} />
-				<Rodape selecionado={3} />
-			</>
-		);
-	};
+				<View style={styles.textContainer}>
+					<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>
+						<Image source={sino} style={styles.icon} resizeMode="cover" />
+						<Text style={styles.buttonText}>Notificações</Text>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => setModalConfig(true)} style={styles.button}>
+						<Image source={engrenagem} style={styles.icon} resizeMode="cover" />
+						<Text style={styles.buttonText}>Configurações</Text>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => setModalCertificados(true)} style={styles.button}>
+						<Image source={certificado} style={styles.icon} resizeMode="cover" />
+						<Text style={styles.buttonText}>Meus certificados</Text>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => setModalChat(true)} style={styles.button}>
+						<Image source={chat} style={styles.icon} resizeMode="cover" />
+						<Text style={styles.buttonText}>Fale conosco</Text>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => { AsyncStorage.setItem('login', "\0").then(() => router.replace("/")) }} style={styles.button}>
+						<Text style={styles.buttonText}>Logout</Text>
+					</TouchableOpacity>
+				</View>
+			</View>
+			<Image style={styles.figura1} source={figura1} />
+			<Image style={styles.figura2} source={figura2} />
+			<Image style={styles.figura3} source={figura3} />
+			<Image style={styles.figura4} source={figura4} />
+			<Rodape selecionado={3} />
+		</>
+	);
+};
 
-	const windowHeight = Dimensions.get("window").height;
+const windowHeight = Dimensions.get("window").height;
 
-	const styles = StyleSheet.create({
-		container: {
-			top: "5%",
-		},
-		textContainer: {
-			top: "15%",
-			width: "70%",
-			marginHorizontal: "15%"
-		},
-		userInfo: {
-			alignItems: "center",
-		},
-		imagem: {
-			width: 150,
-			height: 150,
-			borderRadius: 75,
-			backgroundColor: "#8A60FF",
-		},
-		button: {
-			color: "#8A60FF",
-			flexDirection: "row",
-			marginTop: "5%",
-			marginLeft: "0%",
-			alignItems: "center",
-			zIndex: 20
-		},
-		buttonText: {
-			fontSize: 20,
-			color: "#8A60FF",
-			textDecorationLine: "underline",
-		},
-		nome: {
-			fontSize: 21,
-			textAlign: "center",
-			fontWeight: "500",
-		},
-		curso: {
-			fontSize: 19,
-			textAlign: "center",
-		},
-		icon: {
-			width: 20,
-			height: 20,
-			marginRight: 10,
-		},
-		figura1: {
-			position: "absolute",
-			top: "25%"
-		},
-		figura2: {
-			position: "absolute",
-			right: 0,
-			top: "25%"
-		},
-		figura3: {
-			position: "absolute",
-			bottom: "10%"
-		},
-		figura4: {
-			position: "absolute",
-			right: 0,
-			bottom: "10%"
-		},
-		modal: {
-			width: "90%"
-		}
-	});
+const styles = StyleSheet.create({
+	container: {
+		top: "5%",
+	},
+	textContainer: {
+		top: "15%",
+		width: "70%",
+		marginHorizontal: "15%"
+	},
+	userInfo: {
+		alignItems: "center",
+	},
+	imagem: {
+		width: 150,
+		height: 150,
+		borderRadius: 75,
+		backgroundColor: "#8A60FF",
+	},
+	button: {
+		color: "#8A60FF",
+		flexDirection: "row",
+		marginTop: "5%",
+		marginLeft: "0%",
+		alignItems: "center",
+		zIndex: 20
+	},
+	buttonText: {
+		fontSize: 20,
+		color: "#8A60FF",
+		textDecorationLine: "underline",
+	},
+	nome: {
+		fontSize: 21,
+		textAlign: "center",
+		fontWeight: "500",
+	},
+	curso: {
+		fontSize: 19,
+		textAlign: "center",
+	},
+	icon: {
+		width: 20,
+		height: 20,
+		marginRight: 10,
+	},
+	figura1: {
+		position: "absolute",
+		top: "25%"
+	},
+	figura2: {
+		position: "absolute",
+		right: 0,
+		top: "25%"
+	},
+	figura3: {
+		position: "absolute",
+		bottom: "10%"
+	},
+	figura4: {
+		position: "absolute",
+		right: 0,
+		bottom: "10%"
+	},
+	modal: {
+		width: "90%"
+	}
+});
