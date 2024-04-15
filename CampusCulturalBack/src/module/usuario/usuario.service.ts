@@ -49,7 +49,7 @@ export class UsuarioService {
   }
 
   async Login(data: LoginDTO) {
-    const usuario = await this.prisma.usuario.findMany({
+    const usuario = await this.prisma.usuario.findUnique({
       where: {
         login_usuario: data.login_usuario,
         senha_usuario: data.senha_usuario,
