@@ -18,24 +18,27 @@ export default function Login() {
     const olhoAbertoIcon = require("../assets/olho_aberto.png");
 
     const [loginDados, setLoginDados] = useState({
-        login: "",
-        senha: ""
+        "login_usuario": "joaosilva@gmail.com",
+        "senha_usuario": "joao123"
     })
 
     async function fazLogin(data) {
         fetch("https://campus-cultural.vercel.app/usuario/login", {
             method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(data)
-        }).then(async(resp) => {
+        }).then(async (resp) => {
             const resp2 = await resp.json();
             try {
                 await AsyncStorage.setItem('login', JSON.stringify(resp2));
             } catch (err) {
                 console.log(err);
             }
-            console.log(resp2)
             return await resp.json()
-        }).finally(()=> router.replace("/home"))
+        }).finally(() => router.replace("/home"))
     }
 
     //Estado de controle da visibilidade da senha
@@ -65,7 +68,7 @@ export default function Login() {
                             <View style={styles.fieldWithLine}>
                                 <View style={styles.lineUnderInput}></View>
                                 <Image source={pessoaIcon} style={styles.inputIcon} />
-                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" value={loginDados.login} onChange={(e) => setLoginDados({ ...loginDados, login: e.nativeEvent.text })} />
+                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" value={loginDados.login_usuario} onChange={(e) => setLoginDados({ ...loginDados, login_usuario: e.nativeEvent.text })} />
                             </View>
                             <Text style={styles.inputLabelSenha}>senha:</Text>
                             <View style={styles.fieldWithLine}>
@@ -75,15 +78,15 @@ export default function Login() {
                                     style={styles.input2}
                                     placeholderTextColor="#8A60FF"
                                     secureTextEntry={!mostrarSenha}
-                                    value={loginDados.senha}
-                                    onChange={(e) => setLoginDados({ ...loginDados, senha: e.nativeEvent.text })}
+                                    value={loginDados.senha_usuario}
+                                    onChange={(e) => setLoginDados({ ...loginDados, senha_usuario: e.nativeEvent.text })}
                                 />
                                 <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
                                     <Image source={mostrarSenha ? olhoAbertoIcon : olhoFechadoIcon} style={styles.eyeIcon} />
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.buttonContainer}>
-                                <TouchableOpacity style={styles.button} onPress={()=>{fazLogin(loginDados)}}>
+                                <TouchableOpacity style={styles.button} onPress={() => { fazLogin(loginDados) }}>
                                     <Text style={styles.buttonText}>ENTRAR</Text>
                                 </TouchableOpacity>
                             </View>

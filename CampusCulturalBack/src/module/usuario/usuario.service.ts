@@ -55,7 +55,12 @@ export class UsuarioService {
         senha_usuario: data.senha_usuario,
       },
     });
-    return usuario;
+    return {
+      "id_usuario": usuario.id_usuario,
+      "nome_usuario": usuario.nome_usuario,
+      "curso_usuario": usuario.curso_usuario,
+      "is_professor": usuario.is_professor
+    };
   }
 
   async update(id_usuario: number, usuarioDTO: UsuarioDTO) {
