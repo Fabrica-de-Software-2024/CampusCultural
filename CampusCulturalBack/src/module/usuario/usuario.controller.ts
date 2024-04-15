@@ -31,7 +31,7 @@ export class UsuarioController {
     description: "Efetua o Login um usuário com Email e Senha."
   })
   @Post('/login')
-  Login(@Body() data: { login_usuario: string, senha_usuario }) {
+  Login(@Body() data: { login_usuario: string, senha_usuario: string }) {
     return this.usuarioService.Login(data);
   }
 

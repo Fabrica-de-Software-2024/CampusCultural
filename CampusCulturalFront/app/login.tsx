@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
+
 
 export default function Login() {
 
@@ -24,9 +27,15 @@ export default function Login() {
             method: "POST",
             body: JSON.stringify(data)
         }).then(async(resp) => {
-            console.log(await resp.json())
+            const resp2 = await resp.json();
+            try {
+                await AsyncStorage.setItem('login', JSON.stringify(resp2));
+            } catch (err) {
+                console.log(err);
+            }
+            console.log(resp2)
             return await resp.json()
-        })
+        }).finally(()=> router.replace("/home"))
     }
 
     //Estado de controle da visibilidade da senha

@@ -1,15 +1,20 @@
 import { router } from "expo-router"
 import { useEffect } from "react"
 import { ScrollView, StyleSheet, TouchableOpacity, Text } from "react-native"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Index() {
 
-    /*
-    useEffect(()=>{
-        router.replace("/home")
+    useEffect(() => {
+        AsyncStorage.getItem('login').then((resp) => {
+            resp != null ?
+                router.replace("/home")
+                :
+                router.replace("/login")
+        });
     })
-    */
+
     return (
         <ScrollView style={styles.container}>
             <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/login")}><Text style={styles.texto}>Login</Text></TouchableOpacity>
