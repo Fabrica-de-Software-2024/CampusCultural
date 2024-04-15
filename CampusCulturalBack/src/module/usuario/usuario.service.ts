@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsuarioDTO } from './usuario.dto';
+import { LoginDTO, UsuarioDTO } from './usuario.dto';
 import { PrismaService } from '../../database/PrismaService'
 import { error } from 'console';
 
@@ -48,7 +48,7 @@ export class UsuarioService {
     }
   }
 
-  async Login(data: { login_usuario: string, senha_usuario: string }) {
+  async Login(data: LoginDTO) {
     const usuario = await this.prisma.usuario.findFirst({
       where: {
         login_usuario: data.login_usuario,
