@@ -16,8 +16,9 @@ import CertificadosCard from "./components/CertificadosPopup";
 import AjudaCard from "./components/AjudaPopup";
 import BotaoAddEvento from "./components/BotaoAddEvento";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
-
+import fs from 'fs'
 
 export type Usuario = {
 	"id_usuario": number,
@@ -44,6 +45,21 @@ export default function Perfil() {
 	const [modalCertificados, setModalCertificados] = useState(false);
 	const [modalChat, setModalChat] = useState(false);
 	const [dados, setDados] = useState<Usuario>()
+	const [alteraImagem, setAlteraImagem] = useState(null);
+
+	async function pegaImagem() {
+		let _imagem = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 1,
+			base64: true
+		})
+
+		if (!_imagem.canceled) {
+			setAlteraImagem('data:image/png;base64,'+_imagem.assets[0].base64);
+		}
+	}
 
 	useEffect(() => {
 		AsyncStorage.getItem('login').then((resp) => {
@@ -75,12 +91,12 @@ export default function Perfil() {
 			<Navbar title="Minha Conta" links={false} />
 			<View style={styles.container}>
 				<View style={styles.userInfo}>
-					<Image source={logo} style={styles.imagem} resizeMode="cover" />
+					<Image source={{uri: alteraImagem}} style={styles.imagem} resizeMode="cover" />
 					<Text style={styles.nome}>{dados?.nome_usuario}</Text>
 					<Text style={styles.curso}>{dados?.curso_usuario}</Text>
 				</View>
 				<View style={styles.textContainer}>
-					<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>
+					<TouchableOpacity onPress={() => { setModalNotificacoes(true); pegaImagem() }} style={styles.button}>
 						<Image source={sino} style={styles.icon} resizeMode="cover" />
 						<Text style={styles.buttonText}>Notificações</Text>
 					</TouchableOpacity>

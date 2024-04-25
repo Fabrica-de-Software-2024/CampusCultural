@@ -23,7 +23,18 @@ async function fazLogin(data) {
                 'Authorization': `Bearer ${token}`
             },
         })
-        const dados = await dadosresp.json();
+        var dados = await dadosresp.json();
+        const tiporesp = await fetch("https://coensapp.dv.utfpr.edu.br/siacoes/service/user/list/profiles", {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+        const tipo = await tiporesp.json()
+        dados.type = tipo[0];
+
         try {
             await AsyncStorage.setItem('login', JSON.stringify(dados));
         } catch (err) {

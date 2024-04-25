@@ -15,6 +15,7 @@ datasource db {
 
 model Usuario {
   id_usuario    Int                @id
+  imagem        String
   eventos       Evento[]
   inscricao     Evento_Inscricao[]
 
@@ -29,6 +30,7 @@ model Evento {
   sub_evento       String
   data_evento      DateTime           @default(now())
   descricao_evento String
+  imagem           String
   inscricao        Evento_Inscricao[]
 
   @@map("evento")

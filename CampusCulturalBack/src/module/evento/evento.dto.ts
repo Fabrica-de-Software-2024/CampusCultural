@@ -37,4 +37,10 @@ export class EventoDTO {
         example: "A Semana Acadêmica é um evento anual do curso de engenharia de software..."
     })
     "descricao_evento": string;
+
+    @ApiProperty({
+        description: "Banner do evento em Base64.",
+        example: "data:image/png;base64,............."
+    })
+    imagem: string;
 }

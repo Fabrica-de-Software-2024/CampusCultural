@@ -12,9 +12,7 @@ export class UsuarioService {
         id_usuario
       }
     })
-    return {
-      "id_usuario": usuario.id_usuario,
-    };
+    return usuario;
   }
 
   async edit(usuarioDTO: UsuarioDTO) {
@@ -26,7 +24,7 @@ export class UsuarioService {
     if (userExists) {
       const update_usuario = await this.prisma.usuario.update({
         data: {
-          
+          imagem: usuarioDTO.imagem
         },
         where: {
           id_usuario: usuarioDTO?.id_usuario,
@@ -37,7 +35,8 @@ export class UsuarioService {
     else if (!userExists) {
       const novo_usuario = await this.prisma.usuario.create({
         data: {
-          id_usuario: usuarioDTO.id_usuario
+          id_usuario: usuarioDTO.id_usuario,
+          imagem: usuarioDTO.imagem
         },
       });
       return novo_usuario;

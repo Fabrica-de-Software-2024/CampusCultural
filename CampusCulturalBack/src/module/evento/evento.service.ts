@@ -26,7 +26,8 @@ export class EventoService {
                 nome_evento: data.nome_evento,
                 sub_evento: data.sub_evento,
                 data_evento: data.data_evento,
-                descricao_evento: data.descricao_evento
+                descricao_evento: data.descricao_evento,
+                imagem: data.imagem
             },
         });
         return novo_evento;
@@ -48,7 +49,8 @@ export class EventoService {
                     nome_evento: data.nome_evento,
                     sub_evento: data.sub_evento,
                     data_evento: data.data_evento,
-                    descricao_evento: data.descricao_evento
+                    descricao_evento: data.descricao_evento,
+                    imagem: data.imagem
                 },
                 where: {
                     id_evento,
