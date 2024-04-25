@@ -14,12 +14,7 @@ datasource db {
 }
 
 model Usuario {
-  id_usuario    Int                @id @default(autoincrement())
-  nome_usuario  String
-  login_usuario String             @unique
-  senha_usuario String
-  curso_usuario String
-  is_professor  Boolean             @default(false)
+  id_usuario    Int                @id
   eventos       Evento[]
   inscricao     Evento_Inscricao[]
 

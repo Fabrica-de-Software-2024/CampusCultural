@@ -23,8 +23,8 @@ export type Usuario = {
 	"id_usuario": number,
 	"nome_usuario": string,
 	"curso_usuario": string,
-	"login_usuario": string,
-	"senha_usuario": string
+	"login_usuario"?: string,
+	"senha_usuario"?: string,
 	"is_professor": boolean,
 }
 
@@ -47,9 +47,15 @@ export default function Perfil() {
 
 	useEffect(() => {
 		AsyncStorage.getItem('login').then((resp) => {
-			setDados(JSON.parse(resp));
+			let _dados = JSON.parse(resp)
+			setDados({
+				"id_usuario": 0,
+				"nome_usuario": _dados?.name,
+				"curso_usuario": _dados?.studentCode,
+				"is_professor": false,
+			});
 		})
-	},[])
+	}, [])
 
 	return (
 		<>

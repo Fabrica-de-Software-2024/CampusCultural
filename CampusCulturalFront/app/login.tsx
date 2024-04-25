@@ -1,8 +1,39 @@
 import React, { useState } from 'react';
-import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
+import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
+async function fazLogin(data) {
+    const tokenresp = await fetch("https://coensapp.dv.utfpr.edu.br/siacoes/service/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    
+    const token = await tokenresp.text();
+    if(token !== ""){
+        const dadosresp = await fetch("https://coensapp.dv.utfpr.edu.br/siacoes/service/user/profile", {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+        const dados = await dadosresp.json();
+        try {
+            await AsyncStorage.setItem('login', JSON.stringify(dados));
+        } catch (err) {
+            console.log(err);
+        }
+        router.replace("/home")
+        return dados;
+    }
+    else Alert.alert("Falha no Login", "RA ou Senha Incorreta!");
+}
 
 export default function Login() {
 
@@ -18,28 +49,11 @@ export default function Login() {
     const olhoAbertoIcon = require("../assets/olho_aberto.png");
 
     const [loginDados, setLoginDados] = useState({
-        "login_usuario": "",
-        "senha_usuario": ""
+        "login": "",
+        "password": ""
     })
 
-    async function fazLogin(data) {
-        fetch("https://campus-cultural.vercel.app/usuario/login", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(async (resp) => {
-            const resp2 = await resp.json();
-            try {
-                await AsyncStorage.setItem('login', JSON.stringify(resp2));
-            } catch (err) {
-                console.log(err);
-            }
-            return await resp.json()
-        }).finally(() => router.replace("/home"))
-    }
+    
 
     //Estado de controle da visibilidade da senha
     const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -63,13 +77,13 @@ export default function Login() {
                             Quer ter acesso ao calendário de eventos em tempo real?{' '}
                             <Text style={styles.purpleText3}>Efetue o login!</Text>
                         </Text>
-                        
+
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputLabelEmail}>e-mail:</Text>
                             <View style={styles.fieldWithLine}>
                                 <View style={styles.lineUnderInput}></View>
                                 <Image source={pessoaIcon} style={styles.inputIcon} />
-                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" value={loginDados.login_usuario} onChange={(e) => setLoginDados({ ...loginDados, login_usuario: e.nativeEvent.text })} />
+                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" value={loginDados.login} onChange={(e) => setLoginDados({ ...loginDados, login: e.nativeEvent.text })} />
                             </View>
                             <Text style={styles.inputLabelSenha}>senha:</Text>
                             <View style={styles.fieldWithLine}>
@@ -79,16 +93,16 @@ export default function Login() {
                                     style={styles.input2}
                                     placeholderTextColor="#8A60FF"
                                     secureTextEntry={!mostrarSenha}
-                                    value={loginDados.senha_usuario}
-                                    onChange={(e) => setLoginDados({ ...loginDados, senha_usuario: e.nativeEvent.text })}
+                                    value={loginDados.password}
+                                    onChange={(e) => setLoginDados({ ...loginDados, password: e.nativeEvent.text })}
                                 />
                                 <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
                                     <Image source={mostrarSenha ? olhoAbertoIcon : olhoFechadoIcon} style={styles.eyeIcon} />
                                 </TouchableOpacity>
                             </View>
-                            
+
                             <View style={styles.buttonContainer}>
-                                <TouchableOpacity style={styles.button} onPress={() => { fazLogin(loginDados) }}>
+                                <TouchableOpacity style={styles.button} onPress={() => { fazLogin(loginDados).then((resp)=>console.log(resp)) }}>
                                     <Text style={styles.buttonText}>ENTRAR</Text>
                                 </TouchableOpacity>
                             </View>
