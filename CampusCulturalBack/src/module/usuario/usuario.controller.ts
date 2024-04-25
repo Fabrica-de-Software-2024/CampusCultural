@@ -21,7 +21,7 @@ export class UsuarioController {
     summary: "Edita um usuário",
     description: "Edita um usuário"
   })
-  @Post('/edit')
+  @Post()
   create(@Body() usuarioDTO: UsuarioDTO) {
     return this.usuarioService.edit(usuarioDTO);
   }
