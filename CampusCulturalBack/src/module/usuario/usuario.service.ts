@@ -16,34 +16,19 @@ export class UsuarioService {
   }
 
   async edit(usuarioDTO: UsuarioDTO) {
-    const userExists = await this.prisma.usuario.findFirst({
+    const update_usuario = await this.prisma.usuario.upsert({
       where: {
+        id_usuario: usuarioDTO?.id_usuario
+      },
+      update: {
+        imagem: usuarioDTO?.imagem
+      },
+      create: {
         id_usuario: usuarioDTO?.id_usuario,
+        imagem: usuarioDTO?.imagem
       }
     });
-    if (userExists) {
-      const update_usuario = await this.prisma.usuario.update({
-        data: {
-          imagem: usuarioDTO.imagem
-        },
-        where: {
-          id_usuario: usuarioDTO?.id_usuario,
-        },
-      });
-      return update_usuario;
-    }
-    else if (!userExists) {
-      const novo_usuario = await this.prisma.usuario.create({
-        data: {
-          id_usuario: usuarioDTO.id_usuario,
-          imagem: usuarioDTO.imagem
-        },
-      });
-      return novo_usuario;
-    }
-    else {
-      throw new Error('Criação de usuario invalida');
-    }
+    return update_usuario;
   }
 
   async remove(id_usuario: number) {

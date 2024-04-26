@@ -58,6 +58,7 @@ export default function Perfil() {
 
 		if (!_imagem.canceled) {
 			setAlteraImagem('data:image/png;base64,' + _imagem.assets[0].base64);
+			console.log('data:image/png;base64,' + _imagem.assets[0].base64);
 			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
 				method: 'POST',
 				body: JSON.stringify({
