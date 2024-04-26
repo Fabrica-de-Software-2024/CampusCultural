@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	Dimensions,
 	Modal,
+	Alert
 } from "react-native";
 import Navbar from "./components/Navbar";
 import Rodape from "./components/Rodape";
@@ -18,7 +19,6 @@ import BotaoAddEvento from "./components/BotaoAddEvento";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
-import fs from 'fs'
 
 export type Usuario = {
 	"id_usuario": number,
@@ -57,7 +57,25 @@ export default function Perfil() {
 		})
 
 		if (!_imagem.canceled) {
-			setAlteraImagem('data:image/png;base64,'+_imagem.assets[0].base64);
+			setAlteraImagem('data:image/png;base64,' + _imagem.assets[0].base64);
+			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
+				method: 'POST',
+				body: JSON.stringify({
+					"id_usuario": dados.id_usuario,
+					"imagem": 'data:image/png;base64,' + _imagem.assets[0].base64
+				}),
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				}
+			});
+
+			if(!resp.ok){
+				const resp2 = await resp.json()
+				console.log(resp2)
+				router.replace("/perfil")
+			}
+			else {Alert.alert("Erro", "Não foi possivel atualizar a imagem.")}
 		}
 	}
 
@@ -65,7 +83,7 @@ export default function Perfil() {
 		AsyncStorage.getItem('login').then((resp) => {
 			let _dados = JSON.parse(resp)
 			setDados({
-				"id_usuario": 0,
+				"id_usuario": _dados?.studentCode,
 				"nome_usuario": _dados?.name,
 				"curso_usuario": _dados?.studentCode,
 				"is_professor": false,
@@ -91,7 +109,7 @@ export default function Perfil() {
 			<Navbar title="Minha Conta" links={false} />
 			<View style={styles.container}>
 				<View style={styles.userInfo}>
-					<Image source={{uri: alteraImagem}} style={styles.imagem} resizeMode="cover" />
+					<Image source={{ uri: alteraImagem }} style={styles.imagem} resizeMode="cover" />
 					<Text style={styles.nome}>{dados?.nome_usuario}</Text>
 					<Text style={styles.curso}>{dados?.curso_usuario}</Text>
 				</View>
