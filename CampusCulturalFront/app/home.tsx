@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
 import EventoCard, { Evento } from "./components/EventoCard";
 import BotaoAddEvento from "./components/BotaoAddEvento";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Usuario } from "./perfil";
 
 export async function puxaEventos() {
     const resp = await fetch("https://campus-cultural.vercel.app/evento");
@@ -14,11 +16,21 @@ export async function puxaEventos() {
 
 export default function Home() {
 
+    const [dados, setDados] = useState<Usuario>()
     const [eventosSelecionado, setEventosSelecionado] = useState(0);
     const [eventos, setEventos] = useState([]);
     const filtro = require("../assets/filtro.png")
 
     useEffect(() => {
+        AsyncStorage.getItem('login').then(async (resp) => {
+            let _dados = JSON.parse(resp)
+            setDados({
+                "id_usuario": _dados?.studentCode,
+                "nome_usuario": _dados?.name,
+                "curso_usuario": _dados?.studentCode,
+                "is_professor": false,
+            });
+        })
         puxaEventos().then((resp) => setEventos(resp));
     }, [])
 
@@ -26,7 +38,12 @@ export default function Home() {
     return (
         <>
             <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
-            <BotaoAddEvento />
+            {
+				dados?.is_professor ?
+					<BotaoAddEvento />
+					:
+					<></>
+			}
             <TouchableOpacity style={{ position: "absolute", right: "3%", top: "20%" }}>
                 <Image source={filtro} />
             </TouchableOpacity>

@@ -30,7 +30,7 @@ export type Usuario = {
 }
 
 export default function Perfil() {
-	const logo = require("../assets/logo.png");
+	const lapis = require("../assets/lapis.png");
 	const sino = require("../assets/sino.png");
 	const engrenagem = require("../assets/engrenagem.png");
 	const certificado = require("../assets/certificado.png");
@@ -57,44 +57,50 @@ export default function Perfil() {
 		})
 
 		if (!_imagem.canceled) {
-			setAlteraImagem('data:image/png;base64,' + _imagem.assets[0].base64);
-			console.log('data:image/png;base64,' + _imagem.assets[0].base64);
+			const body = await JSON.stringify({
+				"id_usuario": await Number(dados.id_usuario),
+				"imagem": 'data:image/png;base64,' + _imagem.assets[0].base64
+			})
 			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
 				method: 'POST',
-				body: JSON.stringify({
-					"id_usuario": dados.id_usuario,
-					"imagem": 'data:image/png;base64,' + _imagem.assets[0].base64
-				}),
+				body: body,
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				}
 			});
 
-			if(!resp.ok){
+			if (resp.ok) {
 				const resp2 = await resp.json()
-				console.log(resp2)
 				router.replace("/perfil")
 			}
-			else {Alert.alert("Erro", "Não foi possivel atualizar a imagem.")}
+			else { Alert.alert("Erro", "Não foi possivel atualizar a imagem.") }
 		}
 	}
 
 	useEffect(() => {
-		AsyncStorage.getItem('login').then((resp) => {
+		AsyncStorage.getItem('login').then(async (resp) => {
 			let _dados = JSON.parse(resp)
 			setDados({
 				"id_usuario": _dados?.studentCode,
 				"nome_usuario": _dados?.name,
 				"curso_usuario": _dados?.studentCode,
-				"is_professor": false,
+				"is_professor": true,
 			});
+			const respfoto = await fetch(`https://campus-cultural.vercel.app/usuario/${await Number(_dados?.studentCode)}`);
+			const respfoto2 = await respfoto.json();
+			setAlteraImagem(respfoto2?.imagem);
 		})
 	}, [])
 
 	return (
 		<>
-			<BotaoAddEvento />
+			{
+				dados?.is_professor ?
+					<BotaoAddEvento />
+					:
+					<></>
+			}
 			<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalNotificacoes} onRequestClose={() => setModalNotificacoes(false)} >
 				<NotificacoesCard setAberto={setModalNotificacoes} />
 			</Modal>
@@ -110,12 +116,13 @@ export default function Perfil() {
 			<Navbar title="Minha Conta" links={false} />
 			<View style={styles.container}>
 				<View style={styles.userInfo}>
-					<Image source={{ uri: alteraImagem }} style={styles.imagem} resizeMode="cover" />
+					<TouchableOpacity style={styles.editaImagem} onPress={() => pegaImagem()}><Image style={styles.lapis} source={lapis} /></TouchableOpacity>
+					<Image source={alteraImagem !== null ? { uri: alteraImagem } : require("../assets/icone_evento.png")} style={styles.imagem} resizeMode="cover" />
 					<Text style={styles.nome}>{dados?.nome_usuario}</Text>
 					<Text style={styles.curso}>{dados?.curso_usuario}</Text>
 				</View>
 				<View style={styles.textContainer}>
-					<TouchableOpacity onPress={() => { setModalNotificacoes(true); pegaImagem() }} style={styles.button}>
+					<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>
 						<Image source={sino} style={styles.icon} resizeMode="cover" />
 						<Text style={styles.buttonText}>Notificações</Text>
 					</TouchableOpacity>
@@ -164,6 +171,19 @@ const styles = StyleSheet.create({
 		height: 150,
 		borderRadius: 75,
 		backgroundColor: "#8A60FF",
+	},
+	editaImagem: {
+		position: "absolute",
+		backgroundColor: "#8A60FF",
+		zIndex: 50,
+		borderRadius: 9999,
+		bottom: "25%",
+		right: "30%"
+	},
+	lapis: {
+		margin: 10,
+		height: 30,
+		aspectRatio: 1 / 1
 	},
 	button: {
 		color: "#8A60FF",

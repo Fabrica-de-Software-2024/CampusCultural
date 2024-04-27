@@ -6,6 +6,8 @@ import Rodape from "./components/Rodape";
 import { puxaEventos } from "./home";
 import { Evento } from "./components/EventoCard";
 import BotaoAddEvento from "./components/BotaoAddEvento";
+import { Usuario } from "./perfil";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function Calendario() {
@@ -16,7 +18,7 @@ export default function Calendario() {
 
     const figura6 = require("../assets/figura6.png");
 
-
+    const [dados, setDados] = useState<Usuario>()
 
     const [data, setData] = useState(new Date(Date.now()).toISOString())
 
@@ -31,6 +33,18 @@ export default function Calendario() {
     var index2 = 0;
 
     useEffect(() => {
+
+
+        AsyncStorage.getItem('login').then(async (resp) => {
+            let _dados = JSON.parse(resp)
+            setDados({
+                "id_usuario": _dados?.studentCode,
+                "nome_usuario": _dados?.name,
+                "curso_usuario": _dados?.studentCode,
+                "is_professor": false,
+            });
+        })
+
 
         puxaEventos().then((e) => setEventos(e))
 
@@ -98,7 +112,12 @@ export default function Calendario() {
     return (
         <>
             <Navbar title={"Calendário"} links={false} />
-            <BotaoAddEvento />
+            {
+                dados?.is_professor ?
+                    <BotaoAddEvento />
+                    :
+                    <></>
+            }
             <View style={styles.container}>
                 <View style={styles.calendarioContainer}>
                     <View style={styles.calendarioContainerTitulo}>
@@ -146,7 +165,7 @@ export default function Calendario() {
                                     return (
                                         <View key={index}>
                                             <TouchableOpacity onPress={() => router.replace(`/evento/${i.id_evento}`)}>
-                                                <Text style={index2 < 2 ? styles.textEventoRoxo : styles.textEvento}>{`${new Date(i.data_evento).getDate() + 1} - ${dias_da_semana[new Date(i.data_evento).getDay() + 1]} - ${i.nome_evento.length > 30? i.nome_evento.substring(0,25)+"..." : i.nome_evento}`}</Text>
+                                                <Text style={index2 < 2 ? styles.textEventoRoxo : styles.textEvento}>{`${new Date(i.data_evento).getDate() + 1} - ${dias_da_semana[new Date(i.data_evento).getDay() + 1]} - ${i.nome_evento.length > 30 ? i.nome_evento.substring(0, 25) + "..." : i.nome_evento}`}</Text>
                                             </TouchableOpacity>
                                             <Image source={risco} />
                                         </View>
