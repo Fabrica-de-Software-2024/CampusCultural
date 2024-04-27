@@ -15,20 +15,33 @@ export class UsuarioService {
     return usuario;
   }
 
-  async edit(usuarioDTO: UsuarioDTO) {
-    const update_usuario = await this.prisma.usuario.upsert({
+  async update(data: UsuarioDTO) {
+    console.log(data)
+    const userExists = await this.prisma.usuario.findUnique({
       where: {
-        id_usuario: usuarioDTO?.id_usuario
-      },
-      update: {
-        imagem: usuarioDTO?.imagem
-      },
-      create: {
-        id_usuario: usuarioDTO?.id_usuario,
-        imagem: usuarioDTO?.imagem
+        id_usuario: data.id_usuario,
       }
     });
-    return update_usuario;
+    if (userExists) {
+      const update_usuario = await this.prisma.usuario.update({
+        where: {
+          id_usuario: data?.id_usuario,
+        },
+        data: {
+          id_usuario: data?.id_usuario,
+          imagem: data?.imagem,
+        }
+      });
+      return update_usuario;
+    } else {
+      const usuario = await this.prisma.usuario.create({
+        data: {
+          id_usuario: data?.id_usuario,
+          imagem: data?.imagem,
+        }
+      });
+      return usuario;
+    }
   }
 
   async remove(id_usuario: number) {

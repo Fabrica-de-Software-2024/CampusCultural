@@ -22,8 +22,9 @@ export class UsuarioController {
     description: "Edita um usuário"
   })
   @Post()
-  create(@Body() usuarioDTO: UsuarioDTO) {
-    return this.usuarioService.edit(usuarioDTO);
+  update(@Body() data: UsuarioDTO){
+    console.log(data)
+    return this.usuarioService.update(data);
   }
 
   @ApiOperation({

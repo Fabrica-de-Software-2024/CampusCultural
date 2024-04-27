@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Usuario {
-  id_usuario    Int                @id
+  id_usuario    Int                @id @default(autoincrement())
   imagem        String
   eventos       Evento[]
   inscricao     Evento_Inscricao[]
