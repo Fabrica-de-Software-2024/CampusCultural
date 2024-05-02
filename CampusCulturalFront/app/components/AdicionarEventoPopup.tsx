@@ -2,24 +2,74 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView } from 'react-native';
 import EventoCard, { Evento } from './EventoCard';
 import { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function AdicionarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>> }) {
 
     const iconBanner = require("../../assets/escolher_imagem.png")
+
+    const [calendario, setCalendario] = useState(0);
+
+    const [dataEvento, setDataEvento] = useState(new Date(Date.now()))
+
+    const [nomeImagem, setNomeImagem] = useState("Selecionar...")
+
+    const [dataImage, setDataImage] = useState("")
 
     const [data, setData] = useState<Evento>(
         {
             professor_evento: null,
             nome_evento: "",
             sub_evento: "",
-            data_evento: new Date(Date.now()).toISOString(),
+            data_evento: "",
+            imagem: "",
             descricao_evento: "",
         }
     )
 
+    const mudaData = (event, data) => {
+        console.log(data)
+        setDataEvento(data);
+        setCalendario(2);
+    }
+
+    const mudaHora = (event, data) => {
+        console.log(data)
+        let _data = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate(), data.getHours(), data.getMinutes())
+        setDataEvento(_data);
+        setData({ ...data, data_evento: _data})
+        setCalendario(0);
+    }
+
+    async function pegaImagem() {
+		let _imagem = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [20, 9],
+			quality: 1,
+			base64: true
+		})
+
+		if (!_imagem.canceled) {
+            setNomeImagem(_imagem.assets[0].uri.substring(_imagem.assets[0].uri.lastIndexOf('/') + 1, _imagem.assets[0].uri.length));
+            console.log('data:image/png;base64,' + _imagem.assets[0].base64);
+            setDataImage('data:image/png;base64,' + _imagem.assets[0].base64);
+		}
+	}
+
     return (
 
         <View style={styles.body}>
+            {
+                calendario === 1 ?
+                    <DateTimePicker mode='date' value={dataEvento} onChange={mudaData}/>
+                    :
+                    calendario === 2 ?
+                        <DateTimePicker mode='time' value={dataEvento} is24Hour={true} onChange={mudaHora}/>
+                        :
+                        <></>
+            }
             <View style={styles.container}>
                 <View style={styles.imagem}>
                     <Image source={require('../../assets/mais_circulado.png')}></Image>
@@ -33,15 +83,18 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                         <Text style={styles.textoRoxo}>
                             Aqui você pode criar e editar eventos de maneira fácil! Preencha os campos abaixo:
                         </Text>
-
-                        <TextInput placeholder='Insira um nome para o evento...' style={styles.linhaForm} value={data.nome_evento} onChange={(e)=>setData({...data, nome_evento: e.nativeEvent.text})}></TextInput>
-                        <TextInput placeholder='Insira um subtítulo para o evento...' style={styles.linhaForm} value={data.sub_evento} onChange={(e)=>setData({...data, sub_evento: e.nativeEvent.text})}></TextInput>
-                        <Text style={{ color: '#838181', fontSize: 10 }}>Insira a data do evento:</Text>
-                        <TextInput placeholder='dd/mm' style={styles.linhaForm} value={data.data_evento} onChange={(e)=>setData({...data, data_evento: e.nativeEvent.text})}></TextInput>
-                        <TextInput placeholder='insira um banner' style={styles.linhaForm} /*inlineImageRight={IconBanner}*/></TextInput>
-                        <TextInput placeholder='insira uma descrição' style={styles.linhaForm} value={data.descricao_evento} onChange={(e)=>setData({...data, descricao_evento: e.nativeEvent.text})}></TextInput>
+                        <Text style={styles.texto}>Insira um nome para o evento:</Text>
+                        <TextInput style={styles.linhaForm} value={data.nome_evento} onChange={(e) => setData({ ...data, nome_evento: e.nativeEvent.text })}></TextInput>
+                        <Text style={styles.texto}>Insira um subtítulo para o evento:</Text>
+                        <TextInput style={styles.linhaForm} value={data.sub_evento} onChange={(e) => setData({ ...data, sub_evento: e.nativeEvent.text })}></TextInput>
+                        <Text style={styles.texto}>Insira a data do evento:</Text>
+                        <TouchableOpacity style={{paddingTop: 10}} onPress={()=>setCalendario(1)}><Text style={styles.linhaForm}>{new Date(dataEvento).toLocaleString("pt-BR", { dateStyle:'full', timeStyle:'short' })}</Text></TouchableOpacity>
+                        <Text style={styles.texto}>Insira um banner:</Text>
+                        <TouchableOpacity style={{paddingTop: 10, flexDirection: 'row'}} onPress={()=>pegaImagem()}><Image style={{marginRight: 5}} source={iconBanner} /><Text style={styles.linhaForm}>{nomeImagem}</Text></TouchableOpacity>
+                        <Text style={styles.texto}>Insira uma descrição para o evento:</Text>
+                        <TextInput style={styles.linhaForm} value={data.descricao_evento} onChange={(e) => setData({ ...data, descricao_evento: e.nativeEvent.text })}></TextInput>
                         <Text style={styles.textoRoxo}>Prévia do evento:</Text>
-                        <EventoCard data={data} previa={true} />
+                        <EventoCard data={data} previa={true} image={dataImage} />
                     </ScrollView>
                     <View style={styles.containerBotao}><TouchableOpacity style={styles.button} onPress={() => props.setModal(false)}><Text style={{ color: 'white' }}>Concluir</Text></TouchableOpacity></View>
                 </View>
@@ -74,13 +127,17 @@ const styles = StyleSheet.create({
 
     },
 
+    texto: { 
+        color: '#838181', 
+        fontSize: 10 
+    },
+
     textoRoxo: {
-        marginTop: '8%',
+        marginVertical: '8%',
         fontSize: 14,
         lineHeight: 16.94,
         color: '#6B3BF4',
         fontWeight: "700",
-        textAlign: 'justify'
     },
 
     imagem: {
@@ -102,8 +159,7 @@ const styles = StyleSheet.create({
         padding: 0,
         borderBottomColor: '#838181',
         borderBottomWidth: 1,
-        marginTop: 10,
-
+        marginBottom: 5,
     },
 
     button: {
@@ -118,7 +174,7 @@ const styles = StyleSheet.create({
         width: '70%',
     },
     scroll: {
-        height: "75%"
+        height: "75%",
     },
     containerBotao: {
         width: "100%",

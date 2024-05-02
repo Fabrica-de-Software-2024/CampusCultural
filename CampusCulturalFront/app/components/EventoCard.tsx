@@ -1,4 +1,5 @@
 import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export type Evento = {
@@ -7,29 +8,38 @@ export type Evento = {
   "nome_evento": string,
   "sub_evento": string,
   "data_evento": string,
+  "imagem": string,
   "descricao_evento": string
 }
 
-export default function EventoCard(props: { data: Evento, previa: boolean }) {
+export default function EventoCard(props: { data: Evento, previa: boolean, image?: string }) {
   const icone = require("../../assets/icone_evento.png");
   const calendario = require("../../assets/mini_calendario.png");
-  const image = require("../../assets/evento_card_1.png");
+  //const [image, setImage] = useState(require("../../assets/evento_card_1.png"));
+
+  const [carregado, setCarregado] = useState(false)
 
   const data = new Date(props.data.data_evento);
   const data2 = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { weekday: "short", dateStyle: "full", timeStyle: "short" });
+  console.log(props.data);
+  
+  useEffect(()=>{
+    //setImage({uri: props.data.imagem});
+    setTimeout(()=>{setCarregado(true)},1000);
+  })
 
   return (
-    <TouchableOpacity onPress={()=>router.replace(`/evento/${props.data.id_evento}`)} style={styles.container}>
+    <TouchableOpacity onPress={props.previa ? () => { } : () => router.replace(`/evento/${props.data.id_evento}`)} style={styles.container}>
       <View style={styles.container_nome}>
-        <Image source={icone} style={props.previa? styles.icone_previa : {}} />
-        <Text style={props.previa? styles.tituloPrevia : styles.titulo}>{props.data.nome_evento}</Text>
+        <Image source={icone} style={props.previa ? styles.icone_previa : {}} />
+        <Text style={props.previa ? styles.tituloPrevia : styles.titulo}>{props.data.nome_evento}</Text>
       </View>
       <View style={styles.container_info}>
-        <View style={styles.container_data}><Text style={props.previa? styles.text_info_previa : styles.text_info}>{data2}</Text><Image source={calendario} /></View>
-        <Text style={props.previa? styles.text_info_previa : styles.text_info}>{props.data.sub_evento}</Text>
+        <View style={styles.container_data}><Text style={props.previa ? styles.text_info_previa : styles.text_info}>{data2}</Text><Image source={calendario} /></View>
+        <Text style={props.previa ? styles.text_info_previa : styles.text_info}>{props.data.sub_evento}</Text>
       </View>
-      <Image style={props.previa? styles.image_previa : styles.image} source={image}/>
-      <Text style={props.previa? styles.descricaoPrevia : styles.descricao}>{props.data.descricao_evento.length > 500? props.data.descricao_evento.substring(0,300)+"..." : props.data.descricao_evento}</Text>
+      {props.image !== "" && <Image style={props.previa ? styles.image_previa : styles.image} source={{uri: props.image}} />}
+      <Text style={props.previa ? styles.descricaoPrevia : styles.descricao}>{props.data.descricao_evento.length > 500 ? props.data.descricao_evento.substring(0, 300) + "..." : props.data.descricao_evento}</Text>
     </TouchableOpacity>
   )
 }
@@ -94,7 +104,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain"
   },
   image_previa: {
-    height: "32%",
+    width: "100%",
     resizeMode: "contain"
   },
   descricao: {
@@ -106,6 +116,6 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontWeight: "400",
     width: "90%",
-    marginBottom: "25%"
+    marginBottom: "40%"
   }
 });
