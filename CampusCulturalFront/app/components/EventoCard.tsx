@@ -15,20 +15,21 @@ export type Evento = {
 export default function EventoCard(props: { data: Evento, previa: boolean, image?: string }) {
   const icone = require("../../assets/icone_evento.png");
   const calendario = require("../../assets/mini_calendario.png");
-  //const [image, setImage] = useState(require("../../assets/evento_card_1.png"));
+  const image = require("../../assets/evento_card_1.png");
+  const [imagem, setImagem] = useState(null);
 
   const [carregado, setCarregado] = useState(false)
 
   const data = new Date(props.data.data_evento);
   const data2 = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { weekday: "short", dateStyle: "full", timeStyle: "short" });
-  console.log(props.data);
-  
-  useEffect(()=>{
-    //setImage({uri: props.data.imagem});
-    setTimeout(()=>{setCarregado(true)},1000);
+
+  useEffect(() => {
+    //setImage({uri: props.data.imagem});r
+    setTimeout(() => { setImagem(props.image) }, 5000);
   })
 
   return (
+    
     <TouchableOpacity onPress={props.previa ? () => { } : () => router.replace(`/evento/${props.data.id_evento}`)} style={styles.container}>
       <View style={styles.container_nome}>
         <Image source={icone} style={props.previa ? styles.icone_previa : {}} />
@@ -38,7 +39,7 @@ export default function EventoCard(props: { data: Evento, previa: boolean, image
         <View style={styles.container_data}><Text style={props.previa ? styles.text_info_previa : styles.text_info}>{data2}</Text><Image source={calendario} /></View>
         <Text style={props.previa ? styles.text_info_previa : styles.text_info}>{props.data.sub_evento}</Text>
       </View>
-      {props.image !== "" && <Image style={props.previa ? styles.image_previa : styles.image} source={{uri: props.image}} />}
+      <Image style={props.previa ? styles.image_previa : styles.image} source={{uri: props.data.imagem}} />
       <Text style={props.previa ? styles.descricaoPrevia : styles.descricao}>{props.data.descricao_evento.length > 500 ? props.data.descricao_evento.substring(0, 300) + "..." : props.data.descricao_evento}</Text>
     </TouchableOpacity>
   )

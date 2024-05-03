@@ -4,6 +4,7 @@ import EventoCard, { Evento } from './EventoCard';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { router } from 'expo-router';
 
 export default function AdicionarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>> }) {
 
