@@ -36,15 +36,20 @@ export default function Evento() {
 
     useEffect(() => {
         puxaEvento(params.id as unknown as number).then((resp) => {
+            console.log(resp)
             setDados(resp);
             setDiffString(`Restam ${Math.floor((diferenca / 3600000) / 24)} dias e ${Math.floor((diferenca / 3600000) - (Math.floor((diferenca / 3600000) / 24) * 24))} horas`)
         })
+        
     }, [params, diferenca])
 
     return (
         <>
             <Navbar title={"Evento"} links={false} />
-            <Image source={banner} />
+            
+            <Image source={{uri: dados.imagem}} />
+
+           
             <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalEdit} onRequestClose={() => setmodalEdit(false)} >
                 <EditarEvento data={dados} setModal={setmodalEdit}/>
             </Modal>

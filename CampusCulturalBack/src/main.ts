@@ -15,6 +15,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('Usuários')
     .addTag('Eventos')
+    .addTag('Imagens')
     .addTag('Inscrições')
     .build();
 

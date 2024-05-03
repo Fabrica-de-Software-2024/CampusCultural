@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { UsuarioModule } from './module/usuario/usuario.module';
 import { EventoModule } from './module/evento/evento.module';
 import { EventoInscricaoModule } from './module/inscricao/inscricao.module';
+import { ImagemModule } from './module/imagem/imagem.module';
 
 @Module({
-  imports: [UsuarioModule, EventoModule, EventoInscricaoModule],
+  imports: [UsuarioModule, EventoModule, ImagemModule, EventoInscricaoModule],
   controllers: [AppController],
   providers: [AppService],
 })

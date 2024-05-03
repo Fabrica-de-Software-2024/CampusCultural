@@ -14,10 +14,11 @@ datasource db {
 }
 
 model Usuario {
-  id_usuario    Int                @id @default(autoincrement())
-  imagem        String
-  eventos       Evento[]
-  inscricao     Evento_Inscricao[]
+  id_usuario     Int                @id @default(autoincrement())
+  imagem_usuario Imagem             @relation(fields: [imagem], references: [id_imagem])
+  imagem         Int
+  eventos        Evento[]
+  inscricao      Evento_Inscricao[]
 
   @@map("usuario")
 }
@@ -30,10 +31,20 @@ model Evento {
   sub_evento       String
   data_evento      DateTime           @default(now())
   descricao_evento String
-  imagem           String
+  imagem_evento    Imagem             @relation(fields: [imagem], references: [id_imagem])
+  imagem           Int
   inscricao        Evento_Inscricao[]
 
   @@map("evento")
+}
+
+model Imagem {
+  id_imagem Int       @id @default(autoincrement())
+  imagem    String
+  usuario   Usuario[]
+  evento    Evento[]
+
+  @@map("imagem")
 }
 
 model Evento_Inscricao {

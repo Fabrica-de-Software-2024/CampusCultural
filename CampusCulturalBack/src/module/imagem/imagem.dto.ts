@@ -1,15 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class UsuarioDTO {
+export class ImagemDTO {
     @ApiProperty({
-        description: "Chave Primária do Schema de Usuários.",
-        example: 2400000
+        description: "Chave Primária do Schema de Imagens.",
+        example: 1
     })
-    "id_usuario": number;
+    "id_imagem": number;
 
     @ApiProperty({
         description: "Foto de Perfil do Usuário em Base64.",
         example: "data:image/png;base64,............."
     })
-    "imagem"?: number;
+    "imagem"?: string;
 }
