@@ -58,9 +58,11 @@ export default function Perfil() {
 
 		if (!_imagem.canceled) {
 			const body = await JSON.stringify({
-				"id_usuario": await Number(dados.id_usuario),
-				"imagem": 'data:image/png;base64,' + _imagem.assets[0].base64
+				"id_usuario": dados.id_usuario,
+				"imagemstr": 'data:image/png;base64,' + _imagem.assets[0].base64
 			})
+
+			console.log('data:image/png;base64,' + _imagem.assets[0].base64);
 
 			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
 				method: 'POST',
@@ -70,7 +72,6 @@ export default function Perfil() {
 					'Content-Type': 'application/json'
 				}
 			});
-
 			if (resp.ok) {
 				const resp2 = await resp.json()
 				router.replace("/perfil")

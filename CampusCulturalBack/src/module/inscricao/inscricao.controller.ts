@@ -40,8 +40,8 @@ export class EventoInscricaoController {
     description: "Filtra as inscrições pelo ID do Usuário."
   })
   @Get('/usuario/:id')
-  findUsuario(@Param('id') id: number) {
-    return this.eventoInscricaoService.findUsuario(+id);
+  findUsuario(@Param('id') id: string) {
+    return this.eventoInscricaoService.findUsuario(id);
   }
 
   @ApiOperation({

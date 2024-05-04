@@ -12,7 +12,7 @@ export class EventoDTO {
         description: "Identificador do Professor que Registrou o Evento.",
         example: 1
     })
-    "professor_evento": number;
+    "professor_evento": string;
 
     @ApiProperty({
         description: "Nome do Evento.",
