@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Usuario {
-  id_usuario     Int                @id @default(autoincrement())
+  id_usuario     String                @id
   imagem_usuario Imagem             @relation(fields: [imagem], references: [id_imagem])
   imagem         Int
   eventos        Evento[]
@@ -26,7 +26,7 @@ model Usuario {
 model Evento {
   id_evento        Int                @id @default(autoincrement())
   professor        Usuario            @relation(fields: [professor_evento], references: [id_usuario])
-  professor_evento Int
+  professor_evento String
   nome_evento      String
   sub_evento       String
   data_evento      DateTime           @default(now())
@@ -50,7 +50,7 @@ model Imagem {
 model Evento_Inscricao {
   id_evento_inscricao  Int     @id @default(autoincrement())
   inscricao_usuario    Usuario @relation(fields: [id_inscricao_usuario], references: [id_usuario])
-  id_inscricao_usuario Int
+  id_inscricao_usuario String
   inscricao_evento     Evento  @relation(fields: [id_inscricao_evento], references: [id_evento])
   id_inscricao_evento  Int
   notificacao          Boolean

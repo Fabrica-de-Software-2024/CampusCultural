@@ -14,7 +14,7 @@ export class UsuarioController {
   })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usuarioService.findOne(+id);
+    return this.usuarioService.findOne(id);
   }
 
   @ApiOperation({
@@ -22,7 +22,7 @@ export class UsuarioController {
     description: "Edita um usuário"
   })
   @Post()
-  update(@Body() data: UsuarioDTO){
+  update(@Body() data: UsuarioDTO) {
     console.log(data)
     return this.usuarioService.update(data);
   }
@@ -33,6 +33,6 @@ export class UsuarioController {
   })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usuarioService.remove(+id);
+    return this.usuarioService.remove(id);
   }
 }
