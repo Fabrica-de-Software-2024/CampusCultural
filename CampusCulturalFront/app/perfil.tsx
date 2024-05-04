@@ -61,6 +61,7 @@ export default function Perfil() {
 				"id_usuario": await Number(dados.id_usuario),
 				"imagem": 'data:image/png;base64,' + _imagem.assets[0].base64
 			})
+
 			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
 				method: 'POST',
 				body: body,
@@ -89,7 +90,9 @@ export default function Perfil() {
 			});
 			const respfoto = await fetch(`https://campus-cultural.vercel.app/usuario/${await Number(_dados?.studentCode)}`);
 			const respfoto2 = await respfoto.json();
-			setAlteraImagem(respfoto2?.imagem);
+			const respfoto3 = await fetch(`https://campus-cultural.vercel.app/imagem/${respfoto2.imagem}`);
+			const respfoto4 = await respfoto3.json();
+			setAlteraImagem(respfoto4?.imagem);
 		})
 	}, [])
 

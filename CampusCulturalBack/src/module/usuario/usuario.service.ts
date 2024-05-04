@@ -6,7 +6,7 @@ import { PrismaService } from '../../database/PrismaService'
 export class UsuarioService {
   constructor(private prisma: PrismaService) { }
 
-  async findOne(id_usuario: number) {
+  async findOne(id_usuario: string) {
     const usuario = await this.prisma.usuario.findUnique({
       where: {
         id_usuario
@@ -23,28 +23,33 @@ export class UsuarioService {
       }
     });
     if (userExists) {
-      const update_usuario = await this.prisma.usuario.update({
+      const update_usuario = await this.prisma.imagem.update({
         where: {
-          id_usuario: data?.id_usuario,
+          id_imagem: userExists.imagem,
         },
         data: {
-          id_usuario: data?.id_usuario,
-          imagem: data?.imagem,
+          id_imagem: userExists.imagem,
+          imagem: data?.imagemstr,
         }
       });
       return update_usuario;
     } else {
+      const imagem = await this.prisma.imagem.create({
+        data: {
+          imagem: data?.imagemstr,
+        }
+      })
       const usuario = await this.prisma.usuario.create({
         data: {
           id_usuario: data?.id_usuario,
-          imagem: data?.imagem,
+          imagem: imagem?.id_imagem
         }
       });
       return usuario;
     }
   }
 
-  async remove(id_usuario: number) {
+  async remove(id_usuario: string) {
     const userExists = await this.prisma.usuario.delete({
       where: {
         id_usuario,
