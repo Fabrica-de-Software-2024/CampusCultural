@@ -26,7 +26,7 @@ export class EventoInscricaoService {
         })
         return evento_inscricao;
     }
-    async findUsuario(id_inscricao_usuario: number) {
+    async findUsuario(id_inscricao_usuario: string) {
         const evento_inscricao = await this.prisma.evento_Inscricao.findMany({
             where: {
                 id_inscricao_usuario

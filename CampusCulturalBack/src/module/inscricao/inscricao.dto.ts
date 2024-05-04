@@ -11,7 +11,7 @@ export class Evento_InscricaoDTO {
         description: "Identificador do Usuário que se inscreveu no evento.",
         example: 1
     })
-    "id_inscricao_usuario": number;
+    "id_inscricao_usuario": string;
 
     @ApiProperty({
         description: "Identificador do Evento que o usuário se inscreveu.",
