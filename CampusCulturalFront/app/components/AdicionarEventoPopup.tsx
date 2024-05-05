@@ -67,7 +67,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                 "sub_evento": data.sub_evento,
                 "data_evento": data.data_evento,
                 "descricao_evento": data.descricao_evento,
-                "imagem": imagem
+                "imagemstr": imagem
             })
             try {
                 const resp2 = await fetch("https://campus-cultural.vercel.app/evento", {
@@ -79,7 +79,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                     }
                 })
                 console.log(await resp2.json());
-            } catch(e){console.log(e)}
+            } catch (e) { console.log(e) }
             setModal(false);
         })
     }

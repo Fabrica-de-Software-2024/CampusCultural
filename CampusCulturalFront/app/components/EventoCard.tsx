@@ -15,7 +15,6 @@ export type Evento = {
 export async function pegaBanner(id: number, setImagem: React.Dispatch<string>) {
   const respbanner = await fetch(`https://campus-cultural.vercel.app/imagem/${id}`)
   const respbanner2 = await respbanner.json();
-  console.log(respbanner2.imagem)
   setImagem(respbanner2?.imagem);
 }
 
@@ -27,7 +26,7 @@ export default function EventoCard(props: { data: Evento, previa: boolean, image
   const [carregado, setCarregado] = useState(false)
 
   const data = new Date(props.data.data_evento);
-  const data2 = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { weekday: "short", dateStyle: "full", timeStyle: "short" });
+  const data2 = new Date(data.getTime()).toLocaleString("pt-BR", { weekday: "short", dateStyle: "full", timeStyle: "short" });
 
   useEffect(() => {
     pegaBanner(props.data.imagem, setImagem).then(() => setCarregado(true));

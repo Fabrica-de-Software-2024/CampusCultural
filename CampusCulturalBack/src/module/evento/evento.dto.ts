@@ -42,7 +42,7 @@ export class EventoDTO {
         description: "ID do Banner do evento.",
         example: 1
     })
-    imagem: number;
+    imagem?: number;
 
     @ApiProperty({
         description: "Banner do evento em Base64.",

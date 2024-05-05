@@ -37,22 +37,28 @@ export default function Evento() {
     const certificado = require("../../assets/certificado_quadrado.png")
 
     const data = new Date(dados?.data_evento);
-    const data2 = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { dateStyle: "long" });
-    const horario = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { timeStyle: 'short' });
+    const data2 = new Date(data.getTime()).toLocaleString("pt-BR", { dateStyle: "long" });
+    const horario = new Date(data.getTime()).toLocaleString("pt-BR", { timeStyle: 'short' });
 
-    const diferenca = data.getTime() - Date.now();
     const [difString, setDiffString] = useState("");
     const [modalEdit, setmodalEdit] = useState(false);
 
     useEffect(() => {
-        puxaEvento(params.id as unknown as number, setImagem).then((resp) => {
-            setDados(resp);
-            if (diferenca > 0) {
-                setDiffString(`Restam ${Math.floor((diferenca / 3600000) / 24)} dias e ${Math.floor((diferenca / 3600000) - (Math.floor((diferenca / 3600000) / 24) * 24))} horas`)
-            } else if (diferenca > (2 * 60 * 60 * 1000)) { setDiffString(`Evento em Andamento!`) }
-            else { setDiffString(`Esse evento ja acabou.`) }
-        })
-    }, [params, diferenca])
+        let diferenca = data.getTime() - (Math.floor(Date.now() / 60000) * 60000);
+        try {
+            puxaEvento(params.id as unknown as number, setImagem).then((resp) => {
+                setDados(resp);
+                if (diferenca > (3600000 * 24)) {
+                    setDiffString(`Restam ${Math.floor((diferenca / 3600000) / 24)} dias e ${Math.floor((diferenca / 3600000) - (Math.floor((diferenca / 3600000) / 24) * 24))} horas`)
+                }
+                else if (diferenca > 0) { setDiffString(`Restam ${Math.floor((diferenca / 3600000))} horas e ${Math.floor((diferenca / 60000) - (Math.floor((diferenca / 3600000)) * 60))} minutos`) }
+                else if (Math.sqrt(diferenca * diferenca) < (2 * 60 * 60 * 1000)) { setDiffString(`Evento em Andamento!`) }
+                else { setDiffString(`Esse evento ja acabou.`) }
+            })
+        } catch(e) {
+            console.log(e)
+        }
+    }, [params])
 
     return (
         <>
