@@ -21,7 +21,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
 
 export type Usuario = {
-	"id_usuario": number,
+	"id_usuario": string,
 	"nome_usuario": string,
 	"curso_usuario": string,
 	"login_usuario"?: string,
@@ -40,6 +40,7 @@ export default function Perfil() {
 	const figura3 = require("../assets/figura9.png");
 	const figura4 = require("../assets/figura10.png");
 
+	const [carregado, setCarregado] = useState(false)
 	const [modalNotificacoes, setModalNotificacoes] = useState(false);
 	const [modalConfig, setModalConfig] = useState(false);
 	const [modalCertificados, setModalCertificados] = useState(false);
@@ -62,7 +63,7 @@ export default function Perfil() {
 				"imagemstr": 'data:image/png;base64,' + _imagem.assets[0].base64
 			})
 
-			console.log('data:image/png;base64,' + _imagem.assets[0].base64);
+			//console.log('data:image/png;base64,' + _imagem.assets[0].base64);
 
 			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
 				method: 'POST',
@@ -72,7 +73,7 @@ export default function Perfil() {
 					'Content-Type': 'application/json'
 				}
 			});
-			if (resp.ok) {
+			if (resp.status == 201) {
 				const resp2 = await resp.json()
 				router.replace("/perfil")
 			}
@@ -84,17 +85,17 @@ export default function Perfil() {
 		AsyncStorage.getItem('login').then(async (resp) => {
 			let _dados = JSON.parse(resp)
 			setDados({
-				"id_usuario": _dados?.studentCode,
+				"id_usuario": _dados?.login,
 				"nome_usuario": _dados?.name,
 				"curso_usuario": _dados?.studentCode,
 				"is_professor": true,
 			});
-			const respfoto = await fetch(`https://campus-cultural.vercel.app/usuario/${await Number(_dados?.studentCode)}`);
+			const respfoto = await fetch(`https://campus-cultural.vercel.app/usuario/${_dados?.login}`);
 			const respfoto2 = await respfoto.json();
 			const respfoto3 = await fetch(`https://campus-cultural.vercel.app/imagem/${respfoto2.imagem}`);
-			const respfoto4 = await respfoto3.json();
-			setAlteraImagem(respfoto4?.imagem);
-		})
+			const respfoto4 = await respfoto3.json()
+			setAlteraImagem(respfoto4?.imagem)
+		}).then(() => setCarregado(true));
 	}, [])
 
 	return (
@@ -119,12 +120,14 @@ export default function Perfil() {
 			</Modal>
 			<Navbar title="Minha Conta" links={false} />
 			<View style={styles.container}>
-				<View style={styles.userInfo}>
-					<TouchableOpacity style={styles.editaImagem} onPress={() => pegaImagem()}><Image style={styles.lapis} source={lapis} /></TouchableOpacity>
-					<Image source={alteraImagem !== null ? { uri: alteraImagem } : require("../assets/icone_evento.png")} style={styles.imagem} resizeMode="cover" />
-					<Text style={styles.nome}>{dados?.nome_usuario}</Text>
-					<Text style={styles.curso}>{dados?.curso_usuario}</Text>
-				</View>
+				{carregado &&
+					<View style={styles.userInfo}>
+						<TouchableOpacity style={styles.editaImagem} onPress={() => pegaImagem()}><Image style={styles.lapis} source={lapis} /></TouchableOpacity>
+						<Image source={alteraImagem !== null ? { uri: alteraImagem } : require("../assets/icone_evento.png")} style={styles.imagem} resizeMode="cover" />
+						<Text style={styles.nome}>{dados?.nome_usuario}</Text>
+						<Text style={styles.curso}>{dados?.curso_usuario}</Text>
+					</View>
+				}
 				<View style={styles.textContainer}>
 					<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>
 						<Image source={sino} style={styles.icon} resizeMode="cover" />

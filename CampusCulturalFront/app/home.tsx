@@ -11,6 +11,7 @@ import { Usuario } from "./perfil";
 export async function puxaEventos() {
     const resp = await fetch("https://campus-cultural.vercel.app/evento");
     const resp2 = await resp.json();
+    console.log(resp2)
     return resp2;
 }
 

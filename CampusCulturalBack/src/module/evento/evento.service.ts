@@ -20,6 +20,12 @@ export class EventoService {
         return evento;
     }
     async create(data: EventoDTO) {
+        const nova_imagem = await this.prisma.imagem.create({
+            data: {
+                imagem: data.imagemstr
+            },
+        });
+
         const novo_evento = await this.prisma.evento.create({
             data: {
                 professor_evento: data.professor_evento,
@@ -27,7 +33,7 @@ export class EventoService {
                 sub_evento: data.sub_evento,
                 data_evento: data.data_evento,
                 descricao_evento: data.descricao_evento,
-                imagem: data.imagem
+                imagem: nova_imagem.id_imagem
             },
         });
         return novo_evento;

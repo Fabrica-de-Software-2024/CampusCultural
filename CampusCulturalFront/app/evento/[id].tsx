@@ -1,21 +1,30 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert } from "react-native";
 import Navbar from '../components/Navbar';
 import Rodape from '../components/Rodape';
 import { Evento as EventoDTO } from '../components/EventoCard';
 import EditarEvento from '../components/EditarEventoPopup';
 
-export async function puxaEvento(id: number) {
-    const resp = await fetch(`https://campus-cultural.vercel.app/evento/${id}`);
-    const resp2 = await resp.json();
-    return resp2;
+export async function puxaEvento(id: number, setImagem: React.Dispatch<React.SetStateAction<string>>) {
+    try {
+        const resp = await fetch(`https://campus-cultural.vercel.app/evento/${id}`);
+        const resp2 = await resp.json();
+        const resp3 = await fetch(`https://campus-cultural.vercel.app/imagem/${resp2.imagem}`);
+        const resp4 = await resp3.json();
+
+        let _imagem = await resp4?.imagem;
+        setImagem(_imagem);
+        return resp2;
+    } catch (err) { console.log(err) }
 }
 
 export default function Evento() {
     const params = useLocalSearchParams();
 
     const [dados, setDados] = useState<EventoDTO>()
+
+    const [imagem, setImagem] = useState(null)
 
     const [inscrito, setInscrito] = useState(false);
 
@@ -30,28 +39,30 @@ export default function Evento() {
     const data = new Date(dados?.data_evento);
     const data2 = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { dateStyle: "long" });
     const horario = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { timeStyle: 'short' });
+
     const diferenca = data.getTime() - Date.now();
     const [difString, setDiffString] = useState("");
     const [modalEdit, setmodalEdit] = useState(false);
 
     useEffect(() => {
-        puxaEvento(params.id as unknown as number).then((resp) => {
-            console.log(resp)
+        puxaEvento(params.id as unknown as number, setImagem).then((resp) => {
             setDados(resp);
-            setDiffString(`Restam ${Math.floor((diferenca / 3600000) / 24)} dias e ${Math.floor((diferenca / 3600000) - (Math.floor((diferenca / 3600000) / 24) * 24))} horas`)
+            if (diferenca > 0) {
+                setDiffString(`Restam ${Math.floor((diferenca / 3600000) / 24)} dias e ${Math.floor((diferenca / 3600000) - (Math.floor((diferenca / 3600000) / 24) * 24))} horas`)
+            } else if (diferenca > (2 * 60 * 60 * 1000)) { setDiffString(`Evento em Andamento!`) }
+            else { setDiffString(`Esse evento ja acabou.`) }
         })
-        
     }, [params, diferenca])
 
     return (
         <>
             <Navbar title={"Evento"} links={false} />
-            
-            <Image source={{uri: dados.imagem}} />
 
-           
+            {imagem != "" && <Image source={{ uri: imagem }} style={styles.imagem} resizeMode='cover' />}
+
+
             <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalEdit} onRequestClose={() => setmodalEdit(false)} >
-                <EditarEvento data={dados} setModal={setmodalEdit}/>
+                <EditarEvento data={dados} setModal={setmodalEdit} />
             </Modal>
             <ScrollView>
 
@@ -59,7 +70,7 @@ export default function Evento() {
                     <Image source={icone} />
                     <Text style={styles.titulo}>{dados?.nome_evento}</Text>
                     <View style={styles.containerBotoes}>
-                        <TouchableOpacity onPress={()=>setmodalEdit(true)}>
+                        <TouchableOpacity onPress={() => setmodalEdit(true)}>
                             <Image source={editar} />
                         </TouchableOpacity>
                         <TouchableOpacity>
@@ -105,6 +116,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: "5%"
+    },
+    imagem: {
+        width: "100%",
+        aspectRatio: 20 / 9,
     },
     titulo: {
         width: "60%",

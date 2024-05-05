@@ -8,14 +8,20 @@ export type Evento = {
   "nome_evento": string,
   "sub_evento": string,
   "data_evento": string,
-  "imagem": string,
+  "imagem"?: number,
   "descricao_evento": string
+}
+
+export async function pegaBanner(id: number, setImagem: React.Dispatch<string>) {
+  const respbanner = await fetch(`https://campus-cultural.vercel.app/imagem/${id}`)
+  const respbanner2 = await respbanner.json();
+  console.log(respbanner2.imagem)
+  setImagem(respbanner2?.imagem);
 }
 
 export default function EventoCard(props: { data: Evento, previa: boolean, image?: string }) {
   const icone = require("../../assets/icone_evento.png");
   const calendario = require("../../assets/mini_calendario.png");
-  const image = require("../../assets/evento_card_1.png");
   const [imagem, setImagem] = useState(null);
 
   const [carregado, setCarregado] = useState(false)
@@ -24,25 +30,25 @@ export default function EventoCard(props: { data: Evento, previa: boolean, image
   const data2 = new Date(data.getTime() + (data.getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { weekday: "short", dateStyle: "full", timeStyle: "short" });
 
   useEffect(() => {
-    //setImage({uri: props.data.imagem});r
-    setTimeout(() => { setImagem(props.image) }, 5000);
-  })
+    pegaBanner(props.data.imagem, setImagem).then(() => setCarregado(true));
+  }, [props])
 
-  return (
-    
-    <TouchableOpacity onPress={props.previa ? () => { } : () => router.replace(`/evento/${props.data.id_evento}`)} style={styles.container}>
-      <View style={styles.container_nome}>
-        <Image source={icone} style={props.previa ? styles.icone_previa : {}} />
-        <Text style={props.previa ? styles.tituloPrevia : styles.titulo}>{props.data.nome_evento}</Text>
-      </View>
-      <View style={styles.container_info}>
-        <View style={styles.container_data}><Text style={props.previa ? styles.text_info_previa : styles.text_info}>{data2}</Text><Image source={calendario} /></View>
-        <Text style={props.previa ? styles.text_info_previa : styles.text_info}>{props.data.sub_evento}</Text>
-      </View>
-      <Image style={props.previa ? styles.image_previa : styles.image} source={{uri: props.data.imagem}} />
-      <Text style={props.previa ? styles.descricaoPrevia : styles.descricao}>{props.data.descricao_evento.length > 500 ? props.data.descricao_evento.substring(0, 300) + "..." : props.data.descricao_evento}</Text>
-    </TouchableOpacity>
-  )
+  if (carregado) {
+    return (
+      <TouchableOpacity onPress={props.previa ? () => { } : () => router.replace(`/evento/${props.data.id_evento}`)} style={styles.container}>
+        <View style={styles.container_nome}>
+          <Image source={icone} style={props.previa ? styles.icone_previa : {}} />
+          <Text style={props.previa ? styles.tituloPrevia : styles.titulo}>{props.data.nome_evento}</Text>
+        </View>
+        <View style={styles.container_info}>
+          <View style={styles.container_data}><Text style={props.previa ? styles.text_info_previa : styles.text_info}>{data2}</Text><Image source={calendario} /></View>
+          <Text style={props.previa ? styles.text_info_previa : styles.text_info}>{props.data.sub_evento}</Text>
+        </View>
+        <Image style={props.previa ? styles.image_previa : styles.image} source={{ uri: props.image == undefined ? imagem : props.image }} />
+        <Text style={props.previa ? styles.descricaoPrevia : styles.descricao}>{/*props.data.descricao_evento.length > 500 ? props.data.descricao_evento.substring(0, 300) + "..." : */props.data.descricao_evento}</Text>
+      </TouchableOpacity>
+    )
+  } else return <></>
 }
 
 const styles = StyleSheet.create({
@@ -102,11 +108,11 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "90%",
-    resizeMode: "contain"
+    aspectRatio: 20 / 9,
   },
   image_previa: {
     width: "100%",
-    resizeMode: "contain"
+    aspectRatio: 20 / 9,
   },
   descricao: {
     fontSize: 12,
