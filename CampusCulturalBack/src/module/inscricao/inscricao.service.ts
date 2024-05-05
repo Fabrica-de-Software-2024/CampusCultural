@@ -34,6 +34,15 @@ export class EventoInscricaoService {
         })
         return evento_inscricao;
     }
+    async findUsuarioEvento(id_inscricao_usuario: string, id_inscricao_evento: number) {
+        const evento_inscricao = await this.prisma.evento_Inscricao.findFirst({
+            where: {
+                id_inscricao_usuario,
+                id_inscricao_evento: Number(id_inscricao_evento)
+            }
+        })
+        return evento_inscricao;
+    }
     async create(data: Evento_InscricaoDTO) {
         const inscricaoExists = await this.prisma.evento_Inscricao.findFirst({
             where: {

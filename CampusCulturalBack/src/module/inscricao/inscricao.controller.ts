@@ -45,6 +45,15 @@ export class EventoInscricaoController {
   }
 
   @ApiOperation({
+    summary: "Filtra as inscrições pelo ID do Usuário e do Evento.",
+    description: "Filtra as inscrições pelo ID do Usuário e do Evento."
+  })
+  @Get('/usuario/:id_usuario/:id_evento')
+  findUsuarioEvento(@Param('id_usuario') id_usuario: string, @Param('id_evento') id_evento: number) {
+    return this.eventoInscricaoService.findUsuarioEvento(id_usuario, id_evento);
+  }
+
+  @ApiOperation({
     summary: "Cria uma nova Inscrição.",
     description: "Cria uma nova Inscrição."
   })
