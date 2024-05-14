@@ -26,6 +26,7 @@ export class AuthController {
         password: {
           type: 'string',
           description: 'Senha de acesso do usuário',
+          format: 'password',
         },
       },
     },
