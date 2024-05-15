@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as bodyParser from 'body-parser';
-import 'dotenv/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,9 +19,11 @@ async function bootstrap() {
     .addTag('Eventos')
     .addTag('Imagens')
     .addTag('Inscrições')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+
   SwaggerModule.setup('api', app, document, {
     customCss:
       '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
