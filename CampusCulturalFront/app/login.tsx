@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
 async function fazLogin(data) {
-    const tokenresp = await fetch("https://coensapp.dv.utfpr.edu.br/siacoes/service/login", {
+    const tokenresp = await fetch("https://campus-cultural.vercel.app/auth/login", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -13,28 +13,17 @@ async function fazLogin(data) {
         }
     })
     
-    const token = await tokenresp.text();
-    if(token !== ""){
-        const dadosresp = await fetch("https://coensapp.dv.utfpr.edu.br/siacoes/service/user/profile", {
+    const token = await tokenresp.json();
+    if(token.access_token !== ""){
+        const dadosresp = await fetch("https://campus-cultural.vercel.app/auth/profile", {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token.access_token}`
             },
         })
         var dados = await dadosresp.json();
-        const tiporesp = await fetch("https://coensapp.dv.utfpr.edu.br/siacoes/service/user/list/profiles", {
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-        })
-        const tipo = await tiporesp.json()
-        dados.type = tipo[0];
-
         try {
             await AsyncStorage.setItem('login', JSON.stringify(dados));
         } catch (err) {
@@ -60,7 +49,7 @@ export default function Login() {
     const olhoAbertoIcon = require("../assets/olho_aberto.png");
 
     const [loginDados, setLoginDados] = useState({
-        "login": "",
+        "username": "",
         "password": ""
     })
 
@@ -94,7 +83,7 @@ export default function Login() {
                             <View style={styles.fieldWithLine}>
                                 <View style={styles.lineUnderInput}></View>
                                 <Image source={pessoaIcon} style={styles.inputIcon} />
-                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" value={loginDados.login} onChange={(e) => setLoginDados({ ...loginDados, login: e.nativeEvent.text })} />
+                                <TextInput style={styles.input2} placeholderTextColor="#8A60FF" value={loginDados.username} onChange={(e) => setLoginDados({ ...loginDados, username: e.nativeEvent.text })} />
                             </View>
                             <Text style={styles.inputLabelSenha}>senha:</Text>
                             <View style={styles.fieldWithLine}>
