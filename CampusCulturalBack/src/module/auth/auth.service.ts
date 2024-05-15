@@ -41,7 +41,7 @@ export class AuthService {
       is_professor: isProfessor,
       id_usuario: userData.login,
       nome_usuario: userData.name,
-      imagem: 0
+      imagem: 1
     };
 
     const newUser = this.usuarioService.create(userCreate);
