@@ -41,6 +41,7 @@ export class AuthService {
       is_professor: isProfessor,
       id_usuario: userData.login,
       nome_usuario: userData.name,
+      imagem: 1
     };
 
     const newUser = this.usuarioService.create(userCreate);
@@ -53,6 +54,7 @@ export class AuthService {
       sub: user.id_usuario,
       nome_usuario: user.nome_usuario,
       is_professor: user.is_professor,
+      iat: user.imagem
     } satisfies JwtPayload;
 
     return {
