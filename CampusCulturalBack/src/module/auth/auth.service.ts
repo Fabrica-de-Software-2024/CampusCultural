@@ -11,7 +11,7 @@ export type JwtPayload = {
   sub: string;
   nome_usuario: string;
   is_professor: boolean;
-  iat?: number;
+  iat: number;
 };
 
 @Injectable()
