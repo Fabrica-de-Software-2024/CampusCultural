@@ -5,7 +5,7 @@ import { UsuarioCreateDTO } from './usuarioCreate.dto';
 
 @Injectable()
 export class UsuarioService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async findOne(id_usuario: string) {
     const usuario = await this.prisma.usuario.findUnique({
@@ -37,17 +37,37 @@ export class UsuarioService {
 
     if (!user) return null;
 
-    const update_usuario = await this.prisma.imagem.update({
-      where: {
-        id_imagem: user.imagem,
-      },
-      data: {
-        id_imagem: user.imagem,
-        imagem: data?.imagemstr,
-      },
-    });
+    if (user.imagem !== 1) {
+      const update_usuario = await this.prisma.imagem.update({
+        where: {
+          id_imagem: user.imagem,
+        },
+        data: {
+          id_imagem: user.imagem,
+          imagem: data?.imagemstr,
+        },
+      });
 
-    return update_usuario;
+      return update_usuario;
+    }
+    else {
+      const update_imagem = await this.prisma.imagem.create({
+        data: {
+          imagem: data?.imagemstr,
+        },
+      });
+      const update_usuario = await this.prisma.usuario.update({
+        where: {
+          id_usuario: user.id_usuario,
+        },
+        data: {
+          imagem: update_imagem.id_imagem,
+        },
+      })
+      return update_usuario;
+    }
+
+
   }
 
   async remove(id_usuario: string) {

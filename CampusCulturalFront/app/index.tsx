@@ -6,14 +6,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Index() {
 
-/*     useEffect(() => {
+    useEffect(() => {
         AsyncStorage.getItem('login').then((resp) => {
             resp != null ?
                 router.replace("/home")
                 :
                 router.replace("/login")
         });
-    }) */
+    })
 
     return (
         <ScrollView style={styles.container}>

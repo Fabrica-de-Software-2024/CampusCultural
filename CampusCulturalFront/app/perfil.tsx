@@ -23,9 +23,7 @@ import { router } from "expo-router";
 export type Usuario = {
 	"id_usuario": string,
 	"nome_usuario": string,
-	"curso_usuario": string,
-	"login_usuario"?: string,
-	"senha_usuario"?: string,
+	"imagem": number,
 	"is_professor": boolean,
 }
 
@@ -63,8 +61,6 @@ export default function Perfil() {
 				"imagemstr": 'data:image/png;base64,' + _imagem.assets[0].base64
 			})
 
-			//console.log('data:image/png;base64,' + _imagem.assets[0].base64);
-
 			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
 				method: 'POST',
 				body: body,
@@ -73,6 +69,7 @@ export default function Perfil() {
 					'Content-Type': 'application/json'
 				}
 			});
+			console.log(await resp.json())
 			if (resp.status == 201) {
 				const resp2 = await resp.json()
 				router.replace("/perfil")
@@ -84,17 +81,16 @@ export default function Perfil() {
 	useEffect(() => {
 		AsyncStorage.getItem('login').then(async (resp) => {
 			let _dados = JSON.parse(resp)
+			console.log(_dados)
 			setDados({
-				"id_usuario": _dados?.login,
-				"nome_usuario": _dados?.name,
-				"curso_usuario": _dados?.studentCode,
+				"id_usuario": _dados?.id_usuario,
+				"nome_usuario": _dados?.nome_usuario,
 				"is_professor": true,
+				"imagem": _dados?.imagem
 			});
-			const respfoto = await fetch(`https://campus-cultural.vercel.app/usuario/${_dados?.login}`);
-			const respfoto2 = await respfoto.json();
-			const respfoto3 = await fetch(`https://campus-cultural.vercel.app/imagem/${respfoto2.imagem}`);
-			const respfoto4 = await respfoto3.json()
-			setAlteraImagem(respfoto4?.imagem)
+			const respfoto = await fetch(`https://campus-cultural.vercel.app/imagem/${_dados?.imagem}`);
+			const respfoto2 = await respfoto.json()
+			setAlteraImagem(respfoto2?.imagem)
 		}).then(() => setCarregado(true));
 	}, [])
 
@@ -119,37 +115,37 @@ export default function Perfil() {
 				<AjudaCard setAberto={setModalChat} />
 			</Modal>
 			<Navbar title="Minha Conta" links={false} />
-			<View style={styles.container}>
-				{carregado &&
+			{carregado &&
+				<View style={styles.container}>
 					<View style={styles.userInfo}>
 						<TouchableOpacity style={styles.editaImagem} onPress={() => pegaImagem()}><Image style={styles.lapis} source={lapis} /></TouchableOpacity>
 						<Image source={alteraImagem !== null ? { uri: alteraImagem } : require("../assets/icone_evento.png")} style={styles.imagem} resizeMode="cover" />
 						<Text style={styles.nome}>{dados?.nome_usuario}</Text>
-						<Text style={styles.curso}>{dados?.curso_usuario}</Text>
+						{/*<Text style={styles.curso}>{dados?.curso_usuario}</Text>*/}
 					</View>
-				}
-				<View style={styles.textContainer}>
-					<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>
-						<Image source={sino} style={styles.icon} resizeMode="cover" />
-						<Text style={styles.buttonText}>Notificações</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => setModalConfig(true)} style={styles.button}>
-						<Image source={engrenagem} style={styles.icon} resizeMode="cover" />
-						<Text style={styles.buttonText}>Configurações</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => setModalCertificados(true)} style={styles.button}>
-						<Image source={certificado} style={styles.icon} resizeMode="cover" />
-						<Text style={styles.buttonText}>Meus certificados</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => setModalChat(true)} style={styles.button}>
-						<Image source={chat} style={styles.icon} resizeMode="cover" />
-						<Text style={styles.buttonText}>Fale conosco</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => { AsyncStorage.setItem('login', "\0").then(() => router.replace("/")) }} style={styles.button}>
-						<Text style={styles.buttonText}>Logout</Text>
-					</TouchableOpacity>
+					<View style={styles.textContainer}>
+						<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>
+							<Image source={sino} style={styles.icon} resizeMode="cover" />
+							<Text style={styles.buttonText}>Notificações</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => setModalConfig(true)} style={styles.button}>
+							<Image source={engrenagem} style={styles.icon} resizeMode="cover" />
+							<Text style={styles.buttonText}>Configurações</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => setModalCertificados(true)} style={styles.button}>
+							<Image source={certificado} style={styles.icon} resizeMode="cover" />
+							<Text style={styles.buttonText}>Meus certificados</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => setModalChat(true)} style={styles.button}>
+							<Image source={chat} style={styles.icon} resizeMode="cover" />
+							<Text style={styles.buttonText}>Fale conosco</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => { AsyncStorage.setItem('login', "\0").then(() => router.replace("/")) }} style={styles.button}>
+							<Text style={styles.buttonText}>Logout</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
-			</View>
+			}
 			<Image style={styles.figura1} source={figura1} />
 			<Image style={styles.figura2} source={figura2} />
 			<Image style={styles.figura3} source={figura3} />
