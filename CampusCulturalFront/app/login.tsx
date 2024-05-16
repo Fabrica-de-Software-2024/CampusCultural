@@ -53,7 +53,6 @@ export default function Login() {
         "password": ""
     })
 
-    
 
     //Estado de controle da visibilidade da senha
     const [mostrarSenha, setMostrarSenha] = useState(false);
