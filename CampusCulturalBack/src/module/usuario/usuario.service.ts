@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsuarioDTO } from './usuario.dto';
 import { PrismaService } from '../../database/PrismaService';
 import { UsuarioCreateDTO } from './usuarioCreate.dto';
@@ -48,7 +48,11 @@ export class UsuarioService {
         },
       });
 
-      return update_usuario;
+      if(!update_usuario){return user}
+
+      else new NotFoundException('Usuário não encontrado');
+
+      return user;
     }
     else {
       const update_imagem = await this.prisma.imagem.create({

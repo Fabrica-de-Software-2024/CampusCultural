@@ -7,7 +7,8 @@ import {
 	TouchableOpacity,
 	Dimensions,
 	Modal,
-	Alert
+	Alert,
+	ActivityIndicator
 } from "react-native";
 import Navbar from "./components/Navbar";
 import Rodape from "./components/Rodape";
@@ -61,6 +62,8 @@ export default function Perfil() {
 				"imagemstr": 'data:image/png;base64,' + _imagem.assets[0].base64
 			})
 
+			setCarregado(false)
+
 			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
 				method: 'POST',
 				body: body,
@@ -72,6 +75,11 @@ export default function Perfil() {
 			console.log(await resp.json())
 			if (resp.status == 201) {
 				const resp2 = await resp.json()
+				try {
+					await AsyncStorage.setItem('login', JSON.stringify(resp2));
+				} catch (err) {
+					console.log(err);
+				}
 				router.replace("/perfil")
 			}
 			else { Alert.alert("Erro", "Não foi possivel atualizar a imagem.") }
@@ -115,7 +123,7 @@ export default function Perfil() {
 				<AjudaCard setAberto={setModalChat} />
 			</Modal>
 			<Navbar title="Minha Conta" links={false} />
-			{carregado &&
+			{carregado ?
 				<View style={styles.container}>
 					<View style={styles.userInfo}>
 						<TouchableOpacity style={styles.editaImagem} onPress={() => pegaImagem()}><Image style={styles.lapis} source={lapis} /></TouchableOpacity>
@@ -144,6 +152,10 @@ export default function Perfil() {
 							<Text style={styles.buttonText}>Logout</Text>
 						</TouchableOpacity>
 					</View>
+				</View>
+				:
+				<View style={styles.carregando}>
+					<ActivityIndicator size={"large"} color={"#8A60FF"} />
 				</View>
 			}
 			<Image style={styles.figura1} source={figura1} />
@@ -235,5 +247,9 @@ const styles = StyleSheet.create({
 	},
 	modal: {
 		width: "90%"
+	},
+	carregando: {
+		flex: 1,
+		justifyContent: "center"
 	}
 });

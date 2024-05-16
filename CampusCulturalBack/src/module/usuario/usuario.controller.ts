@@ -37,6 +37,7 @@ export class UsuarioController {
     if (!usuario) {
       throw new NotFoundException('Usuário não encontrado');
     }
+    else return usuario
   }
 
   @ApiOperation({
