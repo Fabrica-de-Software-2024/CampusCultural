@@ -8,7 +8,7 @@ export class EventoService {
     constructor(private prisma: PrismaService) { }
     async findAll() {
         const eventos = await this.prisma.evento.findMany();
-        const eventos2 = await eventos.sort((a,b)=> {return (a.data_evento - b.data_evento)})
+        const eventos2 = await eventos.sort((a, b) => { return (Number(a.data_evento) - Number(b.data_evento)) });
         return eventos2;
     }
     async findOne(id_evento: number) {
@@ -31,7 +31,7 @@ export class EventoService {
                 professor_evento: data.professor_evento,
                 nome_evento: data.nome_evento,
                 sub_evento: data.sub_evento,
-                data_evento: data.data_evento,
+                data_evento: data.data_evento.toString(),
                 descricao_evento: data.descricao_evento,
                 imagem: nova_imagem.id_imagem
             },
@@ -54,7 +54,7 @@ export class EventoService {
                     professor_evento: data.professor_evento,
                     nome_evento: data.nome_evento,
                     sub_evento: data.sub_evento,
-                    data_evento: data.data_evento,
+                    data_evento: data.data_evento.toString(),
                     descricao_evento: data.descricao_evento,
                     imagem: data.imagem
                 },
