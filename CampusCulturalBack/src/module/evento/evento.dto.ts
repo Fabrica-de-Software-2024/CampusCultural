@@ -48,5 +48,5 @@ export class EventoDTO {
         description: "Banner do evento em Base64.",
         example: "data:image/png;base64,............."
     })
-    imagemstr: string;
+    imagemstr?: string;
 }

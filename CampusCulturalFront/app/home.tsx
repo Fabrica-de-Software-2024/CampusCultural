@@ -1,5 +1,5 @@
 import { router } from "expo-router"
-import { Button, ScrollView, StatusBar, Text, TouchableOpacity, Image } from "react-native"
+import { Button, ScrollView, StatusBar, Text, TouchableOpacity, Image, View, ActivityIndicator } from "react-native"
 import Navbar from "./components/Navbar"
 import { useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
@@ -17,6 +17,7 @@ export async function puxaEventos() {
 
 export default function Home() {
 
+    const [carregado, setCarregado] = useState(false)
     const [dados, setDados] = useState<Usuario>()
     const [eventosSelecionado, setEventosSelecionado] = useState(0);
     const [eventos, setEventos] = useState([]);
@@ -26,13 +27,13 @@ export default function Home() {
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp)
             setDados({
-                "id_usuario": _dados?.studentCode,
-                "nome_usuario": _dados?.name,
-                "curso_usuario": _dados?.studentCode,
-                "is_professor": false,
+                "id_usuario": _dados?.id_usuario,
+                "nome_usuario": _dados?.nome_usuario,
+                "is_professor": _dados?.is_professor,
+                "imagem": _dados?.imagem
             });
         })
-        puxaEventos().then((resp) => setEventos(resp));
+        puxaEventos().then((resp) => setEventos(resp)).finally(() => setCarregado(true));
     }, [])
 
 
@@ -40,45 +41,52 @@ export default function Home() {
         <>
             <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
             {
-				dados?.is_professor ?
-					<BotaoAddEvento />
-					:
-					<></>
-			}
+                dados?.is_professor ?
+                    <BotaoAddEvento />
+                    :
+                    <></>
+            }
             <TouchableOpacity style={{ position: "absolute", right: "3%", top: "20%" }}>
                 <Image source={filtro} />
             </TouchableOpacity>
-            <ScrollView style={{ marginVertical: 50 }}>
-                {
-                    eventosSelecionado === 0 ?
-                        eventos.map((i: Evento, index: number) => {
-                            if (Date.now() <= Date.parse(i.data_evento)) {
-                                return (
-                                    <EventoCard key={index} data={i} previa={false} />
-                                )
-                            }
-                        })
-                        :
-                        eventosSelecionado === 1 ?
-                            eventos.map((i, index) => {
-                                return (
-                                    <EventoCard key={index} data={i} previa={false} />
-                                )
-                            })
-                            :
-                            eventosSelecionado === 2 ?
-
-                                eventos.map((i, index) => {
-                                    if (Date.now() > Date.parse(i.data_evento)) {
+            {
+                carregado ?
+                    <ScrollView style={{ marginVertical: 50 }}>
+                        {
+                            eventosSelecionado === 0 ?
+                                eventos.map((i: Evento, index: number) => {
+                                    if (Date.now() <= Date.parse(i.data_evento)) {
                                         return (
                                             <EventoCard key={index} data={i} previa={false} />
                                         )
                                     }
                                 })
                                 :
-                                <></>
-                }
-            </ScrollView>
+                                eventosSelecionado === 1 ?
+                                    eventos.map((i, index) => {
+                                        return (
+                                            <EventoCard key={index} data={i} previa={false} />
+                                        )
+                                    })
+                                    :
+                                    eventosSelecionado === 2 ?
+
+                                        eventos.map((i, index) => {
+                                            if (Date.now() > Date.parse(i.data_evento)) {
+                                                return (
+                                                    <EventoCard key={index} data={i} previa={false} />
+                                                )
+                                            }
+                                        })
+                                        :
+                                        <></>
+                        }
+                    </ScrollView>
+                    :
+                    <View style={{ flex: 1, justifyContent: "center" }}>
+                        <ActivityIndicator size={"large"} color={"#8A60FF"} />
+                    </View>
+            }
             <Rodape selecionado={1} />
         </>
     )

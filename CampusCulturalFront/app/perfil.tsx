@@ -72,15 +72,9 @@ export default function Perfil() {
 					'Content-Type': 'application/json'
 				}
 			});
-			console.log(await resp.json())
 			if (resp.status == 201) {
-				const resp2 = await resp.json()
-				try {
-					await AsyncStorage.setItem('login', JSON.stringify(resp2));
-				} catch (err) {
-					console.log(err);
-				}
-				router.replace("/perfil")
+				Alert.alert("Sucesso", "A imagem foi alterada!");
+				router.replace("/perfil");
 			}
 			else { Alert.alert("Erro", "Não foi possivel atualizar a imagem.") }
 		}
@@ -89,6 +83,8 @@ export default function Perfil() {
 	useEffect(() => {
 		AsyncStorage.getItem('login').then(async (resp) => {
 			let _dados = JSON.parse(resp)
+			const resp2 = await fetch(`https://campus-cultural.vercel.app/usuario/${_dados?.id_usuario}`);
+			_dados = await resp2.json()
 			console.log(_dados)
 			setDados({
 				"id_usuario": _dados?.id_usuario,

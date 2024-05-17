@@ -1,5 +1,5 @@
 import { router } from "expo-router"
-import { Button, StatusBar, Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native"
+import { Button, StatusBar, Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, ActivityIndicator } from "react-native"
 import Navbar from "./components/Navbar"
 import { ReactNode, useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
@@ -28,6 +28,8 @@ export default function Calendario() {
 
     const [eventos, setEventos] = useState([])
 
+    const [carregado, setCarregado] = useState(false)
+
     const dias_da_semana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
     var index2 = 0;
@@ -38,15 +40,15 @@ export default function Calendario() {
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp)
             setDados({
-                "id_usuario": _dados?.studentCode,
-                "nome_usuario": _dados?.name,
-                "curso_usuario": _dados?.studentCode,
-                "is_professor": false,
+                "id_usuario": _dados?.id_usuario,
+                "nome_usuario": _dados?.nome_usuario,
+                "is_professor": _dados?.is_professor,
+                "imagem": _dados?.imagem
             });
         })
 
 
-        puxaEventos().then((e) => setEventos(e))
+        puxaEventos().then((e) => setEventos(e)).finally(() => setCarregado(true))
 
         var _mes = new Date(data).getMonth()
 
@@ -157,23 +159,30 @@ export default function Calendario() {
                 </View>
                 <View style={styles.bottomContainer}>
                     <Text style={styles.tituloEventos}>Próximos <Text style={{ color: "#411BAA" }}>Eventos</Text></Text>
-                    <ScrollView style={styles.containerEventos}>
-                        {
-                            eventos.map((i: Evento, index: number) => {
-                                if (Date.parse(data) <= Date.parse(i.data_evento)) {
-                                    index2++;
-                                    return (
-                                        <View key={index}>
-                                            <TouchableOpacity onPress={() => router.replace(`/evento/${i.id_evento}`)}>
-                                                <Text style={index2 < 2 ? styles.textEventoRoxo : styles.textEvento}>{`${new Date(i.data_evento).getDate() + 1} - ${dias_da_semana[new Date(i.data_evento).getDay() + 1]} - ${i.nome_evento.length > 30 ? i.nome_evento.substring(0, 25) + "..." : i.nome_evento}`}</Text>
-                                            </TouchableOpacity>
-                                            <Image source={risco} />
-                                        </View>
-                                    )
+                    {
+                        carregado ?
+                            <ScrollView style={styles.containerEventos}>
+                                {
+                                    eventos.map((i: Evento, index: number) => {
+                                        if (Date.parse(data) <= Date.parse(i.data_evento)) {
+                                            index2++;
+                                            return (
+                                                <View key={index}>
+                                                    <TouchableOpacity onPress={() => router.replace(`/evento/${i.id_evento}`)}>
+                                                        <Text style={index2 < 2 ? styles.textEventoRoxo : styles.textEvento}>{`${new Date(i.data_evento).getDate() + 1} - ${dias_da_semana[new Date(i.data_evento).getDay() + 1]} - ${i.nome_evento.length > 30 ? i.nome_evento.substring(0, 25) + "..." : i.nome_evento}`}</Text>
+                                                    </TouchableOpacity>
+                                                    <Image source={risco} />
+                                                </View>
+                                            )
+                                        }
+                                    })
                                 }
-                            })
-                        }
-                    </ScrollView>
+                            </ScrollView>
+                            :
+                            <View style={styles.carregando}>
+                                <ActivityIndicator size={"large"} color={"#8A60FF"} />
+                            </View>
+                    }
                 </View>
             </View >
             <Rodape selecionado={2} />
@@ -294,5 +303,9 @@ const styles = StyleSheet.create({
         position: "absolute",
         right: 0,
         bottom: "10%"
+    },
+    carregando: {
+        flex: 1,
+        justifyContent: "center"
     }
 });
