@@ -31,7 +31,7 @@ model Evento {
   professor        Usuario            @relation(fields: [professor_evento], references: [id_usuario])
   nome_evento      String
   sub_evento       String
-  data_evento      BigInt 
+  data_evento      Int
   descricao_evento String
   imagem_evento    Imagem             @relation(fields: [imagem], references: [id_imagem])
   imagem           Int
