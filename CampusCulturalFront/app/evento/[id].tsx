@@ -44,10 +44,11 @@ export default function Evento() {
     const [modalEdit, setmodalEdit] = useState(false);
 
     useEffect(() => {
-        let diferenca = data.getTime() - (Math.floor(Date.now() / 60000) * 60000);
         try {
-            puxaEvento(params.id as unknown as number, setImagem).then((resp) => {
+            puxaEvento(params.id as unknown as number, setImagem).then(async (resp) => {
                 setDados(resp);
+                var milidata = await data.getTime()
+                var diferenca: number = milidata - Date.now();
                 if (diferenca > (3600000 * 24)) {
                     setDiffString(`Restam ${Math.floor((diferenca / 3600000) / 24)} dias e ${Math.floor((diferenca / 3600000) - (Math.floor((diferenca / 3600000) / 24) * 24))} horas`)
                 }
@@ -58,7 +59,7 @@ export default function Evento() {
         } catch(e) {
             console.log(e)
         }
-    }, [params])
+    }, [data])
 
     return (
         <>

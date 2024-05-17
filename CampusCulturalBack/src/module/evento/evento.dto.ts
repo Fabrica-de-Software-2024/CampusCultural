@@ -27,10 +27,10 @@ export class EventoDTO {
     "sub_evento": string;
 
     @ApiProperty({
-        description: "Data do Evento no formato ISO 8601, por exemplo, nesse formato o dia 31/03/2024 as 15:26:36 no horário de Brasilia ficaria da seguinte forma: (2024-03-31T18:26:36.197Z).",
-        example: new Date(Date.now()).toISOString()
+        description: "Data do Evento no formato UNIX Timestamp, por exemplo, o horario do exemplo é o horario atual.",
+        example: Date.now()
     })
-    "data_evento"?: Date;
+    "data_evento"?: number;
 
     @ApiProperty({
         description: "Descrição mais detalhada do Evento.",

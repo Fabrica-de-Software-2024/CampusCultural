@@ -62,7 +62,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp);
             const body = JSON.stringify({
-                "professor_evento": _dados?.login,
+                "professor_evento": _dados?.id_usuario,
                 "nome_evento": data.nome_evento,
                 "sub_evento": data.sub_evento,
                 "data_evento": data.data_evento,
