@@ -14,6 +14,12 @@ export class UsuarioCreateDTO {
   'nome_usuario': string;
 
   @ApiProperty({
+    description: 'Atributo Principal do usuário',
+    example: 'Aluno',
+  })
+  'atributo_usuario': string;
+
+  @ApiProperty({
     description: 'Se o usuário é um professor',
     type: Boolean,
   })

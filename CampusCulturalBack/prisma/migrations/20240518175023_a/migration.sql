@@ -14,7 +14,7 @@ CREATE TABLE "evento" (
     "professor_evento" TEXT NOT NULL,
     "nome_evento" TEXT NOT NULL,
     "sub_evento" TEXT NOT NULL,
-    "data_evento" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "data_evento" TEXT NOT NULL,
     "descricao_evento" TEXT NOT NULL,
     "imagem" INTEGER NOT NULL,
 

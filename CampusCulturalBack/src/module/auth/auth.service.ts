@@ -11,6 +11,7 @@ export type JwtPayload = {
   sub: string;
   nome_usuario: string;
   is_professor: boolean;
+  atributo_usuario: string
   iat: number;
 };
 
@@ -36,11 +37,13 @@ export class AuthService {
 
     const userData = await this.getUserDataFromApi(token);
     const isProfessor = await this.getIfIsProfessorFromApi(token);
+    const atributo = await this.getFirstAtributeFromApi(token)
 
     const userCreate = {
       is_professor: isProfessor,
       id_usuario: userData.login,
       nome_usuario: userData.name,
+      atributo_usuario: atributo,
       imagem: 1
     };
 
@@ -53,6 +56,7 @@ export class AuthService {
     const payload = {
       sub: user.id_usuario,
       nome_usuario: user.nome_usuario,
+      atributo_usuario: user.atributo_usuario,
       is_professor: user.is_professor,
       iat: user.imagem
     } satisfies JwtPayload;
@@ -136,5 +140,16 @@ export class AuthService {
     );
 
     return data.includes('PROFESSOR');
+  }
+
+  private async getFirstAtributeFromApi(token: string) {
+    const data = await this.getApiInfoJson<string[]>(
+      'https://coensapp.dv.utfpr.edu.br/siacoes/service/user/list/profiles',
+      token,
+    );
+
+    if (data.includes('STUDENT')) {return "ALUNO"}
+
+    else return data[0];
   }
 }

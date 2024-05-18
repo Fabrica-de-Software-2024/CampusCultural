@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView } from 'react-native';
-import EventoCard, { Evento } from './EventoCard';
-import { useState } from 'react';
+import EventoCard, { Evento, professor } from './EventoCard';
+import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,7 +12,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
 
     const [calendario, setCalendario] = useState(0);
 
-    const [dataEvento, setDataEvento] = useState(new Date(Date.now()))
+    const [dataEvento, setDataEvento] = useState(new Date(Math.floor(Date.now() / 1000) * 1000))
 
     const [nomeImagem, setNomeImagem] = useState("Selecionar...")
 
@@ -20,10 +20,11 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
 
     const [data, setData] = useState<Evento>(
         {
-            professor_evento: null,
+            professor_evento: "",
             nome_evento: "",
             sub_evento: "",
-            data_evento: "",
+            local_evento: "",
+            data_evento: Date.now().toString(),
             descricao_evento: "",
         }
     )
@@ -38,9 +39,16 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         console.log(data)
         let _data = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate(), data.getHours(), data.getMinutes())
         setDataEvento(_data);
-        setData({ ...data, data_evento: _data })
+        setData({ ...data, data_evento: _data.getTime() })
         setCalendario(0);
     }
+
+    useEffect(() => {
+        AsyncStorage.getItem('login').then(async (resp) => {
+            let _dados = JSON.parse(resp);
+            setData({ ...data, professor_evento: _dados.id_usuario })
+        })
+    }, [data.professor_evento])
 
     async function pegaImagem() {
         let _imagem = await ImagePicker.launchImageLibraryAsync({
@@ -113,6 +121,8 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                         <TextInput style={styles.linhaForm} value={data.nome_evento} onChange={(e) => setData({ ...data, nome_evento: e.nativeEvent.text })}></TextInput>
                         <Text style={styles.texto}>Insira um subtítulo para o evento:</Text>
                         <TextInput style={styles.linhaForm} value={data.sub_evento} onChange={(e) => setData({ ...data, sub_evento: e.nativeEvent.text })}></TextInput>
+                        <Text style={styles.texto}>Insira o local do evento:</Text>
+                        <TextInput style={styles.linhaForm} value={data.local_evento} onChange={(e) => setData({ ...data, local_evento: e.nativeEvent.text })}></TextInput>
                         <Text style={styles.texto}>Insira a data do evento:</Text>
                         <TouchableOpacity style={{ paddingTop: 10 }} onPress={() => setCalendario(1)}><Text style={styles.linhaForm}>{new Date(dataEvento).toLocaleString("pt-BR", { dateStyle: 'full', timeStyle: 'short' })}</Text></TouchableOpacity>
                         <Text style={styles.texto}>Insira um banner:</Text>

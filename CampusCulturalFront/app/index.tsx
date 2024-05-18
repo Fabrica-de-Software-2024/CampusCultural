@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
     },
     carregando: {
-		flex: 1,
-		justifyContent: "center"
-	}
+        flex: 1,
+        justifyContent: "center"
+    }
 })

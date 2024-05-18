@@ -78,7 +78,7 @@ export default function Login() {
                         </Text>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.inputLabelEmail}>e-mail:</Text>
+                            <Text style={styles.inputLabelEmail}>login:</Text>
                             <View style={styles.fieldWithLine}>
                                 <View style={styles.lineUnderInput}></View>
                                 <Image source={pessoaIcon} style={styles.inputIcon} />

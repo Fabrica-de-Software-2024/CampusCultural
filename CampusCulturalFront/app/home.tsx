@@ -55,7 +55,7 @@ export default function Home() {
                         {
                             eventosSelecionado === 0 ?
                                 eventos.map((i: Evento, index: number) => {
-                                    if (Date.now() <= Date.parse(i.data_evento)) {
+                                    if (Date.now() <= (i.data_evento as unknown as number)) {
                                         return (
                                             <EventoCard key={index} data={i} previa={false} />
                                         )
@@ -72,7 +72,7 @@ export default function Home() {
                                     eventosSelecionado === 2 ?
 
                                         eventos.map((i, index) => {
-                                            if (Date.now() > Date.parse(i.data_evento)) {
+                                            if (Date.now() > (i.data_evento as unknown as number)) {
                                                 return (
                                                     <EventoCard key={index} data={i} previa={false} />
                                                 )

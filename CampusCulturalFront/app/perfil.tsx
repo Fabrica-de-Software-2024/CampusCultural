@@ -89,7 +89,7 @@ export default function Perfil() {
 			setDados({
 				"id_usuario": _dados?.id_usuario,
 				"nome_usuario": _dados?.nome_usuario,
-				"is_professor": true,
+				"is_professor": _dados?.is_professor,
 				"imagem": _dados?.imagem
 			});
 			const respfoto = await fetch(`https://campus-cultural.vercel.app/imagem/${_dados?.imagem}`);

@@ -14,13 +14,14 @@ datasource db {
 }
 
 model Usuario {
-  id_usuario     String             @id
-  imagem         Int                @default(1)
-  nome_usuario   String
-  is_professor   Boolean            @default(false)
-  imagem_usuario Imagem            @relation(fields: [imagem], references: [id_imagem])
-  eventos        Evento[]
-  inscricao      Evento_Inscricao[]
+  id_usuario       String             @id
+  imagem           Int                @default(1)
+  nome_usuario     String
+  atributo_usuario String
+  is_professor     Boolean            @default(false)
+  imagem_usuario   Imagem             @relation(fields: [imagem], references: [id_imagem])
+  eventos          Evento[]
+  inscricao        Evento_Inscricao[]
 
   @@map("usuario")
 }
@@ -31,6 +32,7 @@ model Evento {
   professor        Usuario            @relation(fields: [professor_evento], references: [id_usuario])
   nome_evento      String
   sub_evento       String
+  local_evento     String
   data_evento      String
   descricao_evento String
   imagem_evento    Imagem             @relation(fields: [imagem], references: [id_imagem])

@@ -4,47 +4,60 @@ import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export type Evento = {
   "id_evento"?: number,
-  "professor_evento": number,
+  "professor_evento": string,
   "nome_evento": string,
   "sub_evento": string,
+  "local_evento": string,
   "data_evento": string,
   "imagem"?: number,
   "descricao_evento": string
 }
 
-export async function pegaBanner(id: number, setImagem: React.Dispatch<string>) {
-  const respbanner = await fetch(`https://campus-cultural.vercel.app/imagem/${id}`)
+export async function pegaBanner(id: number) {
+  const respbanner = await fetch(`https://campus-cultural.vercel.app/imagem/${id}`);
   const respbanner2 = await respbanner.json();
-  setImagem(respbanner2?.imagem);
+  return respbanner2.imagem;
+}
+
+export async function professor(id: string) {
+  const respprof = await fetch(`https://campus-cultural.vercel.app/usuario/${id}`);
+  const respprof2 = await respprof.json();
+  const respimg = await fetch(`https://campus-cultural.vercel.app/imagem/${respprof2.imagem}`);
+  const respimg2 = await respimg.json();
+  return { nome: respprof2.nome_usuario, imagem: respimg2.imagem as string }
 }
 
 export default function EventoCard(props: { data: Evento, previa: boolean, image?: string }) {
   const icone = require("../../assets/icone_evento.png");
   const calendario = require("../../assets/mini_calendario.png");
-  const [imagem, setImagem] = useState(null);
+  const banner = Math.floor(Math.random() * 2) + 1 == 1 ? require(`../../assets/evento_card_1.png`) : require(`../../assets/evento_card_2.png`);
+
+  const [imagem, setImagem] = useState("")
+
+  const [prof, setProf] = useState({ nome: "", imagem: "" })
 
   const [carregado, setCarregado] = useState(false)
 
-  const data = new Date(props.data.data_evento);
+  const data = new Date(Math.floor(props.data.data_evento as unknown as number / 1000) * 1000);
   const data2 = new Date(data.getTime()).toLocaleString("pt-BR", { weekday: "short", dateStyle: "full", timeStyle: "short" });
 
   useEffect(() => {
-    pegaBanner(props.data.imagem, setImagem).then(() => setCarregado(true));
+    pegaBanner(props.data.imagem).then((resp) => setImagem(resp)).then(() => professor(props.data.professor_evento).then((resp) => setProf(resp))).finally(() => setCarregado(true));
   }, [props])
 
   if (carregado) {
     return (
       <TouchableOpacity onPress={props.previa ? () => { } : () => router.replace(`/evento/${props.data.id_evento}`)} style={styles.container}>
         <View style={styles.container_nome}>
-          <Image source={icone} style={props.previa ? styles.icone_previa : {}} />
-          <Text style={props.previa ? styles.tituloPrevia : styles.titulo}>{props.data.nome_evento}</Text>
+          <Image source={{ uri: prof.imagem }} style={props.previa ? styles.icone_previa : styles.icone} />
+          <Text style={props.previa ? styles.tituloPrevia : styles.titulo}>{props.data.nome_evento == "" ? "Titulo do evento" : props.data.nome_evento}</Text>
         </View>
         <View style={styles.container_info}>
           <View style={styles.container_data}><Text style={props.previa ? styles.text_info_previa : styles.text_info}>{data2}</Text><Image source={calendario} /></View>
-          <Text style={props.previa ? styles.text_info_previa : styles.text_info}>{props.data.sub_evento}</Text>
+          <Text style={props.previa ? styles.text_info_previa : styles.text_info}>{props.data.sub_evento == "" ? "Sub-titulo do evento" : props.data.sub_evento}</Text>
         </View>
-        <Image style={props.previa ? styles.image_previa : styles.image} source={{ uri: props.image == undefined ? imagem : props.image }} />
-        <Text style={props.previa ? styles.descricaoPrevia : styles.descricao}>{/*props.data.descricao_evento.length > 500 ? props.data.descricao_evento.substring(0, 300) + "..." : */props.data.descricao_evento}</Text>
+        <Image style={props.previa ? styles.image_previa : styles.image} source={props.previa ? props.image == "" ? banner : { uri: props.image } : { uri: imagem }} />
+        <Text style={props.previa ? styles.descricaoPrevia : styles.descricao}>{props.data.descricao_evento == "" ? "Descrição do evento" : props.data.descricao_evento != undefined && (props.data.descricao_evento.length > 500) ? props.data.descricao_evento.substring(0, 300) + "..." : props.data.descricao_evento}</Text>
       </TouchableOpacity>
     )
   } else return <></>
@@ -64,6 +77,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     paddingVertical: 5
+  },
+  icone: {
+    width: 40,
+    height: 40
   },
   icone_previa: {
     width: 30,

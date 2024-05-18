@@ -1,7 +1,7 @@
 import { router } from "expo-router"
-import { Button, StatusBar, Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, ActivityIndicator } from "react-native"
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, ActivityIndicator } from "react-native"
 import Navbar from "./components/Navbar"
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
 import { puxaEventos } from "./home";
 import { Evento } from "./components/EventoCard";
@@ -18,25 +18,23 @@ export default function Calendario() {
 
     const figura6 = require("../assets/figura6.png");
 
-    const [dados, setDados] = useState<Usuario>()
+    const [dados, setDados] = useState<Usuario>();
 
-    const [data, setData] = useState(new Date(Date.now()).toISOString())
+    const [data, setData] = useState(new Date(new Date(Date.now()).getFullYear(),new Date(Date.now()).getMonth(), new Date(Date.now()).getDate()).getTime());
 
     const [diasMes, setDiasMes] = useState(0);
 
     const [calendario, setCalendario] = useState([]);
 
-    const [eventos, setEventos] = useState([])
+    const [eventos, setEventos] = useState([]);
 
-    const [carregado, setCarregado] = useState(false)
+    const [carregado, setCarregado] = useState(false);
 
     const dias_da_semana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
     var index2 = 0;
 
     useEffect(() => {
-
-
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp)
             setDados({
@@ -46,7 +44,6 @@ export default function Calendario() {
                 "imagem": _dados?.imagem
             });
         })
-
 
         puxaEventos().then((e) => setEventos(e)).finally(() => setCarregado(true))
 
@@ -104,7 +101,7 @@ export default function Calendario() {
 
         for (let index = 0; index < 7; index++) {
             for (let index2 = 0; index2 < 6; index2++) {
-                _matrizCalendarioVirado[index][index2] = _matrizCalendario[index2][index]
+                _matrizCalendarioVirado[index][index2] = _matrizCalendario[index2][index];
             }
         }
 
@@ -124,7 +121,7 @@ export default function Calendario() {
                 <View style={styles.calendarioContainer}>
                     <View style={styles.calendarioContainerTitulo}>
                         <TouchableOpacity onPress={() => passaMes(-1, data, setData)}><Text style={styles.calendarioTitulo}>{"<"}</Text></TouchableOpacity>
-                        <Text style={styles.calendarioTitulo}>{new Date(new Date(data).getTime() + (new Date(data).getTimezoneOffset() * 60000)).toLocaleString("pt-BR", { dateStyle: "long" })}</Text>
+                        <Text style={styles.calendarioTitulo}>{new Date(data).toLocaleString("pt-BR", { dateStyle: "long" })}</Text>
                         <TouchableOpacity onPress={() => passaMes(1, data, setData)}><Text style={styles.calendarioTitulo}>{">"}</Text></TouchableOpacity>
                     </View>
                     <View style={styles.diasSemana}>
@@ -144,7 +141,7 @@ export default function Calendario() {
                                         {
                                             i.map((j, index2) => {
                                                 return (
-                                                    <TouchableOpacity onPress={() => setData(new Date(new Date(data).getFullYear(), new Date(data).getMonth(), j).toISOString())} style={new Date(data).getDate() === j ? styles.diaSelecionado : styles.dia} key={index2}>
+                                                    <TouchableOpacity onPress={() => setData(new Date(new Date(data).getFullYear(), new Date(data).getMonth(), j).getTime())} style={new Date(data).getDate() === j ? styles.diaSelecionado : styles.dia} key={index2}>
                                                         <Text style={styles.diaText}>{j}</Text>
                                                     </TouchableOpacity>
                                                 )
@@ -164,12 +161,12 @@ export default function Calendario() {
                             <ScrollView style={styles.containerEventos}>
                                 {
                                     eventos.map((i: Evento, index: number) => {
-                                        if (Date.parse(data) <= Date.parse(i.data_evento)) {
+                                        if (data <= (i.data_evento as unknown as number)) {
                                             index2++;
                                             return (
                                                 <View key={index}>
                                                     <TouchableOpacity onPress={() => router.replace(`/evento/${i.id_evento}`)}>
-                                                        <Text style={index2 < 2 ? styles.textEventoRoxo : styles.textEvento}>{`${new Date(i.data_evento).getDate() + 1} - ${dias_da_semana[new Date(i.data_evento).getDay() + 1]} - ${i.nome_evento.length > 30 ? i.nome_evento.substring(0, 25) + "..." : i.nome_evento}`}</Text>
+                                                        <Text style={index2 < 2 ? styles.textEventoRoxo : styles.textEvento}>{`${new Date(Math.floor(i.data_evento as unknown as number / 1000) * 1000).getDate()} - ${dias_da_semana[new Date(Math.floor(i.data_evento as unknown as number / 1000) * 1000).getDay()]} - ${i.nome_evento.length > 30 ? i.nome_evento.substring(0, 25) + "..." : i.nome_evento}`}</Text>
                                                     </TouchableOpacity>
                                                     <Image source={risco} />
                                                 </View>
@@ -192,14 +189,14 @@ export default function Calendario() {
     )
 }
 
-function passaMes(qnt: number, data: string, setData: React.Dispatch<React.SetStateAction<string>>) {
+function passaMes(qnt: number, data: number, setData: React.Dispatch<React.SetStateAction<number>>) {
     if (new Date(data).getMonth() + qnt > 11) {
-        setData(new Date(new Date(data).getFullYear() + 1, 0, 1).toISOString())
+        setData(new Date(new Date(data).getFullYear() + 1, 0, 1).getTime())
     }
     else if (new Date(data).getMonth() + qnt < 0) {
-        setData(new Date(new Date(data).getFullYear() - 1, 11, 1).toISOString())
+        setData(new Date(new Date(data).getFullYear() - 1, 11, 1).getTime())
     }
-    else setData(new Date(new Date(data).getFullYear(), new Date(data).getMonth() + qnt, 1).toISOString())
+    else setData(new Date(new Date(data).getFullYear(), new Date(data).getMonth() + qnt, 1).getTime())
 }
 
 const styles = StyleSheet.create({

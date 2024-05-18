@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert } from "react-native";
 import Navbar from '../components/Navbar';
 import Rodape from '../components/Rodape';
-import { Evento as EventoDTO } from '../components/EventoCard';
+import { Evento as EventoDTO, professor } from '../components/EventoCard';
 import EditarEvento from '../components/EditarEventoPopup';
 
 export async function puxaEvento(id: number, setImagem: React.Dispatch<React.SetStateAction<string>>) {
@@ -24,6 +24,8 @@ export default function Evento() {
 
     const [dados, setDados] = useState<EventoDTO>()
 
+    const [prof, setProf] = useState({ nome: "", imagem: "" })
+
     const [imagem, setImagem] = useState(null)
 
     const [inscrito, setInscrito] = useState(false);
@@ -36,10 +38,8 @@ export default function Evento() {
     const calendario = require("../../assets/mini_calendario.png");
     const certificado = require("../../assets/certificado_quadrado.png")
 
-    const data = new Date(dados?.data_evento);
-    const data2 = new Date(data.getTime()).toLocaleString("pt-BR", { dateStyle: "long" });
-    const horario = new Date(data.getTime()).toLocaleString("pt-BR", { timeStyle: 'short' });
-
+    const [data, setData] = useState("");
+    const [horario, setHorario] = useState("");
     const [difString, setDiffString] = useState("");
     const [modalEdit, setmodalEdit] = useState(false);
 
@@ -47,8 +47,12 @@ export default function Evento() {
         try {
             puxaEvento(params.id as unknown as number, setImagem).then(async (resp) => {
                 setDados(resp);
-                var milidata = await data.getTime()
-                var diferenca: number = milidata - Date.now();
+                setProf(await professor(resp.professor_evento));
+                let datanum = resp.data_evento as unknown as number;
+                let _data = new Date(Math.floor(datanum / 1000) * 1000);
+                setData(_data.toLocaleString("pt-BR", { dateStyle: "long" }));
+                setHorario(_data.toLocaleString("pt-BR", { timeStyle: 'short' }));
+                var diferenca = datanum - Date.now();
                 if (diferenca > (3600000 * 24)) {
                     setDiffString(`Restam ${Math.floor((diferenca / 3600000) / 24)} dias e ${Math.floor((diferenca / 3600000) - (Math.floor((diferenca / 3600000) / 24) * 24))} horas`)
                 }
@@ -56,10 +60,10 @@ export default function Evento() {
                 else if (Math.sqrt(diferenca * diferenca) < (2 * 60 * 60 * 1000)) { setDiffString(`Evento em Andamento!`) }
                 else { setDiffString(`Esse evento ja acabou.`) }
             })
-        } catch(e) {
+        } catch (e) {
             console.log(e)
         }
-    }, [data])
+    }, [])
 
     return (
         <>
@@ -74,7 +78,7 @@ export default function Evento() {
             <ScrollView>
 
                 <View style={styles.containerTitulo}>
-                    <Image source={icone} />
+                    <Image style={styles.icone} source={{ uri: prof.imagem }} />
                     <Text style={styles.titulo}>{dados?.nome_evento}</Text>
                     <View style={styles.containerBotoes}>
                         <TouchableOpacity onPress={() => setmodalEdit(true)}>
@@ -89,14 +93,14 @@ export default function Evento() {
                     </View>
                 </View>
                 <View style={styles.containerInfo}>
-                    <View style={styles.containerData}><Text style={styles.textInfo}>{data2}</Text><Image source={calendario} /></View>
-                    <Text style={styles.textInfo}>Local: B4-S5</Text>
+                    <View style={styles.containerData}><Text style={styles.textInfo}>{data}</Text><Image source={calendario} /></View>
+                    <Text style={styles.textInfo}>Local: {dados?.local_evento}</Text>
                     <Text style={styles.textInfo}>Horário: {horario}</Text>
                     <Text style={styles.textTempo}>{difString}</Text>
                     <View style={styles.containerProf}>
-                        <Image source={icone} />
+                        <Image style={styles.icone} source={{ uri: prof.imagem }} />
                         <View style={styles.containerProfDados}>
-                            <Text style={styles.profNome}>Teste Prof</Text>
+                            <Text style={styles.profNome}>{prof.nome}</Text>
                             <Text style={styles.profLabel}>Professor - UTFPR</Text>
                         </View>
                     </View>
@@ -128,6 +132,10 @@ const styles = StyleSheet.create({
         width: "100%",
         aspectRatio: 20 / 9,
     },
+    icone: {
+        width: 50,
+        height: 50
+    },
     titulo: {
         width: "60%",
         fontSize: 16,
@@ -147,7 +155,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
-        paddingVertical: 2
+        marginVertical: 0
     },
     containerData: {
         width: "90%",
@@ -178,7 +186,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomWidth: 1,
         height: "25%",
-        marginVertical: "10%"
+        marginVertical: "4%"
     },
     containerProfDados: {
         marginLeft: "3%"
@@ -201,7 +209,9 @@ const styles = StyleSheet.create({
         color: "#838181"
     },
     containerInscricao: {
-        height: 220,
+        height: 50,
+        marginBottom: 50,
+        alignItems: 'flex-start',
     },
     botaoInscricao: {
         width: "50%",

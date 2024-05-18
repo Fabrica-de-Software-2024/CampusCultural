@@ -22,6 +22,9 @@ export class UsuarioService {
       data: {
         id_usuario: data.id_usuario,
         nome_usuario: data.nome_usuario,
+        atributo_usuario: data.atributo_usuario,
+        imagem: 1,
+        is_professor: data.is_professor
       },
     });
 

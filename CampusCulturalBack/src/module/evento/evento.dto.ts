@@ -27,6 +27,12 @@ export class EventoDTO {
     "sub_evento": string;
 
     @ApiProperty({
+        description: "Local do Evento.",
+        example: "Auditório!"
+    })
+    "local_evento": string;
+
+    @ApiProperty({
         description: "Data do Evento no formato UNIX Timestamp, por exemplo, o horario do exemplo é o horario atual.",
         example: Date.now()
     })
