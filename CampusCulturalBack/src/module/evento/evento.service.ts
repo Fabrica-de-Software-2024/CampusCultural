@@ -74,7 +74,7 @@ export class EventoService {
                     imagem: data.imagemstr
                 },
                 where: {
-                    id_imagem: data.imagem
+                    id_imagem: eventoExists.imagem,
                 }
             });
             const update_evento = await this.prisma.evento.update({

@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Usuario {
-  id_usuario       String             @id
+  id_usuario       String             @id @unique
   imagem           Int                @default(1)
   nome_usuario     String
   atributo_usuario String
@@ -27,7 +27,7 @@ model Usuario {
 }
 
 model Evento {
-  id_evento        Int                @id @default(autoincrement())
+  id_evento        Int                @id @unique @default(autoincrement())
   professor_evento String
   professor        Usuario            @relation(fields: [professor_evento], references: [id_usuario])
   nome_evento      String
@@ -43,7 +43,7 @@ model Evento {
 }
 
 model Imagem {
-  id_imagem Int       @id @default(autoincrement())
+  id_imagem Int       @id @unique @default(autoincrement())
   imagem    String
   usuario   Usuario[]
   evento    Evento[]
@@ -52,7 +52,7 @@ model Imagem {
 }
 
 model Evento_Inscricao {
-  id_evento_inscricao  Int     @id @default(autoincrement())
+  id_evento_inscricao  Int     @id @unique @default(autoincrement())
   inscricao_usuario    Usuario @relation(fields: [id_inscricao_usuario], references: [id_usuario])
   id_inscricao_usuario String
   inscricao_evento     Evento  @relation(fields: [id_inscricao_evento], references: [id_evento])
