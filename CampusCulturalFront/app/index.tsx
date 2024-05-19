@@ -8,17 +8,18 @@ export default function Index() {
 
     useEffect(() => {
         AsyncStorage.getItem('login').then(async (resp) => {
-            if (resp != null) {
+            /*if (resp != null) {
                 const resp2 = await JSON.parse(resp);
                 const usuario = await fetch(`https://campus-cultural.vercel.app/usuario/${resp2.id_usuario}`);
                 const usuario2 = await usuario.json();
+                
                 try {
                     await AsyncStorage.setItem('login', JSON.stringify(usuario2)).then(() => router.replace("/home"));
                 } catch (err) {
                     console.log(err);
                 }
             }
-            else router.replace("/login")
+            else*/ router.replace("/login")
         });
     })
 

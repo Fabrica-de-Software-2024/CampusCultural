@@ -25,6 +25,7 @@ export type Usuario = {
 	"id_usuario": string,
 	"nome_usuario": string,
 	"imagem": number,
+	"atributo": string
 	"is_professor": boolean,
 }
 
@@ -90,6 +91,7 @@ export default function Perfil() {
 				"id_usuario": _dados?.id_usuario,
 				"nome_usuario": _dados?.nome_usuario,
 				"is_professor": _dados?.is_professor,
+				"atributo": _dados?.atributo_usuario,
 				"imagem": _dados?.imagem
 			});
 			const respfoto = await fetch(`https://campus-cultural.vercel.app/imagem/${_dados?.imagem}`);
@@ -125,7 +127,7 @@ export default function Perfil() {
 						<TouchableOpacity style={styles.editaImagem} onPress={() => pegaImagem()}><Image style={styles.lapis} source={lapis} /></TouchableOpacity>
 						<Image source={alteraImagem !== null ? { uri: alteraImagem } : require("../assets/icone_evento.png")} style={styles.imagem} resizeMode="cover" />
 						<Text style={styles.nome}>{dados?.nome_usuario}</Text>
-						{/*<Text style={styles.curso}>{dados?.curso_usuario}</Text>*/}
+						<Text style={styles.curso}>{dados?.atributo[0] + dados?.atributo.slice(1).toLowerCase()}</Text>
 					</View>
 					<View style={styles.textContainer}>
 						<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>

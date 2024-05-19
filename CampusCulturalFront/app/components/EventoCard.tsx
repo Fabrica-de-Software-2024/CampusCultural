@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 
 export type Evento = {
   "id_evento"?: number,
@@ -24,7 +24,7 @@ export async function professor(id: string) {
   const respprof2 = await respprof.json();
   const respimg = await fetch(`https://campus-cultural.vercel.app/imagem/${respprof2.imagem}`);
   const respimg2 = await respimg.json();
-  return { nome: respprof2.nome_usuario, imagem: respimg2.imagem as string }
+  return { nome: respprof2.nome_usuario, imagem: respimg2.imagem as string, atributo: respprof2.atributo_usuario }
 }
 
 export default function EventoCard(props: { data: Evento, previa: boolean, image?: string }) {
@@ -42,7 +42,12 @@ export default function EventoCard(props: { data: Evento, previa: boolean, image
   const data2 = new Date(data.getTime()).toLocaleString("pt-BR", { weekday: "short", dateStyle: "full", timeStyle: "short" });
 
   useEffect(() => {
-    pegaBanner(props.data.imagem).then((resp) => setImagem(resp)).then(() => professor(props.data.professor_evento).then((resp) => setProf(resp))).finally(() => setCarregado(true));
+    setCarregado(false);
+    pegaBanner(props.data.imagem)
+      .then((resp) => setImagem(resp))
+      .then(() => professor(props.data.professor_evento)
+        .then((resp) => setProf(resp)))
+      .finally(() => setCarregado(true));
   }, [props])
 
   if (carregado) {
@@ -60,7 +65,11 @@ export default function EventoCard(props: { data: Evento, previa: boolean, image
         <Text style={props.previa ? styles.descricaoPrevia : styles.descricao}>{props.data.descricao_evento == "" ? "Descrição do evento" : props.data.descricao_evento != undefined && (props.data.descricao_evento.length > 500) ? props.data.descricao_evento.substring(0, 300) + "..." : props.data.descricao_evento}</Text>
       </TouchableOpacity>
     )
-  } else return <></>
+  } else return (
+    <View style={styles.carregando}>
+      <ActivityIndicator size={"large"} color={"#8A60FF"} />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -140,5 +149,9 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     width: "90%",
     marginBottom: "40%"
+  },
+  carregando: {
+    flex: 1,
+    justifyContent: "center"
   }
 });

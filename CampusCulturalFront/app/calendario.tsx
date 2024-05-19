@@ -41,7 +41,8 @@ export default function Calendario() {
                 "id_usuario": _dados?.id_usuario,
                 "nome_usuario": _dados?.nome_usuario,
                 "is_professor": _dados?.is_professor,
-                "imagem": _dados?.imagem
+                "imagem": _dados?.imagem,
+                "atributo": _dados?.atributo_usuario
             });
         })
 

@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert, ActivityIndicator } from "react-native";
 import Navbar from '../components/Navbar';
 import Rodape from '../components/Rodape';
 import { Evento as EventoDTO, professor } from '../components/EventoCard';
@@ -24,11 +24,13 @@ export default function Evento() {
 
     const [dados, setDados] = useState<EventoDTO>()
 
-    const [prof, setProf] = useState({ nome: "", imagem: "" })
+    const [prof, setProf] = useState({ nome: "", imagem: "", atributo: "" })
 
     const [imagem, setImagem] = useState(null)
 
     const [inscrito, setInscrito] = useState(false);
+
+    const [carregado, setCarregado] = useState(false)
 
     const icone = require("../../assets/icone_evento.png");
     const banner = require("../../assets/evento_card_1.png");
@@ -59,7 +61,7 @@ export default function Evento() {
                 else if (diferenca > 0) { setDiffString(`Restam ${Math.floor((diferenca / 3600000))} horas e ${Math.floor((diferenca / 60000) - (Math.floor((diferenca / 3600000)) * 60))} minutos`) }
                 else if (Math.sqrt(diferenca * diferenca) < (2 * 60 * 60 * 1000)) { setDiffString(`Evento em Andamento!`) }
                 else { setDiffString(`Esse evento ja acabou.`) }
-            })
+            }).then(() => setCarregado(true));
         } catch (e) {
             console.log(e)
         }
@@ -69,54 +71,67 @@ export default function Evento() {
         <>
             <Navbar title={"Evento"} links={false} />
 
-            {imagem != "" && <Image source={{ uri: imagem }} style={styles.imagem} resizeMode='cover' />}
+
 
 
             <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalEdit} onRequestClose={() => setmodalEdit(false)} >
-                <EditarEvento data={dados} setModal={setmodalEdit} />
+                <EditarEvento evento={dados} setModal={setmodalEdit} />
             </Modal>
-            <ScrollView>
+            {
+                carregado ?
 
-                <View style={styles.containerTitulo}>
-                    <Image style={styles.icone} source={{ uri: prof.imagem }} />
-                    <Text style={styles.titulo}>{dados?.nome_evento}</Text>
-                    <View style={styles.containerBotoes}>
-                        <TouchableOpacity onPress={() => setmodalEdit(true)}>
-                            <Image source={editar} />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image source={olho} />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image source={compartilhar} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={styles.containerInfo}>
-                    <View style={styles.containerData}><Text style={styles.textInfo}>{data}</Text><Image source={calendario} /></View>
-                    <Text style={styles.textInfo}>Local: {dados?.local_evento}</Text>
-                    <Text style={styles.textInfo}>Horário: {horario}</Text>
-                    <Text style={styles.textTempo}>{difString}</Text>
-                    <View style={styles.containerProf}>
-                        <Image style={styles.icone} source={{ uri: prof.imagem }} />
-                        <View style={styles.containerProfDados}>
-                            <Text style={styles.profNome}>{prof.nome}</Text>
-                            <Text style={styles.profLabel}>Professor - UTFPR</Text>
-                        </View>
-                    </View>
-                    <View style={styles.containerCertificado}>
-                        <Image source={certificado} />
-                        <Text style={styles.certificadoText}>Emissão de certificado</Text>
-                    </View>
+                    <>
 
-                </View>
-                <View style={styles.containerInscricao}>
-                    <TouchableOpacity style={styles.botaoInscricao} onPress={() => setInscrito(!inscrito)}>
-                        <Text style={styles.textoInscricao}>{inscrito ? "Cancelar Inscrição" : "Inscreva-se"}</Text>
-                    </TouchableOpacity>
-                </View>
+                        {imagem != "" && <Image source={{ uri: imagem }} style={styles.imagem} resizeMode='cover' />}
 
-            </ScrollView>
+                        <ScrollView>
+
+                            <View style={styles.containerTitulo}>
+                                <Image style={styles.icone} source={{ uri: prof.imagem }} />
+                                <Text style={styles.titulo}>{dados?.nome_evento}</Text>
+                                <View style={styles.containerBotoes}>
+                                    <TouchableOpacity onPress={() => setmodalEdit(true)}>
+                                        <Image source={editar} />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Image source={olho} />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Image source={compartilhar} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View style={styles.containerInfo}>
+                                <View style={styles.containerData}><Text style={styles.textInfo}>{data}</Text><Image source={calendario} /></View>
+                                <Text style={styles.textInfo}>Local: {dados?.local_evento}</Text>
+                                <Text style={styles.textInfo}>Horário: {horario}</Text>
+                                <Text style={styles.textTempo}>{difString}</Text>
+                                <View style={styles.containerProf}>
+                                    <Image style={styles.icone} source={{ uri: prof.imagem }} />
+                                    <View style={styles.containerProfDados}>
+                                        <Text style={styles.profNome}>{prof.nome}</Text>
+                                        <Text style={styles.profLabel}>{prof.atributo} - UTFPR</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.containerCertificado}>
+                                    <Image source={certificado} />
+                                    <Text style={styles.certificadoText}>Emissão de certificado</Text>
+                                </View>
+
+                            </View>
+                            <View style={styles.containerInscricao}>
+                                <TouchableOpacity style={styles.botaoInscricao} onPress={() => setInscrito(!inscrito)}>
+                                    <Text style={styles.textoInscricao}>{inscrito ? "Cancelar Inscrição" : "Inscreva-se"}</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                        </ScrollView>
+                    </>
+                    :
+                    <View style={styles.carregando}>
+                        <ActivityIndicator size={"large"} color={"#8A60FF"} />
+                    </View>
+            }
             <Rodape selecionado={0} />
         </>
     )
@@ -229,5 +244,9 @@ const styles = StyleSheet.create({
     },
     modal: {
         width: "90%"
+    },
+    carregando: {
+        flex: 1,
+        justifyContent: "center"
     }
 })

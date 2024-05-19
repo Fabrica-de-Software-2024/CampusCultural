@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 export default function AdicionarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>> }) {
 
@@ -74,9 +75,11 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                 "nome_evento": data.nome_evento,
                 "sub_evento": data.sub_evento,
                 "data_evento": data.data_evento,
+                "local_evento": data.local_evento,
                 "descricao_evento": data.descricao_evento,
                 "imagemstr": imagem
             })
+            console.log(body)
             try {
                 const resp2 = await fetch("https://campus-cultural.vercel.app/evento", {
                     method: 'POST',
@@ -89,6 +92,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                 console.log(await resp2.json());
             } catch (e) { console.log(e) }
             setModal(false);
+            router.replace("/home")
         })
     }
 

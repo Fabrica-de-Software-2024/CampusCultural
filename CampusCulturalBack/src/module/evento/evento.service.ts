@@ -68,6 +68,15 @@ export class EventoService {
             throw new error('Evento não existe!');
         }
         else {
+            const update_banner = await this.prisma.imagem.update({
+                data: {
+                    id_imagem: data.imagem,
+                    imagem: data.imagemstr
+                },
+                where: {
+                    id_imagem: data.imagem
+                }
+            });
             const update_evento = await this.prisma.evento.update({
                 data: {
                     professor_evento: data.professor_evento,
@@ -76,7 +85,7 @@ export class EventoService {
                     local_evento: data.local_evento,
                     data_evento: data.data_evento.toString(),
                     descricao_evento: data.descricao_evento,
-                    imagem: data.imagem
+                    imagem: update_banner.id_imagem
                 },
                 where: {
                     id_evento,

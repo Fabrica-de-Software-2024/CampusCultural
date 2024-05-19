@@ -30,7 +30,8 @@ export default function Home() {
                 "id_usuario": _dados?.id_usuario,
                 "nome_usuario": _dados?.nome_usuario,
                 "is_professor": _dados?.is_professor,
-                "imagem": _dados?.imagem
+                "imagem": _dados?.imagem,
+                "atributo": _dados?.atributo_usuario
             });
         })
         puxaEventos().then((resp) => setEventos(resp)).finally(() => setCarregado(true));
