@@ -1,0 +1,1 @@
+export const back_url = "http://192.168.0.110:3000"

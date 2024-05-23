@@ -1,16 +1,18 @@
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert, ActivityIndicator } from "react-native";
 import Navbar from '../components/Navbar';
 import Rodape from '../components/Rodape';
 import { Evento as EventoDTO, professor } from '../components/EventoCard';
 import EditarEvento from '../components/EditarEventoPopup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { back_url } from '../../api_link';
 
 export async function puxaEvento(id: number, setImagem: React.Dispatch<React.SetStateAction<string>>) {
     try {
-        const resp = await fetch(`https://campus-cultural.vercel.app/evento/${id}`);
+        const resp = await fetch(`${back_url}/evento/${id}`);
         const resp2 = await resp.json();
-        const resp3 = await fetch(`https://campus-cultural.vercel.app/imagem/${resp2.imagem}`);
+        const resp3 = await fetch(`${back_url}/imagem/${resp2.imagem}`);
         const resp4 = await resp3.json();
 
         let _imagem = await resp4?.imagem;
@@ -32,6 +34,8 @@ export default function Evento() {
 
     const [carregado, setCarregado] = useState(false)
 
+    const [usuario, setUsuario] = useState({ usuario: "", inscricao: "" });
+
     const icone = require("../../assets/icone_evento.png");
     const banner = require("../../assets/evento_card_1.png");
     const editar = require("../../assets/editar.png");
@@ -45,11 +49,54 @@ export default function Evento() {
     const [difString, setDiffString] = useState("");
     const [modalEdit, setmodalEdit] = useState(false);
 
+    function gereinscricao() {
+        console.log(inscrito)
+
+        console.log(usuario)
+        if (inscrito) {
+            try {
+                fetch(`${back_url}/inscricao/${usuario.inscricao}`, { method: "DELETE" }).then(() => router.replace(`/evento/${dados.id_evento}`))
+            } catch (err) { console.log(err) }
+        } else {
+
+            try {
+                AsyncStorage.getItem('login').then(async (resp2) => {
+                    let _dados = await JSON.parse(resp2)
+
+                    let body = JSON.stringify({
+                        "id_inscricao_usuario": _dados.id_usuario,
+                        "id_inscricao_evento": dados.id_evento,
+                    })
+
+                    console.log(body)
+                    fetch(`${back_url}/inscricao`, {
+                        method: "POST",
+                        body: body,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+
+                    }).then(() => router.replace(`/evento/${dados.id_evento}`))
+                })
+
+            } catch (err) { console.log(err) }
+
+        }
+    }
+
     useEffect(() => {
         try {
             puxaEvento(params.id as unknown as number, setImagem).then(async (resp) => {
                 setDados(resp);
                 setProf(await professor(resp.professor_evento));
+                AsyncStorage.getItem('login').then(async (resp2) => {
+                    let _dados = JSON.parse(resp2)
+                    let inscrito = await fetch(`${back_url}/inscricao/usuario/${_dados?.id_usuario}/${resp.id_evento}`)
+                    let inscrito2 = await inscrito.json();
+                    setUsuario({ usuario: _dados.id_usuario, inscricao: inscrito2.id_evento_inscricao });
+                    inscrito2 ? setInscrito(true) : setInscrito(false);
+                })
                 let datanum = resp.data_evento as unknown as number;
                 let _data = new Date(Math.floor(datanum / 1000) * 1000);
                 setData(_data.toLocaleString("pt-BR", { dateStyle: "long" }));
@@ -120,7 +167,7 @@ export default function Evento() {
 
                             </View>
                             <View style={styles.containerInscricao}>
-                                <TouchableOpacity style={styles.botaoInscricao} onPress={() => setInscrito(!inscrito)}>
+                                <TouchableOpacity style={styles.botaoInscricao} onPress={() => gereinscricao()}>
                                     <Text style={styles.textoInscricao}>{inscrito ? "Cancelar Inscrição" : "Inscreva-se"}</Text>
                                 </TouchableOpacity>
                             </View>
@@ -149,7 +196,8 @@ const styles = StyleSheet.create({
     },
     icone: {
         width: 50,
-        height: 50
+        height: 50,
+        borderRadius: 9999
     },
     titulo: {
         width: "60%",

@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import { back_url } from '../../api_link';
 
 export default function AdicionarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>> }) {
 
@@ -81,7 +82,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
             })
             console.log(body)
             try {
-                const resp2 = await fetch("https://campus-cultural.vercel.app/evento", {
+                const resp2 = await fetch(`${back_url}/evento`, {
                     method: 'POST',
                     body: body,
                     headers: {

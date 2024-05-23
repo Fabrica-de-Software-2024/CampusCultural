@@ -20,6 +20,7 @@ import BotaoAddEvento from "./components/BotaoAddEvento";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
+import { back_url } from "../api_link";
 
 export type Usuario = {
 	"id_usuario": string,
@@ -65,7 +66,7 @@ export default function Perfil() {
 
 			setCarregado(false)
 
-			const resp = await fetch("https://campus-cultural.vercel.app/usuario", {
+			const resp = await fetch(`${back_url}/usuario`, {
 				method: 'POST',
 				body: body,
 				headers: {
@@ -84,7 +85,7 @@ export default function Perfil() {
 	useEffect(() => {
 		AsyncStorage.getItem('login').then(async (resp) => {
 			let _dados = JSON.parse(resp)
-			const resp2 = await fetch(`https://campus-cultural.vercel.app/usuario/${_dados?.id_usuario}`);
+			const resp2 = await fetch(`${back_url}/usuario/${_dados?.id_usuario}`);
 			_dados = await resp2.json()
 			console.log(_dados)
 			setDados({
@@ -94,7 +95,7 @@ export default function Perfil() {
 				"atributo": _dados?.atributo_usuario,
 				"imagem": _dados?.imagem
 			});
-			const respfoto = await fetch(`https://campus-cultural.vercel.app/imagem/${_dados?.imagem}`);
+			const respfoto = await fetch(`${back_url}/imagem/${_dados?.imagem}`);
 			const respfoto2 = await respfoto.json()
 			setAlteraImagem(respfoto2?.imagem)
 		}).then(() => setCarregado(true));

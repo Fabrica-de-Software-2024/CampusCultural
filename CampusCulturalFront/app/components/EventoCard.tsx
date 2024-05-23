@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { back_url } from "../../api_link";
 
 export type Evento = {
   "id_evento"?: number,
@@ -14,15 +15,15 @@ export type Evento = {
 }
 
 export async function pegaBanner(id: number) {
-  const respbanner = await fetch(`https://campus-cultural.vercel.app/imagem/${id}`);
+  const respbanner = await fetch(`${back_url}/imagem/${id}`);
   const respbanner2 = await respbanner.json();
   return respbanner2.imagem;
 }
 
 export async function professor(id: string) {
-  const respprof = await fetch(`https://campus-cultural.vercel.app/usuario/${id}`);
+  const respprof = await fetch(`${back_url}/usuario/${id}`);
   const respprof2 = await respprof.json();
-  const respimg = await fetch(`https://campus-cultural.vercel.app/imagem/${respprof2.imagem}`);
+  const respimg = await fetch(`${back_url}/imagem/${respprof2.imagem}`);
   const respimg2 = await respimg.json();
   return { nome: respprof2.nome_usuario, imagem: respimg2.imagem as string, atributo: respprof2.atributo_usuario }
 }
@@ -89,11 +90,13 @@ const styles = StyleSheet.create({
   },
   icone: {
     width: 40,
-    height: 40
+    height: 40,
+    borderRadius: 9999
   },
   icone_previa: {
     width: 30,
-    height: 30
+    height: 30,
+    borderRadius: 9999
   },
   titulo: {
     marginLeft: 10,

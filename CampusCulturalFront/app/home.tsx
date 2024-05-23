@@ -7,9 +7,10 @@ import EventoCard, { Evento } from "./components/EventoCard";
 import BotaoAddEvento from "./components/BotaoAddEvento";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Usuario } from "./perfil";
+import { back_url } from "../api_link";
 
 export async function puxaEventos() {
-    const resp = await fetch("https://campus-cultural.vercel.app/evento");
+    const resp = await fetch(`${back_url}/evento`);
     const resp2 = await resp.json();
     console.log(resp2)
     return resp2;

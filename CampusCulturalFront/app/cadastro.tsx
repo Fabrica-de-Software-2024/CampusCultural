@@ -1,9 +1,10 @@
 import { router } from "expo-router"
 import { useState } from "react";
 import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
+import { back_url } from "../api_link";
 
 async function cadastrar(data) {
-    fetch("https://campus-cultural.vercel.app/usuario/register", {
+    fetch(`${back_url}/usuario/register`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',

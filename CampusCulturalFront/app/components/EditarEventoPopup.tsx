@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import { back_url } from '../../api_link';
 
 export default function EditarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>>, evento: Evento }) {
 
@@ -41,7 +42,7 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp);
             setData({ ...data, professor_evento: _dados.id_usuario })
-            let _img = await fetch(`https://campus-cultural.vercel.app/imagem/${props.evento.imagem}`);
+            let _img = await fetch(`${back_url}/imagem/${props.evento.imagem}`);
             let _img2 = await _img.json();
             setDataImage(_img2.imagem)
         })
@@ -77,7 +78,7 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
             })
             console.log(body)
             try {
-                const resp2 = await fetch(`https://campus-cultural.vercel.app/evento/${data.id_evento}`, {
+                const resp2 = await fetch(`${back_url}/evento/${data.id_evento}`, {
                     method: 'PATCH',
                     body: body,
                     headers: {

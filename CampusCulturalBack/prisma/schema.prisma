@@ -57,7 +57,7 @@ model Evento_Inscricao {
   id_inscricao_usuario String
   inscricao_evento     Evento  @relation(fields: [id_inscricao_evento], references: [id_evento])
   id_inscricao_evento  Int
-  notificacao          Boolean
+  notificacao          Boolean @default(true)
 
   @@map("evento_inscricao")
 }

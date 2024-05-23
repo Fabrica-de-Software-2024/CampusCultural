@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import { back_url } from '../api_link';
 
 async function fazLogin(data) {
-    const tokenresp = await fetch("https://campus-cultural.vercel.app/auth/login", {
+    const tokenresp = await fetch(`${back_url}/auth/login`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -15,7 +16,7 @@ async function fazLogin(data) {
     
     const token = await tokenresp.json();
     if(token.access_token !== ""){
-        const dadosresp = await fetch("https://campus-cultural.vercel.app/auth/profile", {
+        const dadosresp = await fetch(`${back_url}/auth/profile`, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
