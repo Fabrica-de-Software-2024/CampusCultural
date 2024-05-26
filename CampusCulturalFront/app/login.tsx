@@ -14,8 +14,8 @@ async function fazLogin(data) {
         }
     })
     
-    const token = await tokenresp.json();
-    if(token.access_token !== ""){
+    if(tokenresp.status == 201){
+        const token = await tokenresp.json();
         const dadosresp = await fetch(`${back_url}/auth/profile`, {
             method: "GET",
             headers: {
