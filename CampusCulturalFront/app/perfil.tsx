@@ -166,7 +166,7 @@ export default function Perfil() {
 	);
 };
 
-const windowHeight = Dimensions.get("window").height;
+const window = Dimensions.get("window");
 
 const styles = StyleSheet.create({
 	container: {
@@ -181,9 +181,9 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	imagem: {
-		width: 150,
-		height: 150,
-		borderRadius: 75,
+		width: window.width / 3,
+		borderRadius: 9999,
+		aspectRatio: 1 / 1,
 		backgroundColor: "#8A60FF",
 	},
 	editaImagem: {
@@ -195,9 +195,9 @@ const styles = StyleSheet.create({
 		right: "30%"
 	},
 	lapis: {
-		margin: 10,
-		height: 30,
-		aspectRatio: 1 / 1
+		margin: window.width / 40,
+		width: window.width / 15,
+		height: window.width / 15,
 	},
 	button: {
 		color: "#8A60FF",
@@ -208,23 +208,23 @@ const styles = StyleSheet.create({
 		zIndex: 20
 	},
 	buttonText: {
-		fontSize: 20,
+		fontSize: window.width / 20,
 		color: "#8A60FF",
 		textDecorationLine: "underline",
 	},
 	nome: {
-		fontSize: 21,
+		fontSize: window.width / 20,
 		textAlign: "center",
 		fontWeight: "500",
 	},
 	curso: {
-		fontSize: 19,
+		fontSize: window.width / 25,
 		textAlign: "center",
 	},
 	icon: {
-		width: 20,
-		height: 20,
+		width: window.width / 20,
 		marginRight: 10,
+		aspectRatio: 1 / 1
 	},
 	figura1: {
 		position: "absolute",

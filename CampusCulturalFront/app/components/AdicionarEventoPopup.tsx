@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import EventoCard, { Evento, professor } from './EventoCard';
 import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
@@ -110,18 +110,18 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                         <></>
             }
             <View style={styles.container}>
-                <View style={styles.imagem}>
-                    <Image source={require('../../assets/mais_circulado.png')}></Image>
+                <View style={styles.imagemContainer}>
+                    <Image style={styles.imagem} source={require('../../assets/mais_circulado.png')}></Image>
                 </View>
 
-                <Text style={{ margin: 'auto', fontWeight: 'bold', marginTop: '12%' }}><Text style={{ color: '#6B3BF4' }}>Adicionar</Text> Evento</Text>
-
+                <Text style={styles.textoAdicionar}><Text style={{ color: '#6B3BF4' }}>Adicionar</Text> Evento</Text>
+                <Text style={styles.textoRoxo}>
+                    Aqui você pode criar e editar eventos de maneira fácil! Preencha os campos abaixo:
+                </Text>
                 <View style={styles.containerInterno}>
                     <ScrollView style={styles.scroll}>
 
-                        <Text style={styles.textoRoxo}>
-                            Aqui você pode criar e editar eventos de maneira fácil! Preencha os campos abaixo:
-                        </Text>
+
                         <Text style={styles.texto}>Insira um nome para o evento:</Text>
                         <TextInput style={styles.linhaForm} value={data.nome_evento} onChange={(e) => setData({ ...data, nome_evento: e.nativeEvent.text })}></TextInput>
                         <Text style={styles.texto}>Insira um subtítulo para o evento:</Text>
@@ -137,7 +137,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                         <Text style={styles.textoRoxo}>Prévia do evento:</Text>
                         <EventoCard data={data} previa={true} image={dataImage} />
                     </ScrollView>
-                    <View style={styles.containerBotao}><TouchableOpacity style={styles.button} onPress={() => adicionar(data, dataImage, props.setModal)}><Text style={{ color: 'white' }}>Concluir</Text></TouchableOpacity></View>
+                    <View style={styles.containerBotao}><TouchableOpacity style={styles.button} onPress={() => adicionar(data, dataImage, props.setModal)}><Text style={styles.buttonText}>Concluir</Text></TouchableOpacity></View>
                 </View>
             </View>
 
@@ -145,6 +145,8 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
 
     );
 }
+
+const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     body: {
@@ -170,33 +172,44 @@ const styles = StyleSheet.create({
 
     texto: {
         color: '#838181',
-        fontSize: 10
+        fontSize: window.height / 60
+    },
+
+    textoAdicionar: {
+        fontSize: window.height / 60,
+        fontWeight: 'bold', 
+        marginTop: '10%'
     },
 
     textoRoxo: {
-        marginVertical: '8%',
-        fontSize: 14,
+        width: '80%',
+        marginVertical: '5%',
+        fontSize: window.height / 60,
         lineHeight: 16.94,
         color: '#6B3BF4',
         fontWeight: "700",
     },
 
-    imagem: {
+    imagemContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 'auto',
         position: 'absolute',
-        top: -60,
+        top: - window.height / 15,
         backgroundColor: '#6B3BF4',
         padding: 0,
-        width: 90,
-        height: 90,
-        borderRadius: 90 / 2
+        borderRadius: 9999
+    },
+
+    imagem: {
+        width: window.height / 15,
+        height: window.height / 15,
+        margin: 15
     },
 
     linhaForm: {
-        fontSize: 10,
+        fontSize: window.height / 60,
         padding: 0,
         borderBottomColor: '#838181',
         borderBottomWidth: 1,
@@ -208,16 +221,23 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: '#6B3BF4',
         borderRadius: 40,
-        marginTop: '5%',
+        marginTop: '10%',
+        fontSize: window.height / 40,
+    },
+
+    buttonText: {
+        fontSize: window.height / 60,
+        color: 'white'
     },
 
     containerInterno: {
-        width: '70%',
+        width: '80%',
     },
     scroll: {
-        height: "75%",
+        height: "60%",
     },
     containerBotao: {
-        width: "100%",
+        width: "60%",
+        alignSelf: 'center'
     }
 });

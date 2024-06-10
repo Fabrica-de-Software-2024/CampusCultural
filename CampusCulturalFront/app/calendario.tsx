@@ -1,5 +1,5 @@
 import { router } from "expo-router"
-import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, ActivityIndicator } from "react-native"
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, ActivityIndicator, Dimensions } from "react-native"
 import Navbar from "./components/Navbar"
 import { useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
@@ -200,6 +200,8 @@ function passaMes(qnt: number, data: number, setData: React.Dispatch<React.SetSt
     else setData(new Date(new Date(data).getFullYear(), new Date(data).getMonth() + qnt, 1).getTime())
 }
 
+const window = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -222,7 +224,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly"
     },
     calendarioTitulo: {
-        fontSize: 24,
+        fontSize: window.width / 15,
         color: "#FFF",
         marginVertical: 5,
     },
@@ -230,6 +232,7 @@ const styles = StyleSheet.create({
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-evenly",
+        
     },
     diasMes: {
         width: "100%",
@@ -238,11 +241,13 @@ const styles = StyleSheet.create({
     },
     semanaText: {
         color: "#FFF",
-        fontWeight: "400"
+        fontWeight: "400",
+        fontSize: window.width / 25
     },
     semanaSelecionado: {
         color: "#FFF",
-        fontWeight: "700"
+        fontWeight: "700",
+        fontSize: window.width / 25
     },
     linhaDias: {
         justifyContent: "space-evenly"
@@ -258,11 +263,12 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderWidth: 1,
         borderColor: "#FFF",
-        borderRadius: 10
+        borderRadius: 10,
+        fontSize: window.width / 25
     },
     diaText: {
         color: "#FFF",
-        fontSize: 18
+        fontSize: window.width / 25
     },
     bottomContainer: {
         position: 'absolute',
@@ -275,22 +281,23 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 60,
     },
     tituloEventos: {
-        fontSize: 22,
+        fontSize: window.width / 20,
         fontWeight: "700",
         textAlign: "center",
         marginVertical: "5%"
     },
     containerEventos: {
         width: "80%",
-        marginHorizontal: "10%"
+        marginHorizontal: "10%",
+        marginBottom: window.height / 12
     },
     textEventoRoxo: {
-        fontSize: 16,
+        fontSize: window.width / 30,
         fontWeight: "700",
         color: "#411BAA"
     },
     textEvento: {
-        fontSize: 16,
+        fontSize: window.width / 30,
         fontWeight: "700",
     },
     riscoEsquerda: {

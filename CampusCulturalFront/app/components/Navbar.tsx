@@ -1,4 +1,4 @@
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, Dimensions } from "react-native";
 
 export default function Navbar(props: { title: string, links: boolean, selecionado?: number, setSelecionado?: React.Dispatch<React.SetStateAction<number>> }) {
   const logo = require("../../assets/logo.png");
@@ -13,9 +13,11 @@ export default function Navbar(props: { title: string, links: boolean, seleciona
       <View style={styles.container}>
         <Image style={styles.imagem} source={logo} />
         <Text style={styles.titulo}>{props?.title}</Text>
-        <TouchableOpacity >
+
+        <TouchableOpacity style={props.links? {}:{display: "none"}}>
           <Image style={styles.lupa} source={lupa} />
         </TouchableOpacity>
+
       </View>
       <View style={props.links === false ? styles.naobarra : styles.barra}>
         <TouchableOpacity onPress={() => props.setSelecionado(0)}>
@@ -32,35 +34,37 @@ export default function Navbar(props: { title: string, links: boolean, seleciona
   )
 }
 
+const window = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     flexDirection: "row",
     backgroundColor: "#8A60FF",
+    width: window.width
   },
   imagem: {
-    width: 54,
-    height: 54,
+    width: window.width / 10,
+    height: window.width / 10,
     marginVertical: 14,
     marginLeft: 15
   },
   titulo: {
     marginLeft: 5,
-    fontSize: 20,
+    fontSize: window.width / 20,
     fontWeight: "bold",
     color: '#FFF',
     width: "65%"
   },
   lupa: {
-    width: 34,
-    height: 34,
-    right: 0
+    width: window.width / 10,
+    height: window.width / 10,
   },
   barra: {
     backgroundColor: "#1D065D",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     paddingHorizontal: 10,
     paddingVertical: 2
   },
@@ -69,10 +73,10 @@ const styles = StyleSheet.create({
   },
   link: {
     color: "#8A60FF",
-    fontSize: 12
+    fontSize: window.width / 30
   },
   selecionado: {
     color: "#FFF",
-    fontSize: 12
+    fontSize: window.width / 30
   }
 });

@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Image, Text, View, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions } from "react-native";
 import { back_url } from "../../api_link";
 
 export type Evento = {
@@ -73,6 +73,8 @@ export default function EventoCard(props: { data: Evento, previa: boolean, image
   )
 }
 
+const window = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     bottom: 0,
@@ -89,24 +91,24 @@ const styles = StyleSheet.create({
     paddingVertical: 5
   },
   icone: {
-    width: 40,
-    height: 40,
+    width: window.width / 10,
+    height: window.width / 10,
     borderRadius: 9999
   },
   icone_previa: {
-    width: 30,
-    height: 30,
+    width: window.width / 15,
+    height: window.width / 15,
     borderRadius: 9999
   },
   titulo: {
-    marginLeft: 10,
-    fontSize: 16,
+    marginLeft: window.width / 30,
+    fontSize: window.width / 30,
     fontWeight: "700",
     color: "#6B3BF4"
   },
   tituloPrevia: {
     marginLeft: 10,
-    fontSize: 11,
+    fontSize: window.width / 35,
     fontWeight: "700",
     color: "#6B3BF4"
   },
@@ -125,12 +127,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text_info: {
-    fontSize: 12,
+    fontSize: window.width / 40,
+    color: "#838181",
     fontWeight: "400",
     marginRight: 5
   },
   text_info_previa: {
-    fontSize: 8,
+    fontSize: window.width / 45,
     fontWeight: "400",
     marginRight: 5
   },
@@ -139,19 +142,19 @@ const styles = StyleSheet.create({
     aspectRatio: 20 / 9,
   },
   image_previa: {
-    width: "100%",
+    width: "90%",
     aspectRatio: 20 / 9,
   },
   descricao: {
-    fontSize: 12,
+    fontSize: window.width / 40,
+    color: "#838181",
     fontWeight: "400",
     width: "90%"
   },
   descricaoPrevia: {
-    fontSize: 8,
+    fontSize: window.width / 45,
     fontWeight: "400",
     width: "90%",
-    marginBottom: "40%"
   },
   carregando: {
     flex: 1,
