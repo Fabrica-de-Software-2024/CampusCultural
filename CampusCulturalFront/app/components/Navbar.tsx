@@ -1,8 +1,11 @@
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, Dimensions } from "react-native";
+import { useRef, useState } from "react";
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, Dimensions, TextInput } from "react-native";
 
-export default function Navbar(props: { title: string, links: boolean, selecionado?: number, setSelecionado?: React.Dispatch<React.SetStateAction<number>> }) {
+export default function Navbar(props: { title: string, links: boolean, pesquisa?: boolean, setPesquisa?: React.Dispatch<React.SetStateAction<string>>, selecionado?: number, setSelecionado?: React.Dispatch<React.SetStateAction<number>> }) {
   const logo = require("../../assets/logo.png");
   const lupa = require("../../assets/lupa.png");
+  const inputRef = useRef(null)
+  const [pesquisando, setPesquisando] = useState(false);
 
   return (
     <>
@@ -14,7 +17,14 @@ export default function Navbar(props: { title: string, links: boolean, seleciona
         <Image style={styles.imagem} source={logo} />
         <Text style={styles.titulo}>{props?.title}</Text>
 
-        <TouchableOpacity style={props.links? {}:{display: "none"}}>
+        <TouchableOpacity style={props.pesquisa ? pesquisando? {...styles.pesquisa, backgroundColor: "#A180FF"} : {...styles.pesquisa} : { display: "none" }} onPress={()=> {setPesquisando(true); inputRef.current.focus()}}>
+          <TextInput
+            style={styles.input}
+            ref={inputRef}
+            placeholderTextColor="#8A60FF"
+            autoFocus={pesquisando}
+            onChange={(e) => props.setPesquisa(e.nativeEvent.text)}
+          />
           <Image style={styles.lupa} source={lupa} />
         </TouchableOpacity>
 
@@ -39,6 +49,7 @@ const window = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    justifyContent: "flex-start",
     flexDirection: "row",
     backgroundColor: "#8A60FF",
     width: window.width
@@ -54,11 +65,24 @@ const styles = StyleSheet.create({
     fontSize: window.width / 20,
     fontWeight: "bold",
     color: '#FFF',
-    width: "65%"
+    width: "30%"
+  },
+  pesquisa: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    borderRadius: 10,
+    width: window.width / 2,
+    paddingVertical: 2
   },
   lupa: {
     width: window.width / 10,
     height: window.width / 10,
+  },
+  input: {
+    marginLeft: "5%",
+    width: "75%",
+    color: "#FFF"
   },
   barra: {
     backgroundColor: "#1D065D",

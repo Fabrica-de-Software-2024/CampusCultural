@@ -31,6 +31,7 @@ export default function Home() {
     const [eventos, setEventos] = useState([]);
     const [inscricoes, setinscricoes] = useState([])
     const filtro = require("../assets/filtro.png")
+    const [pesquisa, setPesquisa] = useState("")
 
     useEffect(() => {
         AsyncStorage.getItem('login').then(async (resp) => {
@@ -51,7 +52,7 @@ export default function Home() {
 
     return (
         <>
-            <Navbar title={"Início"} links={true} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
+            <Navbar title={"Início"} links={true} pesquisa={true} setPesquisa={setPesquisa} selecionado={eventosSelecionado} setSelecionado={setEventosSelecionado} />
             {
                 dados?.is_professor ?
                     <BotaoAddEvento />
@@ -63,11 +64,11 @@ export default function Home() {
             </TouchableOpacity>
             {
                 carregado ?
-                    <ScrollView style={{ marginVertical: 50 }}>
+                    <ScrollView>
                         {
                             eventosSelecionado === 0 ?
                                 eventos.map((i: Evento, index: number) => {
-                                    if (Date.now() <= (i.data_evento as unknown as number)) {
+                                    if ((Date.now() <= (i.data_evento as unknown as number)) && i.nome_evento.toLowerCase().includes(pesquisa.toLowerCase())) {
                                         return (
                                             <EventoCard key={index} data={i} previa={false} />
                                         )
@@ -76,7 +77,7 @@ export default function Home() {
                                 :
                                 eventosSelecionado === 1 ?
                                     eventos.map((i, index) => {
-                                        if (inscricoes.map((j) => j.id_inscricao_evento).includes(i.id_evento)) {
+                                        if ((inscricoes.map((j) => j.id_inscricao_evento).includes(i.id_evento)) && i.nome_evento.toLowerCase().includes(pesquisa.toLowerCase())) {
                                             return (
                                                 <EventoCard key={index} data={i} previa={false} />
                                             )
@@ -86,7 +87,7 @@ export default function Home() {
                                     eventosSelecionado === 2 ?
 
                                         eventos.map((i, index) => {
-                                            if (Date.now() > (i.data_evento as unknown as number)) {
+                                            if ((Date.now() > (i.data_evento as unknown as number)) && i.nome_evento.toLowerCase().includes(pesquisa.toLowerCase())) {
                                                 return (
                                                     <EventoCard key={index} data={i} previa={false} />
                                                 )

@@ -30,6 +30,8 @@ export default function Calendario() {
 
     const [carregado, setCarregado] = useState(false);
 
+    const [pesquisa, setPesquisa] = useState("")
+
     const dias_da_semana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
     var index2 = 0;
@@ -111,7 +113,7 @@ export default function Calendario() {
 
     return (
         <>
-            <Navbar title={"Calendário"} links={false} />
+            <Navbar title={"Calendário"} pesquisa={true} setPesquisa={setPesquisa} links={false} />
             {
                 dados?.is_professor ?
                     <BotaoAddEvento />
@@ -162,7 +164,7 @@ export default function Calendario() {
                             <ScrollView style={styles.containerEventos}>
                                 {
                                     eventos.map((i: Evento, index: number) => {
-                                        if (data <= (i.data_evento as unknown as number)) {
+                                        if ((data <= (i.data_evento as unknown as number)) && i.nome_evento.toLowerCase().includes(pesquisa.toLowerCase())) {
                                             index2++;
                                             return (
                                                 <View key={index}>
