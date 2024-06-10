@@ -16,12 +16,20 @@ export async function puxaEventos() {
     return resp2;
 }
 
+export async function puxaInscricoes(id: string) {
+    const resp = await fetch(`${back_url}/inscricao/usuario/${id}`);
+    const resp2 = await resp.json();
+    console.log(resp2)
+    return resp2;
+}
+
 export default function Home() {
 
     const [carregado, setCarregado] = useState(false)
     const [dados, setDados] = useState<Usuario>()
     const [eventosSelecionado, setEventosSelecionado] = useState(0);
     const [eventos, setEventos] = useState([]);
+    const [inscricoes, setinscricoes] = useState([])
     const filtro = require("../assets/filtro.png")
 
     useEffect(() => {
@@ -34,8 +42,10 @@ export default function Home() {
                 "imagem": _dados?.imagem,
                 "atributo": _dados?.atributo_usuario
             });
+            puxaInscricoes(_dados?.id_usuario).then((resp) => setinscricoes(resp));
         })
         puxaEventos().then((resp) => setEventos(resp)).finally(() => setCarregado(true));
+
     }, [])
 
 
@@ -48,7 +58,7 @@ export default function Home() {
                     :
                     <></>
             }
-            <TouchableOpacity style={{ position: "absolute", right: "3%", top: "20%" }}>
+            <TouchableOpacity style={{ position: "absolute", right: "3%", top: "20%", display: "none" }}>
                 <Image source={filtro} />
             </TouchableOpacity>
             {
@@ -66,9 +76,11 @@ export default function Home() {
                                 :
                                 eventosSelecionado === 1 ?
                                     eventos.map((i, index) => {
-                                        return (
-                                            <EventoCard key={index} data={i} previa={false} />
-                                        )
+                                        if (inscricoes.map((j) => j.id_inscricao_evento).includes(i.id_evento)) {
+                                            return (
+                                                <EventoCard key={index} data={i} previa={false} />
+                                            )
+                                        }
                                     })
                                     :
                                     eventosSelecionado === 2 ?
