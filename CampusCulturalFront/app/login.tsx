@@ -13,8 +13,8 @@ async function fazLogin(data) {
             'Content-Type': 'application/json'
         }
     })
-    
-    if(tokenresp.status == 201){
+
+    if (tokenresp.status == 201) {
         const token = await tokenresp.json();
         const dadosresp = await fetch(`${back_url}/auth/profile`, {
             method: "GET",
@@ -102,7 +102,7 @@ export default function Login() {
                             </View>
 
                             <View style={styles.buttonContainer}>
-                                <TouchableOpacity style={styles.button} onPress={() => { fazLogin(loginDados).then((resp)=>console.log(resp)) }}>
+                                <TouchableOpacity style={styles.button} onPress={() => { fazLogin(loginDados).then((resp) => console.log(resp)) }}>
                                     <Text style={styles.buttonText}>ENTRAR</Text>
                                 </TouchableOpacity>
                             </View>
@@ -114,7 +114,7 @@ export default function Login() {
     );
 }
 
-const windowHeight = Dimensions.get('window').height;
+const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
@@ -130,16 +130,16 @@ const styles = StyleSheet.create({
     //Imagem grande do topo
     imagem: {
         width: '100%',
-        height: windowHeight * 0.45,
+        height: window.height * 0.45,
         opacity: 0.36
     },
     //Logo acima da imagem de login
     logo: {
         position: 'absolute',
         alignSelf: 'center',
-        top: windowHeight * 0.200 - 100,
-        width: 190,
-        height: 190,
+        top: "5%",
+        width: window.height / 5,
+        height: window.height / 5,
     },
     //Figura superior eaquerda
     figura1: {
@@ -158,11 +158,12 @@ const styles = StyleSheet.create({
     },
     //Figura lateral direita
     figura3: {
-        bottom: 0,
+        bottom: 50,
         right: 0,
         position: 'absolute',
-        width: "15%",
-        height: "20%",
+        width: "10%",
+        height: "12%",
+        resizeMode: 'contain',
         zIndex: 1,
     },
     //Figura inferior esquerda
@@ -170,8 +171,8 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         position: 'absolute',
-        width: 200,
-        height: 200,
+        width: 100,
+        height: 133,
         zIndex: 1,
     },
     //Container branco da parte inferior
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        height: '60%',
+        height: '70%',
         backgroundColor: "#FFFFFF",
         borderTopLeftRadius: 60,
         borderTopRightRadius: 60,
@@ -194,21 +195,19 @@ const styles = StyleSheet.create({
     },
     //Definições para a frase "BEM-VINDO(A) AO NOSSO"
     purpleText: {
-        fontSize: 24,
+        fontSize: window.height / 30,
         fontWeight: 'bold',
         color: '#8A60FF',
     },
     //Definições para a frase "CAMPUS CULTURAL!"
     purpleText2: {
-        fontSize: 24,
+        fontSize: window.height / 30,
         fontWeight: 'bold',
         color: '#6B3BF4',
-        alignSelf: 'flex-start',
-        marginLeft: 35,
     },
     //Definições para a frase "Quer ter acesso ao calendário de eventos em tempo real?"
     grayText: {
-        fontSize: 14,
+        fontSize: window.height / 50,
         color: '#838181',
         marginRight: "10%",
         marginLeft: "10%",
@@ -226,10 +225,12 @@ const styles = StyleSheet.create({
     },
     //Usado nas escritas: e-mail e senha
     inputLabelEmail: {
+        fontSize: window.height / 50,
         color: '#838181',
         marginBottom: 5,
     },
     inputLabelSenha: {
+        fontSize: window.height / 50,
         color: '#838181',
         marginBottom: 5,
         marginTop: 20,
@@ -245,8 +246,8 @@ const styles = StyleSheet.create({
     },
     //Expecificações ícone olho_aberto e olho_fechado
     eyeIcon: {
-        width: 25,
-        height: 25,
+        width: window.height / 30,
+        height: window.height / 30,
         marginRight: 10,
         marginBottom: 5,
         zIndex: 2,
@@ -267,16 +268,16 @@ const styles = StyleSheet.create({
         zIndex: 1, // Garante que a linha fique sob os outros elementos
     },
     inputIcon: {
-        width: 25,
-        height: 25,
+        width: window.height / 30,
+        height: window.height / 30,
         marginRight: 10,
         marginBottom: 5,
         zIndex: 2,
     },
     input2: {
         flex: 1,
-        paddingBottom: 5,
-        fontSize: 16,
+        paddingBottom: window.height / 200,
+        fontSize: window.height / 40,
         color: '#8A60FF',
         backgroundColor: 'transparent', // Importante para que o fundo do TextInput não oculte a linha
         zIndex: 2,

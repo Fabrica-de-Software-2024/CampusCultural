@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 
 export default function Rodape(props: { selecionado: number }) {
   const home = require("../../assets/casa.png");
@@ -26,6 +26,8 @@ export default function Rodape(props: { selecionado: number }) {
   )
 }
 
+const window = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
@@ -36,7 +38,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderTopColor: "#6B3BF4",
     borderTopWidth: 1,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    zIndex: 100
   },
   touchable: {
     display: "flex",
@@ -53,8 +56,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   imagem: {
-    width: 40,
-    height: 40,
+    width: window.width / 10,
+    height: window.width / 10,
     marginVertical: 14,
   },
 });
