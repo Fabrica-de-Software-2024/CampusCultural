@@ -53,6 +53,20 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         })
     }, [data.professor_evento])
 
+    function cancelar() {
+        setData(
+            {
+                professor_evento: "",
+                nome_evento: "",
+                sub_evento: "",
+                local_evento: "",
+                data_evento: Date.now().toString(),
+                descricao_evento: "",
+            }
+        )
+        props.setModal(false)
+    }
+
     async function pegaImagem() {
         let _imagem = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -176,7 +190,7 @@ const styles = StyleSheet.create({
 
     textoAdicionar: {
         fontSize: window.height / 60,
-        fontWeight: 'bold', 
+        fontWeight: 'bold',
         marginTop: '10%'
     },
 

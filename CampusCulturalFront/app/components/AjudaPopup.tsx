@@ -5,6 +5,10 @@ export default function AjudaCard(props:{setAberto: React.Dispatch<React.SetStat
 
     const icone = require("../../assets/chat_branco.png");
 
+    function cancelar() {
+        props.setAberto(false)
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.icone} >
