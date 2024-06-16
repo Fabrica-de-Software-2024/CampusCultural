@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import EventoCard, { Evento, professor } from './EventoCard';
 import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
-import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker from 'react-native-ui-datepicker';
 import { router } from 'expo-router';
 import { back_url } from '../../api_link';
+import { locale } from './AdicionarEventoPopup';
 
 export default function EditarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>>, evento: Evento }) {
 
@@ -23,20 +24,6 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
     const [data, setData] = useState<Evento>(props?.evento)
 
     console.log(props.evento)
-
-    const mudaData = (event, data) => {
-        console.log(data)
-        setDataEvento(data);
-        setCalendario(2);
-    }
-
-    const mudaHora = (event, data) => {
-        console.log(data)
-        let _data = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate(), data.getHours(), data.getMinutes())
-        setDataEvento(_data);
-        setData({ ...data, data_evento: _data.getTime() })
-        setCalendario(0);
-    }
 
     useEffect(() => {
         AsyncStorage.getItem('login').then(async (resp) => {
@@ -102,27 +89,40 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
 
         <View style={styles.body}>
             {
-                calendario === 1 ?
-                    <DateTimePicker mode='date' value={dataEvento} onChange={mudaData} />
-                    :
-                    calendario === 2 ?
-                        <DateTimePicker mode='time' value={dataEvento} is24Hour={true} onChange={mudaHora} />
-                        :
-                        <></>
+                calendario === 1 &&
+                <View style={styles.boxlight}>
+                    <View style={styles.containerCalendario}>
+                        <DateTimePicker
+                            mode="single"
+                            locale={locale}
+                            timePicker={true}
+                            date={dataEvento}
+                            onChange={(params) => setDataEvento(new Date(params.date.toString()))}
+                            calendarTextStyle={{ color: "#FFF" }}
+                            todayTextStyle={{ color: "#FFF" }}
+                            headerTextStyle={{ color: "#FFF" }}
+                            weekDaysTextStyle={{ color: "#FFF" }}
+                            monthContainerStyle={{ backgroundColor: "#00000000", borderWidth: 0 }}
+                            yearContainerStyle={{ backgroundColor: "#00000000", borderWidth: 0 }}
+                            timePickerIndicatorStyle={{ backgroundColor: "#8A60FF" }}
+                            headerButtonColor="#FFF"
+                            selectedItemColor="#8A60FF"
+                        />
+                        <TouchableOpacity style={styles.button} onPress={() => { setCalendario(0); setData({ ...data, data_evento: dataEvento.getTime().toString() }) }}><Text style={styles.buttonTextCalendario}>Concluir</Text></TouchableOpacity>
+                    </View>
+                </View>
             }
             <View style={styles.container}>
-                <View style={styles.imagem}>
-                    <Image source={require('../../assets/mais_circulado.png')}></Image>
+                <View style={styles.imagemContainer}>
+                    <Image style={styles.imagem} source={require('../../assets/lapis.png')}></Image>
                 </View>
 
-                <Text style={{ margin: 'auto', fontWeight: 'bold', marginTop: '12%' }}><Text style={{ color: '#6B3BF4' }}>Adicionar</Text> Evento</Text>
-
+                <Text style={styles.textoAdicionar}><Text style={{ color: '#6B3BF4' }}>Adicionar</Text> Evento</Text>
+                <Text style={styles.textoRoxo}>
+                    Aqui você pode criar e editar eventos de maneira fácil! Preencha os campos abaixo:
+                </Text>
                 <View style={styles.containerInterno}>
                     <ScrollView style={styles.scroll}>
-
-                        <Text style={styles.textoRoxo}>
-                            Aqui você pode criar e editar eventos de maneira fácil! Preencha os campos abaixo:
-                        </Text>
                         <Text style={styles.texto}>Insira um nome para o evento:</Text>
                         <TextInput style={styles.linhaForm} value={data.nome_evento} onChange={(e) => setData({ ...data, nome_evento: e.nativeEvent.text })}></TextInput>
                         <Text style={styles.texto}>Insira um subtítulo para o evento:</Text>
@@ -138,7 +138,7 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
                         <Text style={styles.textoRoxo}>Prévia do evento:</Text>
                         <EventoCard data={data} previa={true} image={dataImage} />
                     </ScrollView>
-                    <View style={styles.containerBotao}><TouchableOpacity style={styles.button} onPress={() => editar(data, dataImage, props.setModal)}><Text style={{ color: 'white' }}>Concluir</Text></TouchableOpacity></View>
+                    <View style={styles.containerBotao}><TouchableOpacity style={styles.button} onPress={() => editar(data, dataImage, props.setModal)}><Text style={styles.buttonText}>Concluir</Text></TouchableOpacity></View>
                 </View>
             </View>
 
@@ -146,6 +146,8 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
 
     );
 }
+
+const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     body: {
@@ -169,35 +171,63 @@ const styles = StyleSheet.create({
 
     },
 
+    boxlight: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: "100%",
+        height: "100%",
+        zIndex: 40,
+        backgroundColor: "#00000099"
+    },
+
+    containerCalendario: {
+        position: 'absolute',
+        width: "90%",
+        backgroundColor: "#6B3BF4",
+        borderRadius: 10
+    },
+
     texto: {
         color: '#838181',
-        fontSize: 10
+        fontSize: window.height / 60
+    },
+
+    textoAdicionar: {
+        fontSize: window.height / 60,
+        fontWeight: 'bold',
+        marginTop: '10%'
     },
 
     textoRoxo: {
-        marginVertical: '8%',
-        fontSize: 14,
+        width: '80%',
+        marginVertical: '5%',
+        fontSize: window.height / 60,
         lineHeight: 16.94,
         color: '#6B3BF4',
         fontWeight: "700",
     },
 
-    imagem: {
+    imagemContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 'auto',
         position: 'absolute',
-        top: -60,
+        top: - window.height / 15,
         backgroundColor: '#6B3BF4',
         padding: 0,
-        width: 90,
-        height: 90,
-        borderRadius: 90 / 2
+        borderRadius: 9999
+    },
+
+    imagem: {
+        width: window.height / 15,
+        height: window.height / 15,
+        margin: 15
     },
 
     linhaForm: {
-        fontSize: 10,
+        fontSize: window.height / 60,
         padding: 0,
         borderBottomColor: '#838181',
         borderBottomWidth: 1,
@@ -209,16 +239,30 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: '#6B3BF4',
         borderRadius: 40,
-        marginTop: '5%',
+        marginTop: '10%',
+        fontSize: window.height / 40,
+    },
+
+    buttonText: {
+        fontSize: window.height / 60,
+        color: 'white'
+    },
+
+    buttonTextCalendario: {
+        fontSize: window.height / 40,
+        color: 'white'
     },
 
     containerInterno: {
-        width: '70%',
+        width: '80%',
     },
     scroll: {
-        height: "75%",
+        height: "60%",
     },
     containerBotao: {
-        width: "100%",
+        width: "60%",
+        alignSelf: 'center'
     }
 });
+
+

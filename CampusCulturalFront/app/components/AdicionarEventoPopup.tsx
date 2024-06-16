@@ -1,13 +1,49 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import EventoCard, { Evento, professor } from './EventoCard';
 import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from 'react-native-ui-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { back_url } from '../../api_link';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+
+export const locale = {
+    "formats": {
+        "L": "DD/MM/YYYY", "LL": "D [de] MMMM [de] YYYY", "LLL": "D [de] MMMM [de] YYYY [às] HH:mm", "LLLL": "dddd, D [de] MMMM [de] YYYY [às] HH:mm", "LT": "HH:mm", "LTS": "HH:mm:ss"
+    },
+    "months": [
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ],
+    "monthsShort": [
+        "jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"
+    ],
+    "name": "pt-br",
+    "ordinal": require("dayjs/locale/br")?.ordinal,
+    "relativeTime": {
+        "M": "um mês",
+        "MM": "%d meses",
+        "d": "um dia",
+        "dd": "%d dias",
+        "future": "em %s",
+        "h": "uma hora",
+        "hh": "%d horas",
+        "m": "um minuto",
+        "mm": "%d minutos",
+        "past": "há %s",
+        "s": "poucos segundos",
+        "y": "um ano",
+        "yy": "%d anos"
+    },
+    "weekdays": [
+        "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"
+    ],
+    "weekdaysMin": [
+        "Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"
+    ],
+    "weekdaysShort": [
+        "Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"
+    ]
+}
 
 export default function AdicionarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>> }) {
 
@@ -32,26 +68,14 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         }
     )
 
-    const mudaData = (event, data) => {
-        console.log(data)
-        setDataEvento(data);
-        setCalendario(2);
-    }
-
-    const mudaHora = (event, _data) => {
-        console.log(_data)
-        setCalendario(0);
-        let __data = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate(), _data.getHours(), _data.getMinutes())
-        setDataEvento(__data);
-        setData({ ...data, data_evento: __data.getTime().toString() })
-    }
-
     useEffect(() => {
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp);
             setData({ ...data, professor_evento: _dados.id_usuario })
         })
     }, [data.professor_evento])
+
+
 
     function cancelar() {
         setData(
@@ -116,13 +140,28 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
 
         <View style={styles.body}>
             {
-                calendario === 1 ?
-                    <RNDateTimePicker mode='date' value={dataEvento} onChange={mudaData} />
-                    :
-                    calendario === 2 ?
-                        <RNDateTimePicker mode='time' value={dataEvento} is24Hour={true} onChange={mudaHora} />
-                        :
-                        <></>
+                calendario === 1 &&
+                <View style={styles.boxlight}>
+                    <View style={styles.containerCalendario}>
+                        <DateTimePicker
+                            mode="single"
+                            locale={locale}
+                            timePicker={true}
+                            date={dataEvento}
+                            onChange={(params) => setDataEvento(new Date(params.date.toString()))}
+                            calendarTextStyle={{ color: "#FFF" }}
+                            todayTextStyle={{ color: "#FFF" }}
+                            headerTextStyle={{ color: "#FFF" }}
+                            weekDaysTextStyle={{ color: "#FFF" }}
+                            monthContainerStyle={{ backgroundColor: "#00000000", borderWidth: 0 }}
+                            yearContainerStyle={{ backgroundColor: "#00000000", borderWidth: 0 }}
+                            timePickerIndicatorStyle={{ backgroundColor: "#8A60FF" }}
+                            headerButtonColor="#FFF"
+                            selectedItemColor="#8A60FF"
+                        />
+                        <TouchableOpacity style={styles.button} onPress={() => { setCalendario(0); setData({ ...data, data_evento: dataEvento.getTime().toString() }) }}><Text style={styles.buttonTextCalendario}>Concluir</Text></TouchableOpacity>
+                    </View>
+                </View>
             }
             <View style={styles.container}>
                 <View style={styles.imagemContainer}>
@@ -183,6 +222,23 @@ const styles = StyleSheet.create({
 
     },
 
+    boxlight: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: "100%",
+        height: "100%",
+        zIndex: 40,
+        backgroundColor: "#00000099"
+    },
+
+    containerCalendario: {
+        position: 'absolute',
+        width: "90%",
+        backgroundColor: "#6B3BF4",
+        borderRadius: 10
+    },
+
     texto: {
         color: '#838181',
         fontSize: window.height / 60
@@ -240,6 +296,11 @@ const styles = StyleSheet.create({
 
     buttonText: {
         fontSize: window.height / 60,
+        color: 'white'
+    },
+
+    buttonTextCalendario: {
+        fontSize: window.height / 40,
         color: 'white'
     },
 
