@@ -4,6 +4,10 @@ export default function ConfiguracoesCard(props: { setAberto: React.Dispatch<Rea
 
     const icone = require("../../assets/engrenagem_branco.png");
 
+    function cancelar() {
+        props.setAberto(false)
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.icone} >

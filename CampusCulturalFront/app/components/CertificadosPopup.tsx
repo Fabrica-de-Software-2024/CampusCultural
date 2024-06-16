@@ -4,6 +4,10 @@ export default function CertificadosCard(props: { setAberto: React.Dispatch<Reac
 
     const icone = require("../../assets/certificado_branco.png");
 
+    function cancelar() {
+        props.setAberto(false)
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.icone} >

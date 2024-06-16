@@ -9,6 +9,10 @@ export default function NotificacoesCard(props: { setAberto: React.Dispatch<Reac
     const [inscritos, setInscritos] = useState(false);
     const [alteracoes, setAlteracoes] = useState(false);
 
+    function cancelar() {
+        props.setAberto(false)
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.icone} >

@@ -48,6 +48,11 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
         })
     }, [data.professor_evento])
 
+    function cancelar() {
+        setData(props?.evento)
+        props.setModal(false)
+    }
+
     async function pegaImagem() {
         let _imagem = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,

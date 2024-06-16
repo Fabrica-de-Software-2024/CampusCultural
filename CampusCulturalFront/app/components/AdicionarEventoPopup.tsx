@@ -7,6 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { back_url } from '../../api_link';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 export default function AdicionarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>> }) {
 
@@ -37,12 +38,12 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         setCalendario(2);
     }
 
-    const mudaHora = (event, data) => {
-        console.log(data)
-        let _data = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate(), data.getHours(), data.getMinutes())
-        setDataEvento(_data);
-        setData({ ...data, data_evento: _data.getTime() })
+    const mudaHora = (event, _data) => {
+        console.log(_data)
         setCalendario(0);
+        let __data = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate(), _data.getHours(), _data.getMinutes())
+        setDataEvento(__data);
+        setData({ ...data, data_evento: __data.getTime().toString() })
     }
 
     useEffect(() => {
@@ -51,6 +52,20 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
             setData({ ...data, professor_evento: _dados.id_usuario })
         })
     }, [data.professor_evento])
+
+    function cancelar() {
+        setData(
+            {
+                professor_evento: "",
+                nome_evento: "",
+                sub_evento: "",
+                local_evento: "",
+                data_evento: Date.now().toString(),
+                descricao_evento: "",
+            }
+        )
+        props.setModal(false)
+    }
 
     async function pegaImagem() {
         let _imagem = await ImagePicker.launchImageLibraryAsync({
@@ -102,10 +117,10 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         <View style={styles.body}>
             {
                 calendario === 1 ?
-                    <DateTimePicker mode='date' value={dataEvento} onChange={mudaData} />
+                    <RNDateTimePicker mode='date' value={dataEvento} onChange={mudaData} />
                     :
                     calendario === 2 ?
-                        <DateTimePicker mode='time' value={dataEvento} is24Hour={true} onChange={mudaHora} />
+                        <RNDateTimePicker mode='time' value={dataEvento} is24Hour={true} onChange={mudaHora} />
                         :
                         <></>
             }
@@ -175,7 +190,7 @@ const styles = StyleSheet.create({
 
     textoAdicionar: {
         fontSize: window.height / 60,
-        fontWeight: 'bold', 
+        fontWeight: 'bold',
         marginTop: '10%'
     },
 
