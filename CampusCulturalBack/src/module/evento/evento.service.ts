@@ -68,15 +68,27 @@ export class EventoService {
             throw new error('Evento não existe!');
         }
         else {
-            const update_banner = await this.prisma.imagem.update({
-                data: {
-                    id_imagem: data.imagem,
-                    imagem: data.imagemstr
-                },
-                where: {
-                    id_imagem: eventoExists.imagem,
-                }
-            });
+            let banner;
+            if (eventoExists.imagem !== 1 && eventoExists.imagem !== 2) {
+                const update_banner = await this.prisma.imagem.update({
+                    data: {
+                        id_imagem: data.imagem,
+                        imagem: data.imagemstr
+                    },
+                    where: {
+                        id_imagem: eventoExists.imagem,
+                    }
+                });
+                banner = update_banner
+            }
+            else {
+                const update_banner = await this.prisma.imagem.create({
+                    data: {
+                        imagem: data.imagemstr
+                    }
+                });
+                banner = update_banner
+            }
             const update_evento = await this.prisma.evento.update({
                 data: {
                     professor_evento: data.professor_evento,
@@ -85,7 +97,7 @@ export class EventoService {
                     local_evento: data.local_evento,
                     data_evento: data.data_evento.toString(),
                     descricao_evento: data.descricao_evento,
-                    imagem: update_banner.id_imagem
+                    imagem: banner.id_imagem
                 },
                 where: {
                     id_evento,

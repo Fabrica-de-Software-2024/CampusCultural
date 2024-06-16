@@ -22,7 +22,7 @@ export class ImagemService {
         id_imagem: data.id_imagem,
       }
     });
-    if (imgExists) {
+    if (imgExists && data.id_imagem !== 1 && data.id_imagem !== 2) {
       const update_imagem = await this.prisma.imagem.update({
         where: {
           id_imagem: data?.id_imagem,

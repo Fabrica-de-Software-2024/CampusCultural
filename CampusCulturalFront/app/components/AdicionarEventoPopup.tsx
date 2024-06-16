@@ -120,8 +120,6 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                 </Text>
                 <View style={styles.containerInterno}>
                     <ScrollView style={styles.scroll}>
-
-
                         <Text style={styles.texto}>Insira um nome para o evento:</Text>
                         <TextInput style={styles.linhaForm} value={data.nome_evento} onChange={(e) => setData({ ...data, nome_evento: e.nativeEvent.text })}></TextInput>
                         <Text style={styles.texto}>Insira um subtítulo para o evento:</Text>
