@@ -26,7 +26,7 @@ export default function Rodape(props: { selecionado: number }) {
   )
 }
 
-const window = Dimensions.get('window');
+const window = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   container: {
@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     borderTopColor: "#6B3BF4",
     borderTopWidth: 1,
     justifyContent: "space-between",
-    zIndex: 100
+    zIndex: 100,
+    height: window.height / 10,
   },
   touchable: {
     display: "flex",

@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert, ActivityIndicator } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert, ActivityIndicator, Dimensions } from "react-native";
 import Navbar from '../components/Navbar';
 import Rodape from '../components/Rodape';
 import { Evento as EventoDTO, professor } from '../components/EventoCard';
@@ -130,26 +130,25 @@ export default function Evento() {
                     <>
 
                         {imagem != "" && <Image source={{ uri: imagem }} style={styles.imagem} resizeMode='cover' />}
-
-                        <ScrollView>
+                        <ScrollView style={styles.scroll}>
 
                             <View style={styles.containerTitulo}>
                                 <Image style={styles.icone} source={{ uri: prof.imagem }} />
                                 <Text style={styles.titulo}>{dados?.nome_evento}</Text>
                                 <View style={styles.containerBotoes}>
                                     <TouchableOpacity onPress={() => setmodalEdit(true)}>
-                                        <Image source={editar} />
+                                        <Image style={styles.iconezin} source={editar} />
                                     </TouchableOpacity>
                                     <TouchableOpacity>
-                                        <Image source={olho} />
+                                        <Image style={styles.iconezin} source={olho} />
                                     </TouchableOpacity>
                                     <TouchableOpacity>
-                                        <Image source={compartilhar} />
+                                        <Image style={styles.iconezin} source={compartilhar} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
                             <View style={styles.containerInfo}>
-                                <View style={styles.containerData}><Text style={styles.textInfo}>{data}</Text><Image source={calendario} /></View>
+                                <View style={styles.containerData}><Text style={styles.textInfo}>{data}</Text><Image style={styles.iconezin} source={calendario} /></View>
                                 <Text style={styles.textInfo}>Local: {dados?.local_evento}</Text>
                                 <Text style={styles.textInfo}>Horário: {horario}</Text>
                                 <Text style={styles.textTempo}>{difString}</Text>
@@ -161,7 +160,7 @@ export default function Evento() {
                                     </View>
                                 </View>
                                 <View style={styles.containerCertificado}>
-                                    <Image source={certificado} />
+                                    <Image style={{ ...styles.icone, borderRadius: 0 }} source={certificado} />
                                     <Text style={styles.certificadoText}>Emissão de certificado</Text>
                                 </View>
 
@@ -184,6 +183,8 @@ export default function Evento() {
     )
 }
 
+const window = Dimensions.get('screen');
+
 const styles = StyleSheet.create({
     containerTitulo: {
         flexDirection: 'row',
@@ -194,14 +195,17 @@ const styles = StyleSheet.create({
         width: "100%",
         aspectRatio: 20 / 9,
     },
+    scroll: {
+        marginBottom: window.height / 10
+    },
     icone: {
-        width: 50,
-        height: 50,
+        width: window.width / 10,
+        height: window.width / 10,
         borderRadius: 9999
     },
     titulo: {
         width: "60%",
-        fontSize: 16,
+        fontSize: window.width / 30,
         fontWeight: '700',
         marginLeft: "3%",
         color: "#6B3BF4"
@@ -211,6 +215,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: "22%",
         justifyContent: 'space-between'
+    },
+    iconezin: {
+        width: window.width / 30,
+        height: window.width / 30
     },
     containerInfo: {
         width: "80%",
@@ -228,14 +236,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     textInfo: {
-        fontSize: 12,
+        fontSize: window.width / 35,
         fontWeight: "400",
         marginRight: 5,
         marginBottom: 5,
         color: "#838181"
     },
     textTempo: {
-        fontSize: 12,
+        fontSize: window.width / 35,
         fontWeight: "400",
         marginRight: 5,
         marginBottom: 5,
@@ -255,11 +263,11 @@ const styles = StyleSheet.create({
         marginLeft: "3%"
     },
     profNome: {
-        fontSize: 16,
+        fontSize: window.width / 30,
         fontWeight: '600'
     },
     profLabel: {
-        fontSize: 14,
+        fontSize: window.width / 35,
         color: "#838181"
     },
     containerCertificado: {
@@ -268,17 +276,17 @@ const styles = StyleSheet.create({
     },
     certificadoText: {
         marginLeft: "5%",
-        fontSize: 16,
+        fontSize: window.width / 30,
         color: "#838181"
     },
     containerInscricao: {
-        height: 50,
-        marginBottom: 50,
+        height: window.height / 10,
+        marginBottom: window.height / 10,
         alignItems: 'flex-start',
     },
     botaoInscricao: {
         width: "50%",
-        height: 50,
+        height: window.height / 10,
         borderRadius: 50,
         marginHorizontal: "25%",
         backgroundColor: "#6B3BF4",
@@ -287,7 +295,7 @@ const styles = StyleSheet.create({
     },
     textoInscricao: {
         color: "#FFF",
-        fontSize: 16,
+        fontSize: window.width / 20,
         fontWeight: '700'
     },
     modal: {

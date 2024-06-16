@@ -1,5 +1,5 @@
 import { router } from "expo-router"
-import { Button, ScrollView, StatusBar, Text, TouchableOpacity, Image, View, ActivityIndicator } from "react-native"
+import { Button, ScrollView, StatusBar, Text, TouchableOpacity, Image, View, ActivityIndicator, Dimensions } from "react-native"
 import Navbar from "./components/Navbar"
 import { useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
@@ -64,11 +64,11 @@ export default function Home() {
             </TouchableOpacity>
             {
                 carregado ?
-                    <ScrollView>
+                    <ScrollView style={{marginBottom: (Dimensions.get("screen").height / 10)}}>
                         {
                             eventosSelecionado === 0 ?
                                 eventos.map((i: Evento, index: number) => {
-                                    if ((Date.now() <= (i.data_evento as unknown as number)) && i.nome_evento.toLowerCase().includes(pesquisa.toLowerCase())) {
+                                    if (((Date.now() - 7200000) <= (i.data_evento as unknown as number)) && i.nome_evento.toLowerCase().includes(pesquisa.toLowerCase())) {
                                         return (
                                             <EventoCard key={index} data={i} previa={false} />
                                         )
