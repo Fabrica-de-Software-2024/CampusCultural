@@ -169,7 +169,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                 <View style={styles.imagemContainer}>
                     <Image style={styles.imagem} source={require('../../assets/mais_circulado.png')}></Image>
                 </View>
-
+                <TouchableOpacity onPress={()=>cancelar()}><Image style ={styles.cancel} source= {require('../../assets/cancel.png')}></Image></TouchableOpacity>
                 <Text style={styles.textoAdicionar}><Text style={{ color: '#6B3BF4' }}>Adicionar</Text> Evento</Text>
                 <Text style={styles.textoRoxo}>
                     Aqui você pode criar e editar eventos de maneira fácil! Preencha os campos abaixo:
@@ -278,6 +278,16 @@ const styles = StyleSheet.create({
         width: window.height / 15,
         height: window.height / 15,
         margin: 15
+    },
+
+    cancel: {
+        position: "absolute",
+        width: window.height / 20,
+        height: window.height / 20,
+        right: "-45%",
+        top: window.height / 50,
+
+
     },
 
     linhaForm: {

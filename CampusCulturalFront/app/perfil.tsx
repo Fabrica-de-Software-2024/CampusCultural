@@ -36,6 +36,7 @@ export default function Perfil() {
 	const engrenagem = require("../assets/engrenagem.png");
 	const certificado = require("../assets/certificado.png");
 	const chat = require("../assets/chat.png");
+	const sair = require("../assets/logout.png");
 	const figura1 = require("../assets/figura7.png");
 	const figura2 = require("../assets/figura8.png");
 	const figura3 = require("../assets/figura9.png");
@@ -148,6 +149,7 @@ export default function Perfil() {
 							<Text style={styles.buttonText}>Fale conosco</Text>
 						</TouchableOpacity>
 						<TouchableOpacity onPress={() => { AsyncStorage.setItem('login', "\0").then(() => router.replace("/")) }} style={styles.button}>
+							<Image source={sair} style={styles.icon} resizeMode="cover" />
 							<Text style={styles.buttonText}>Logout</Text>
 						</TouchableOpacity>
 					</View>
