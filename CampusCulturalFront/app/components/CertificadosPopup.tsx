@@ -1,12 +1,10 @@
-import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Text, Dimensions } from "react-native";
 
 export default function CertificadosCard(props: { setAberto: React.Dispatch<React.SetStateAction<boolean>> }) {
 
     const icone = require("../../assets/certificado_branco.png");
-
-    function cancelar() {
-        props.setAberto(false)
-    }
+    const cancel = require("../../assets/cancel.png");
+   
 
     return (
         <View style={styles.container}>
@@ -15,7 +13,7 @@ export default function CertificadosCard(props: { setAberto: React.Dispatch<Reac
             </View>
             <View style={styles.card}>
                 <View style={styles.containerFechar}>
-                    <TouchableOpacity onPress={() => props.setAberto(false)} style={styles.botaoFechar}><Text style={styles.textoFechar}>X</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => props.setAberto(false)} style={styles.botaoFechar}><Image source={cancel} style = {styles.cancel} /></TouchableOpacity>
                 </View>
                 <View style={styles.containerCardszin}>
                     <TouchableOpacity style={styles.cardzin}>
@@ -31,6 +29,7 @@ export default function CertificadosCard(props: { setAberto: React.Dispatch<Reac
     )
 }
 
+const window = Dimensions.get("screen")
 const styles = StyleSheet.create({
     container: {
         width: "80%",
@@ -69,10 +68,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         padding: 5,
-        margin: 5
+        margin: 25
     },
-    textoFechar: {
-        fontSize: 24
+    cancel:{
+        width: window.height / 20,
+        height: window.height / 20,
     },
     containerCardszin: {
         height: "70%",
