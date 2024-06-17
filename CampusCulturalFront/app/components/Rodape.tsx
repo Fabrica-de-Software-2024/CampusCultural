@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   touchable: {
     display: "flex",
     width: "33%",
+    height: window.height / 10,
     backgroundColor: "#FFF",
     justifyContent: "center",
     alignItems: "center"
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
   touchableAtivado: {
     display: "flex",
     width: "33%",
+    height: window.height / 10,
     backgroundColor: "#6B3BF4",
     justifyContent: "center",
     alignItems: "center"
