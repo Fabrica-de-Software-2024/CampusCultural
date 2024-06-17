@@ -1,3 +1,8 @@
+//  Componente do Popup de Edição de Eventos
+//
+//  O Popup aparece quando o Botão de Editar Evento é Pressionado e se parece com o Popup de Criar Eventos
+//  O Popup so pode ser visto por alguem com Permissão de Editar Eventos 
+//
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import EventoCard, { Evento, professor } from './EventoCard';
@@ -27,6 +32,7 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
 
     console.log(props.evento)
 
+    // Fazendo Requisição do Usuario Logado para atribui-lo como criador do Evento
     useEffect(() => {
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp);
@@ -37,11 +43,13 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
         })
     }, [data.professor_evento])
 
+    // Função para fechar o Popup caso haja desistencia na Edição do Evento
     function cancelar() {
         setData(props?.evento)
         props.setModal(false)
     }
 
+    // Função para selecionar a imagem que sera usada com banner do Evento no celular do Editor
     async function pegaImagem() {
         let _imagem = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -58,6 +66,7 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
         }
     }
 
+    // Função que envia as Informações Editadas fornecidas pelo Editor para API para Registro
     async function editar(data: Evento, imagem: string, setModal: React.Dispatch<React.SetStateAction<boolean>>) {
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp);
@@ -90,7 +99,7 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
     return (
 
         <View style={styles.body}>
-            {
+            {// Calendario usado para selecionar data e hora do Evento
                 calendario === 1 &&
                 <View style={styles.boxlight}>
                     <View style={styles.containerCalendario}>
@@ -117,15 +126,18 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
                 </View>
             }
             <View style={styles.container}>
+                {/*Cabeçalho do Popup*/}
                 <View style={styles.imagemContainer}>
                     <Image style={styles.imagem} source={require('../../assets/lapis.png')}></Image>
                 </View>
+                {/*Botao de Cancelar*/}
                 <TouchableOpacity onPress={()=>cancelar()}><Image style ={styles.cancel} source= {require('../../assets/cancel.png')}></Image></TouchableOpacity>
-                <Text style={styles.textoAdicionar}><Text style={{ color: '#6B3BF4' }}>Adicionar</Text> Evento</Text>
+                <Text style={styles.textoAdicionar}><Text style={{ color: '#6B3BF4' }}>Editar</Text> Evento</Text>
                 <Text style={styles.textoRoxo}>
                     Aqui você pode criar e editar eventos de maneira fácil! Preencha os campos abaixo:
                 </Text>
                 <View style={styles.containerInterno}>
+                    {/*Inputs de Informações do Evento*/}
                     <ScrollView style={styles.scroll}>
                         <Text style={styles.texto}>Insira um nome para o evento:</Text>
                         <TextInput style={styles.linhaForm} value={data.nome_evento} onChange={(e) => setData({ ...data, nome_evento: e.nativeEvent.text })}></TextInput>
@@ -139,9 +151,12 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
                         <TouchableOpacity style={{ paddingTop: 10, flexDirection: 'row' }} onPress={() => pegaImagem()}><Image style={{ marginRight: 5 }} source={iconBanner} /><Text style={styles.linhaForm}>{nomeImagem}</Text></TouchableOpacity>
                         <Text style={styles.texto}>Insira uma descrição para o evento:</Text>
                         <TextInput style={styles.linhaForm} value={data.descricao_evento} onChange={(e) => setData({ ...data, descricao_evento: e.nativeEvent.text })}></TextInput>
+                        
+                        {/*Prévia do Evento*/}
                         <Text style={styles.textoRoxo}>Prévia do evento:</Text>
                         <EventoCard data={data} previa={true} image={dataImage} />
                     </ScrollView>
+                    {/*Botão de Concluir*/}
                     <View style={styles.containerBotao}><TouchableOpacity style={styles.button} onPress={() => editar(data, dataImage, props.setModal)}><Text style={styles.buttonText}>Concluir</Text></TouchableOpacity></View>
                 </View>
             </View>
@@ -151,7 +166,7 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
     );
 }
 
-
+// Estilização dos Componentes
 const styles = StyleSheet.create({
     body: {
         flex: 1,

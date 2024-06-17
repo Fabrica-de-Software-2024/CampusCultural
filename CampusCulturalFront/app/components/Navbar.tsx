@@ -1,3 +1,8 @@
+//  Componente da NavBar Superior
+//  
+//  Esse Componente aparece nas telas Home, Calendario e Perfil como Cabeçalho, mas a Navbar so aparece na tela de Home
+//  Ele mostra o nome da tela que o usuário esta no momento e nas telas de home e calendario ela possui uma lupa para filtrar os eventos por nome
+//
 import { useRef, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, Dimensions, TextInput } from "react-native";
 
@@ -9,14 +14,16 @@ export default function Navbar(props: { title: string, links: boolean, pesquisa?
 
   return (
     <>
+      {/*Barra de Notificações*/}
       <StatusBar
         backgroundColor="#8A60FF"
         barStyle="light-content"
       />
       <View style={styles.container}>
+        {/*Cabeçalho*/}
         <Image style={styles.imagem} source={logo} />
         <Text style={styles.titulo}>{props?.title}</Text>
-
+        {/*Pesquisa*/}
         <TouchableOpacity style={props.pesquisa ? pesquisando? {...styles.pesquisa, backgroundColor: "#A180FF"} : {...styles.pesquisa} : { display: "none" }} onPress={()=> {setPesquisando(true); inputRef.current.focus()}}>
           <TextInput
             style={styles.input}
@@ -28,7 +35,7 @@ export default function Navbar(props: { title: string, links: boolean, pesquisa?
           <Image style={styles.lupa} source={lupa} />
         </TouchableOpacity>
 
-      </View>
+      </View>{/*NavBar*/}
       <View style={props.links === false ? styles.naobarra : styles.barra}>
         <TouchableOpacity onPress={() => props.setSelecionado(0)}>
           <Text style={props.selecionado === 0 ? styles.selecionado : styles.link}>Próximos Eventos</Text>
@@ -44,6 +51,7 @@ export default function Navbar(props: { title: string, links: boolean, pesquisa?
   )
 }
 
+// Estilização dos Componentes
 const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({

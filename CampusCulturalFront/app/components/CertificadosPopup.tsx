@@ -1,3 +1,8 @@
+//  Popup de Certificados do Perfil
+//
+//  Esse Popup permite Visualizar os Certificados no Perfil
+//  Não foi totalmente desenvolvido no MVP
+//
 import { View, StyleSheet, Image, TouchableOpacity, Text, Dimensions } from "react-native";
 
 export default function CertificadosCard(props: { setAberto: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -29,6 +34,7 @@ export default function CertificadosCard(props: { setAberto: React.Dispatch<Reac
     )
 }
 
+// Estilização dos Componentes
 const window = Dimensions.get("screen")
 const styles = StyleSheet.create({
     container: {

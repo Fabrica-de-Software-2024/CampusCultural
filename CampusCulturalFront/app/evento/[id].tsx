@@ -1,3 +1,8 @@
+//  Tela de Visualização completa de um Evento.
+//  
+//  Essa tela Exibe um evento em detalhes
+//  e permite que o usuário se inscreva ou se desinscreva dele
+//  
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert, ActivityIndicator, Dimensions } from "react-native";
@@ -8,6 +13,7 @@ import EditarEvento from '../components/EditarEventoPopup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { back_url } from '../../api_link';
 
+// Requisição dos dados do Evento e do seu Banner
 export async function puxaEvento(id: number, setImagem: React.Dispatch<React.SetStateAction<string>>) {
     try {
         const resp = await fetch(`${back_url}/evento/${id}`);
@@ -34,7 +40,7 @@ export default function Evento() {
 
     const [carregado, setCarregado] = useState(false)
 
-    const [usuario, setUsuario] = useState({ usuario: "", inscricao: "" });
+    const [usuario, setUsuario] = useState({ usuario: "", inscricao: "", is_professor: false });
 
     const icone = require("../../assets/icone_evento.png");
     const banner = require("../../assets/evento_card_1.png");
@@ -49,6 +55,7 @@ export default function Evento() {
     const [difString, setDiffString] = useState("");
     const [modalEdit, setmodalEdit] = useState(false);
 
+    // Função que faz ou remove a inscrição
     function gereinscricao() {
         console.log(inscrito)
 
@@ -87,16 +94,27 @@ export default function Evento() {
 
     useEffect(() => {
         try {
+            // Requisição do evento
             puxaEvento(params.id as unknown as number, setImagem).then(async (resp) => {
                 setDados(resp);
+                // Requisição do Criador do Evento
                 setProf(await professor(resp.professor_evento));
+                // Requisição das informações do usuário para verificar se ele esta inscrito no evento
                 AsyncStorage.getItem('login').then(async (resp2) => {
                     let _dados = JSON.parse(resp2)
                     let inscrito = await fetch(`${back_url}/inscricao/usuario/${_dados?.id_usuario}/${resp.id_evento}`)
-                    let inscrito2 = await inscrito.json();
-                    setUsuario({ usuario: _dados.id_usuario, inscricao: inscrito2.id_evento_inscricao });
-                    inscrito2 ? setInscrito(true) : setInscrito(false);
+
+                    if (inscrito.status === 200) {
+                        let inscrito2 = await inscrito.json();
+                        setUsuario({ usuario: _dados.id_usuario, inscricao: inscrito2.id_evento_inscricao, is_professor: _dados.is_professor });
+                        setInscrito(true)
+                    }
+                    else {
+                        setUsuario({ usuario: _dados.id_usuario, inscricao: "", is_professor: _dados.is_professor });
+                        setInscrito(false)
+                    }
                 })
+                // Calculo de quanto tempo falta para o evento ou se ja acabou e definição das string vermelha de quanto tempo falta
                 let datanum = resp.data_evento as unknown as number;
                 let _data = new Date(Math.floor(datanum / 1000) * 1000);
                 setData(_data.toLocaleString("pt-BR", { dateStyle: "long" }));
@@ -120,7 +138,7 @@ export default function Evento() {
 
 
 
-
+            {/*Modal de Edição do Evento*/}
             <Modal style={styles.modal} animationType="slide" transparent={true} visible={modalEdit} onRequestClose={() => setmodalEdit(false)} >
                 <EditarEvento evento={dados} setModal={setmodalEdit} />
             </Modal>
@@ -129,16 +147,22 @@ export default function Evento() {
 
                     <>
 
-                        {imagem != "" && <Image source={{ uri: imagem }} style={styles.imagem} resizeMode='cover' />}
+                        {// Banner do Evento
+                            imagem != "" &&
+                            <Image source={{ uri: imagem }} style={styles.imagem} resizeMode='cover' />
+                        }
                         <ScrollView style={styles.scroll}>
 
+                            {/*Titulo, foto do criador e botões de ação do evento*/}
                             <View style={styles.containerTitulo}>
                                 <Image style={styles.icone} source={{ uri: prof.imagem }} />
                                 <Text style={styles.titulo}>{dados?.nome_evento}</Text>
                                 <View style={styles.containerBotoes}>
-                                    <TouchableOpacity onPress={() => setmodalEdit(true)}>
-                                        <Image style={styles.iconezin} source={editar} />
-                                    </TouchableOpacity>
+                                    {
+                                        usuario?.is_professor && <TouchableOpacity onPress={() => setmodalEdit(true)}>
+                                            <Image style={styles.iconezin} source={editar} />
+                                        </TouchableOpacity>
+                                    }
                                     <TouchableOpacity>
                                         <Image style={styles.iconezin} source={olho} />
                                     </TouchableOpacity>
@@ -147,6 +171,7 @@ export default function Evento() {
                                     </TouchableOpacity>
                                 </View>
                             </View>
+                            {/*Informações gerais do evento*/}
                             <View style={styles.containerInfo}>
                                 <View style={styles.containerData}><Text style={styles.textInfo}>{data}</Text><Image style={styles.iconezin} source={calendario} /></View>
                                 <Text style={styles.textInfo}>Local: {dados?.local_evento}</Text>
@@ -165,6 +190,7 @@ export default function Evento() {
                                 </View>
 
                             </View>
+                            {/*Botão de Inscrever-se ou Cancelar Inscrição do evento*/}
                             <View style={styles.containerInscricao}>
                                 <TouchableOpacity style={styles.botaoInscricao} onPress={() => gereinscricao()}>
                                     <Text style={styles.textoInscricao}>{inscrito ? "Cancelar Inscrição" : "Inscreva-se"}</Text>
@@ -174,7 +200,7 @@ export default function Evento() {
                         </ScrollView>
                     </>
                     :
-                    <View style={styles.carregando}>
+                    <View style={styles.carregando}>{/*Carregamento*/}
                         <ActivityIndicator size={"large"} color={"#8A60FF"} />
                     </View>
             }
@@ -183,6 +209,8 @@ export default function Evento() {
     )
 }
 
+
+// Estilização dos Componentes
 const window = Dimensions.get('screen');
 
 const styles = StyleSheet.create({

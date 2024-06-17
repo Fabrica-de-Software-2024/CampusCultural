@@ -1,3 +1,8 @@
+//  Popup de Configurações do Perfil
+//
+//  Esse Popup permite editar as configurações do Perfil
+//  Não foi totalmente desenvolvido no MVP
+//
 import { View, StyleSheet, Image, TouchableOpacity, Text, Dimensions } from "react-native";
 
 export default function ConfiguracoesCard(props: { setAberto: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -39,6 +44,7 @@ export default function ConfiguracoesCard(props: { setAberto: React.Dispatch<Rea
     )
 }
 
+// Estilização dos Componentes
 const window = Dimensions.get("screen")
 const styles = StyleSheet.create({
     container: {

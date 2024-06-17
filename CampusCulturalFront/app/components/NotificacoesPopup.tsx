@@ -1,3 +1,8 @@
+//  Popup de Notificações do Perfil
+//
+//  Esse Popup permite editar as configurações de Notificação do Perfil
+//  Não foi totalmente desenvolvido no MVP
+//
 import { Dispatch, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Text, Switch, Dimensions } from "react-native";
 
@@ -66,6 +71,8 @@ export default function NotificacoesCard(props: { setAberto: React.Dispatch<Reac
         </View>
     )
 }
+
+// Estilização dos Componentes
 const window = Dimensions.get("screen")
 const styles = StyleSheet.create({
     container: {

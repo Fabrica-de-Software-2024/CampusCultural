@@ -1,3 +1,8 @@
+//	Tela de Perfil do Usuário
+//
+//	Essa tela exibe informações do usuario e permite que ele altere sua imagem de perfil
+//	e configurações basicas
+//
 import React, { useEffect, useState } from "react";
 import {
 	View,
@@ -22,6 +27,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
 import { back_url } from "../api_link";
 
+{/*Definição do Tipo: Usuário*/ }
 export type Usuario = {
 	"id_usuario": string,
 	"nome_usuario": string,
@@ -50,6 +56,7 @@ export default function Perfil() {
 	const [dados, setDados] = useState<Usuario>()
 	const [alteraImagem, setAlteraImagem] = useState(null);
 
+	{/*Função para alterar a imagem de perfil do usuário*/ }
 	async function pegaImagem() {
 		let _imagem = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -82,7 +89,7 @@ export default function Perfil() {
 			else { Alert.alert("Erro", "Não foi possivel atualizar a imagem.") }
 		}
 	}
-
+	{/*Requisição dos dados do usuário*/ }
 	useEffect(() => {
 		AsyncStorage.getItem('login').then(async (resp) => {
 			let _dados = JSON.parse(resp)
@@ -104,12 +111,14 @@ export default function Perfil() {
 
 	return (
 		<>
+			{/*Botão de adicionar evento*/}
 			{
 				dados?.is_professor ?
 					<BotaoAddEvento />
 					:
 					<></>
 			}
+			{/*Modais do perfil*/}
 			<Modal style={styles.modal} animationType="slide" transparent={true} visible={modalNotificacoes} onRequestClose={() => setModalNotificacoes(false)} >
 				<NotificacoesCard setAberto={setModalNotificacoes} />
 			</Modal>
@@ -125,12 +134,14 @@ export default function Perfil() {
 			<Navbar title="Minha Conta" links={false} />
 			{carregado ?
 				<View style={styles.container}>
+					{/*Dados do Perfil do Usuário*/}
 					<View style={styles.userInfo}>
 						<TouchableOpacity style={styles.editaImagem} onPress={() => pegaImagem()}><Image style={styles.lapis} source={lapis} /></TouchableOpacity>
 						<Image source={alteraImagem !== null ? { uri: alteraImagem } : require("../assets/icone_evento.png")} style={styles.imagem} resizeMode="cover" />
 						<Text style={styles.nome}>{dados?.nome_usuario}</Text>
 						<Text style={styles.curso}>{dados?.atributo[0] + dados?.atributo.slice(1).toLowerCase()}</Text>
 					</View>
+					{/*Botões de acionamento dos Modais*/}
 					<View style={styles.textContainer}>
 						<TouchableOpacity onPress={() => setModalNotificacoes(true)} style={styles.button}>
 							<Image source={sino} style={styles.icon} resizeMode="cover" />
@@ -155,10 +166,11 @@ export default function Perfil() {
 					</View>
 				</View>
 				:
-				<View style={styles.carregando}>
+				<View style={styles.carregando}>{/*Carregamento*/}
 					<ActivityIndicator size={"large"} color={"#8A60FF"} />
 				</View>
 			}
+			{/*figuras do fundo*/}
 			<Image style={styles.figura1} source={figura1} />
 			<Image style={styles.figura2} source={figura2} />
 			<Image style={styles.figura3} source={figura3} />
@@ -168,6 +180,8 @@ export default function Perfil() {
 	);
 };
 
+
+// Estilização dos Componentes
 const window = Dimensions.get("window");
 
 const styles = StyleSheet.create({

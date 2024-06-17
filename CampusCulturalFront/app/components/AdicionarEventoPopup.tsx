@@ -1,3 +1,8 @@
+//  Componente do Popup de Criação de Eventos
+//
+//  O Popup aparece quando o Botão de Criar Eventos é Pressionado e se parece com o Popup de Editar Eventos
+//  O Popup so pode ser visto por alguem com Permissão de Criar Eventos 
+//
 import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import EventoCard, { Evento, professor } from './EventoCard';
 import { useEffect, useState } from 'react';
@@ -7,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { back_url } from '../../api_link';
 
+//  Tradução do Calendario de selecionar data
 export const locale = {
     "formats": {
         "L": "DD/MM/YYYY", "LL": "D [de] MMMM [de] YYYY", "LLL": "D [de] MMMM [de] YYYY [às] HH:mm", "LLLL": "dddd, D [de] MMMM [de] YYYY [às] HH:mm", "LT": "HH:mm", "LTS": "HH:mm:ss"
@@ -57,6 +63,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
 
     const [dataImage, setDataImage] = useState("")
 
+    // Objeto que guarda as informações do Evento que estão sendo preenchidas pelo Criador
     const [data, setData] = useState<Evento>(
         {
             professor_evento: "",
@@ -68,6 +75,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         }
     )
 
+    // Fazendo Requisição do Usuario Logado para atribui-lo como criador do Evento
     useEffect(() => {
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp);
@@ -76,7 +84,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
     }, [data.professor_evento])
 
 
-
+    // Função para fechar o Popup caso haja desistencia na Criação do Evento
     function cancelar() {
         setData(
             {
@@ -91,6 +99,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         props.setModal(false)
     }
 
+    // Função para selecionar a imagem que sera usada com banner do Evento no celular do Criador
     async function pegaImagem() {
         let _imagem = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -107,6 +116,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
         }
     }
 
+    // Função que envia as informações fornecidas pelo criador do Evento para a API para que o Evento seja cadastrado
     async function adicionar(data: Evento, imagem: string, setModal: React.Dispatch<React.SetStateAction<boolean>>) {
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp);
@@ -139,7 +149,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
     return (
 
         <View style={styles.body}>
-            {
+            {// Calendario usado para selecionar data e hora do Evento
                 calendario === 1 &&
                 <View style={styles.boxlight}>
                     <View style={styles.containerCalendario}>
@@ -166,15 +176,18 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                 </View>
             }
             <View style={styles.container}>
+                {/*Cabeçalho do Popup*/}
                 <View style={styles.imagemContainer}>
                     <Image style={styles.imagem} source={require('../../assets/mais_circulado.png')}></Image>
                 </View>
+                {/*Botao de Cancelar*/}
                 <TouchableOpacity onPress={()=>cancelar()}><Image style ={styles.cancel} source= {require('../../assets/cancel.png')}></Image></TouchableOpacity>
                 <Text style={styles.textoAdicionar}><Text style={{ color: '#6B3BF4' }}>Adicionar</Text> Evento</Text>
                 <Text style={styles.textoRoxo}>
                     Aqui você pode criar e editar eventos de maneira fácil! Preencha os campos abaixo:
                 </Text>
                 <View style={styles.containerInterno}>
+                    {/*Inputs de Informações do Evento*/}
                     <ScrollView style={styles.scroll}>
                         <Text style={styles.texto}>Insira um nome para o evento:</Text>
                         <TextInput style={styles.linhaForm} value={data.nome_evento} onChange={(e) => setData({ ...data, nome_evento: e.nativeEvent.text })}></TextInput>
@@ -188,9 +201,12 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
                         <TouchableOpacity style={{ paddingTop: 10, flexDirection: 'row' }} onPress={() => pegaImagem()}><Image style={{ marginRight: 5 }} source={iconBanner} /><Text style={styles.linhaForm}>{nomeImagem}</Text></TouchableOpacity>
                         <Text style={styles.texto}>Insira uma descrição para o evento:</Text>
                         <TextInput style={styles.linhaForm} value={data.descricao_evento} onChange={(e) => setData({ ...data, descricao_evento: e.nativeEvent.text })}></TextInput>
+                        
+                        {/*Prévia do Evento*/}
                         <Text style={styles.textoRoxo}>Prévia do evento:</Text>
                         <EventoCard data={data} previa={true} image={dataImage} />
                     </ScrollView>
+                    {/*Botão de Concluir*/}
                     <View style={styles.containerBotao}><TouchableOpacity style={styles.button} onPress={() => adicionar(data, dataImage, props.setModal)}><Text style={styles.buttonText}>Concluir</Text></TouchableOpacity></View>
                 </View>
             </View>
@@ -200,6 +216,7 @@ export default function AdicionarEvento(props: { setModal: React.Dispatch<React.
     );
 }
 
+// Estilização dos Componentes
 const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({

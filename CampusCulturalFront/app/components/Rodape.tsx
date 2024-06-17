@@ -1,3 +1,8 @@
+//  Componente do Rodapé
+//  
+//  Esse componente aparece nas telas Home, Calendário, Perfil e Evento
+//  Ele possui 3 botões que podem ser usados para navegar entre as telas
+//  
 import { router } from "expo-router";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 
@@ -12,12 +17,15 @@ export default function Rodape(props: { selecionado: number }) {
   return (
     <>
       <View style={styles.container}>
+        {/*Botão Home*/}
         <TouchableOpacity style={props.selecionado === 1 ? styles.touchableAtivado : styles.touchable} onPress={() => router.navigate("/home")}>
           <Image style={styles.imagem} source={props.selecionado === 1 ? home_branco : home} />
         </TouchableOpacity>
+        {/*Botão Calendário*/}
         <TouchableOpacity style={props.selecionado === 2 ? styles.touchableAtivado : styles.touchable} onPress={() => router.navigate("/calendario")}>
           <Image style={styles.imagem} source={props.selecionado === 2 ? calendario_branco : calendario} />
         </TouchableOpacity>
+        {/*Botão Perfil*/}
         <TouchableOpacity style={props.selecionado === 3 ? styles.touchableAtivado : styles.touchable} onPress={() => router.navigate("/perfil")}>
           <Image style={styles.imagem} source={props.selecionado === 3 ? perfil_branco : perfil} />
         </TouchableOpacity>
@@ -26,6 +34,7 @@ export default function Rodape(props: { selecionado: number }) {
   )
 }
 
+// Estilização dos Componentes
 const window = Dimensions.get('screen');
 
 const styles = StyleSheet.create({

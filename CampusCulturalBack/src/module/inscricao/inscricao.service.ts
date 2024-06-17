@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../database/PrismaService';
 import { Evento_InscricaoDTO } from './inscricao.dto';
 import { error } from 'console';
@@ -16,7 +16,8 @@ export class EventoInscricaoService {
                 id_evento_inscricao
             }
         })
-        return evento_inscricao;
+        if (evento_inscricao) { return evento_inscricao; }
+        else throw new NotFoundException("Inscrição não Encontrada")
     }
     async findEvento(id_inscricao_evento: number) {
         const evento_inscricao = await this.prisma.evento_Inscricao.findMany({
@@ -24,7 +25,8 @@ export class EventoInscricaoService {
                 id_inscricao_evento
             }
         })
-        return evento_inscricao;
+        if (evento_inscricao) { return evento_inscricao; }
+        else throw new NotFoundException("Inscrição não Encontrada")
     }
     async findUsuario(id_inscricao_usuario: string) {
         const evento_inscricao = await this.prisma.evento_Inscricao.findMany({
@@ -32,7 +34,8 @@ export class EventoInscricaoService {
                 id_inscricao_usuario
             }
         })
-        return evento_inscricao;
+        if (evento_inscricao) { return evento_inscricao; }
+        else throw new NotFoundException("Inscrição não Encontrada")
     }
     async findUsuarioEvento(id_inscricao_usuario: string, id_inscricao_evento: number) {
         const evento_inscricao = await this.prisma.evento_Inscricao.findFirst({
@@ -41,7 +44,8 @@ export class EventoInscricaoService {
                 id_inscricao_evento: Number(id_inscricao_evento)
             }
         })
-        return evento_inscricao;
+        if (evento_inscricao) { return evento_inscricao; }
+        else throw new NotFoundException("Inscrição não Encontrada")
     }
     async create(data: Evento_InscricaoDTO) {
         console.log(data)

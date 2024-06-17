@@ -1,3 +1,8 @@
+ //  Tela Inicial do React Native
+//
+//  No momento ela redireciona para a tela de login, mas pode redirecionar usuário
+//  para a tela de Home caso o usuário ja tenha logado antes
+//
 import { router } from "expo-router"
 import { useEffect } from "react"
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View, ActivityIndicator } from "react-native"
@@ -8,6 +13,7 @@ export default function Index() {
 
     useEffect(() => {
         AsyncStorage.getItem('login').then(async (resp) => {
+            {/* Codigo comentado: manter login na proxima vez que abrir o app */ }
             /*if (resp != null) {
                 const resp2 = await JSON.parse(resp);
                 const usuario = await fetch(`https://campus-cultural.vercel.app/usuario/${resp2.id_usuario}`);
@@ -19,12 +25,13 @@ export default function Index() {
                     console.log(err);
                 }
             }
-            else*/ router.replace("/login")
+            else*/ router.replace("/login"); {/*Enviar para tela de login*/}
         });
     })
 
     return (
         <>
+            {/*Código comentado: botoes de debug para acessar telas sem precisar de login*/}
             {/*
         <ScrollView style={styles.container}>
             <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/login")}><Text style={styles.texto}>Login</Text></TouchableOpacity>
@@ -32,6 +39,7 @@ export default function Index() {
             <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/home")}><Text style={styles.texto}>Home</Text></TouchableOpacity>
         </ScrollView>
         */}
+            {/*Carregamento*/}
             < View style={styles.carregando} >
                 <ActivityIndicator size={"large"} color={"#8A60FF"} />
             </View >
@@ -39,6 +47,7 @@ export default function Index() {
     )
 }
 
+// Estilização dos Componentes
 const styles = StyleSheet.create({
     container: {
         display: "flex",

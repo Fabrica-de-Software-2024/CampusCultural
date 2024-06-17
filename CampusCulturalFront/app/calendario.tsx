@@ -1,3 +1,8 @@
+//  Tela do Calendário
+//
+//  Essa tela exibe os eventos baseado na data selecionada no calendário
+//  Os eventos tambem podem ser filtrados pelo nome ao clicar na lupa
+//
 import { router } from "expo-router"
 import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, ActivityIndicator, Dimensions } from "react-native"
 import Navbar from "./components/Navbar"
@@ -37,6 +42,7 @@ export default function Calendario() {
     var index2 = 0;
 
     useEffect(() => {
+        // Requisição do Usuário
         AsyncStorage.getItem('login').then(async (resp) => {
             let _dados = JSON.parse(resp)
             setDados({
@@ -47,9 +53,10 @@ export default function Calendario() {
                 "atributo": _dados?.atributo_usuario
             });
         })
-
+        // Requisição dos Eventos
         puxaEventos().then((e) => setEventos(e)).finally(() => setCarregado(true))
 
+        // Logica de Construção do Calendário
         var _mes = new Date(data).getMonth()
 
         if (_mes === 1) {
@@ -114,13 +121,14 @@ export default function Calendario() {
     return (
         <>
             <Navbar title={"Calendário"} pesquisa={true} setPesquisa={setPesquisa} links={false} />
-            {
+            {// Botão de Adicionar Evento
                 dados?.is_professor ?
                     <BotaoAddEvento />
                     :
                     <></>
             }
             <View style={styles.container}>
+                {/*Calendário*/}
                 <View style={styles.calendarioContainer}>
                     <View style={styles.calendarioContainerTitulo}>
                         <TouchableOpacity onPress={() => passaMes(-1, data, setData)}><Text style={styles.calendarioTitulo}>{"<"}</Text></TouchableOpacity>
@@ -159,7 +167,7 @@ export default function Calendario() {
                 </View>
                 <View style={styles.bottomContainer}>
                     <Text style={styles.tituloEventos}>Próximos <Text style={{ color: "#411BAA" }}>Eventos</Text></Text>
-                    {
+                    {// Map dos Eventos
                         carregado ?
                             <ScrollView style={styles.containerEventos}>
                                 {
@@ -179,7 +187,7 @@ export default function Calendario() {
                                 }
                             </ScrollView>
                             :
-                            <View style={styles.carregando}>
+                            <View style={styles.carregando}>{/*Carregamento*/}
                                 <ActivityIndicator size={"large"} color={"#8A60FF"} />
                             </View>
                     }
@@ -192,6 +200,7 @@ export default function Calendario() {
     )
 }
 
+// Função de alterar o Mês
 function passaMes(qnt: number, data: number, setData: React.Dispatch<React.SetStateAction<number>>) {
     if (new Date(data).getMonth() + qnt > 11) {
         setData(new Date(new Date(data).getFullYear() + 1, 0, 1).getTime())
@@ -202,6 +211,8 @@ function passaMes(qnt: number, data: number, setData: React.Dispatch<React.SetSt
     else setData(new Date(new Date(data).getFullYear(), new Date(data).getMonth() + qnt, 1).getTime())
 }
 
+
+// Estilização dos Componentes
 const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({

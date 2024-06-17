@@ -1,3 +1,8 @@
+//  Popup de Ajuda do Perfil
+//
+//  Esse Popup permite tirar dúvidas e receber suporte no Perfil
+//  Não foi totalmente desenvolvido no MVP
+//
 import { Link } from "expo-router";
 import { View, StyleSheet, Image, TouchableOpacity, Text, Dimensions } from "react-native";
 
@@ -29,6 +34,8 @@ export default function AjudaCard(props:{setAberto: React.Dispatch<React.SetStat
         </View>
     )
 }
+
+// Estilização dos Componentes
 const window = Dimensions.get("screen")
 const styles = StyleSheet.create({
     container: {

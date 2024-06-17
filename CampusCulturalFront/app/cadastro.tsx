@@ -1,3 +1,8 @@
+//  Tela de Cadastro de Usuário  
+//
+//  Essa tela inteira foi removida, devido a termos conseguido acesso a API do Siacoes
+//  A ideia inicial era usa-la para cadastrar um novo usuário
+//
 import { router } from "expo-router"
 import { useState } from "react";
 import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
@@ -87,6 +92,8 @@ export default function Cadastro() {
     );
 }
 
+
+// Estilização dos Componentes
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
