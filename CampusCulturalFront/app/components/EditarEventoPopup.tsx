@@ -100,17 +100,19 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
                             timePicker={true}
                             date={dataEvento}
                             onChange={(params) => setDataEvento(new Date(params.date.toString()))}
-                            calendarTextStyle={{ color: "#FFF", fontSize: window.width / 10 }}
-                            todayTextStyle={{ color: "#FFF", fontSize: window.width / 10 }}
-                            headerTextStyle={{ color: "#FFF", fontSize: window.width / 10 }}
-                            weekDaysTextStyle={{ color: "#FFF", fontSize: window.width / 10 }}
+                            selectedTextStyle={{ color: "#FFF", fontSize: window.width / 30 }}
+                            calendarTextStyle={{ color: "#FFF", fontSize: window.width / 30 }}
+                            todayTextStyle={{ color: "#FFF", fontSize: window.width / 30 }}
+                            headerTextStyle={{ color: "#FFF", fontSize: window.width / 30 }}
+                            weekDaysTextStyle={{ color: "#FFF", fontSize: window.width / 30 }}
+                            timePickerTextStyle={{ color: "#FFF", fontSize: window.width / 30 }}
                             monthContainerStyle={{ backgroundColor: "#00000000", borderWidth: 0 }}
                             yearContainerStyle={{ backgroundColor: "#00000000", borderWidth: 0 }}
                             timePickerIndicatorStyle={{ backgroundColor: "#8A60FF" }}
                             headerButtonColor="#FFF"
                             selectedItemColor="#8A60FF"
                         />
-                        <TouchableOpacity style={styles.button} onPress={() => { setCalendario(0); setData({ ...data, data_evento: dataEvento.getTime().toString() }) }}><Text style={styles.buttonTextCalendario}>Concluir</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonCalendario} onPress={() => { setCalendario(0); setData({ ...data, data_evento: dataEvento.getTime().toString() }) }}><Text style={styles.buttonTextCalendario}>OK</Text></TouchableOpacity>
                     </View>
                 </View>
             }
@@ -184,8 +186,9 @@ const styles = StyleSheet.create({
 
     containerCalendario: {
         position: 'absolute',
-        width: "90%",
-        backgroundColor: "#6B3BF4",
+        width: "80%",
+        paddingHorizontal: "5%",
+        backgroundColor: "#1D065D",
         borderRadius: 10
     },
 
@@ -242,6 +245,17 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         marginTop: '10%',
         fontSize: window.height / 40,
+    },
+
+    buttonCalendario: {
+        alignItems: 'center',
+        padding: 5,
+        backgroundColor: '#6B3BF4',
+        borderRadius: 40,
+        marginBottom: '5%',
+        fontSize: window.height / 40,
+        width: "30%",
+        marginLeft: "70%"
     },
 
     buttonText: {
