@@ -9,6 +9,8 @@ import { router } from 'expo-router';
 import { back_url } from '../../api_link';
 import { locale } from './AdicionarEventoPopup';
 
+const window = Dimensions.get('window');
+
 export default function EditarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>>, evento: Evento }) {
 
     const iconBanner = require("../../assets/escolher_imagem.png")
@@ -98,10 +100,10 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
                             timePicker={true}
                             date={dataEvento}
                             onChange={(params) => setDataEvento(new Date(params.date.toString()))}
-                            calendarTextStyle={{ color: "#FFF" }}
-                            todayTextStyle={{ color: "#FFF" }}
-                            headerTextStyle={{ color: "#FFF" }}
-                            weekDaysTextStyle={{ color: "#FFF" }}
+                            calendarTextStyle={{ color: "#FFF", fontSize: window.width / 10 }}
+                            todayTextStyle={{ color: "#FFF", fontSize: window.width / 10 }}
+                            headerTextStyle={{ color: "#FFF", fontSize: window.width / 10 }}
+                            weekDaysTextStyle={{ color: "#FFF", fontSize: window.width / 10 }}
                             monthContainerStyle={{ backgroundColor: "#00000000", borderWidth: 0 }}
                             yearContainerStyle={{ backgroundColor: "#00000000", borderWidth: 0 }}
                             timePickerIndicatorStyle={{ backgroundColor: "#8A60FF" }}
@@ -147,7 +149,6 @@ export default function EditarEvento(props: { setModal: React.Dispatch<React.Set
     );
 }
 
-const window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     body: {
