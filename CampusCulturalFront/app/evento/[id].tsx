@@ -190,12 +190,13 @@ export default function Evento() {
                                 </View>
 
                             </View>
-                            {/*Botão de Inscrever-se ou Cancelar Inscrição do evento*/}
-                            <View style={styles.containerInscricao}>
-                                <TouchableOpacity style={styles.botaoInscricao} onPress={() => gereinscricao()}>
-                                    <Text style={styles.textoInscricao}>{inscrito ? "Cancelar Inscrição" : "Inscreva-se"}</Text>
-                                </TouchableOpacity>
-                            </View>
+                            {//Botão de Inscrever-se ou Cancelar Inscrição do evento
+                                ((Number(dados.data_evento) + 7200000) > Date.now()) && <View style={styles.containerInscricao}>
+                                    <TouchableOpacity style={styles.botaoInscricao} onPress={() => gereinscricao()}>
+                                        <Text style={styles.textoInscricao}>{inscrito ? "Cancelar Inscrição" : "Inscreva-se"}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
 
                         </ScrollView>
                     </>
@@ -300,7 +301,8 @@ const styles = StyleSheet.create({
     },
     containerCertificado: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingBottom: window.height / 70,
     },
     certificadoText: {
         marginLeft: "5%",
