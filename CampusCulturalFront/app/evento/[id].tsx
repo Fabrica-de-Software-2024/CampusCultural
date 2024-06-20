@@ -4,17 +4,18 @@
 //  e permite que o usuário se inscreva ou se desinscreva dele
 //  
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity, ScrollView, Modal, Alert, ActivityIndicator, Dimensions } from "react-native";
 import Navbar from '../components/Navbar';
 import Rodape from '../components/Rodape';
 import { Evento as EventoDTO, professor } from '../components/EventoCard';
 import EditarEvento from '../components/EditarEventoPopup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { back_url } from '../../api_link';
+import { BackendContext } from '../contexts/BackendContext';
+
 
 // Requisição dos dados do Evento e do seu Banner
-export async function puxaEvento(id: number, setImagem: React.Dispatch<React.SetStateAction<string>>) {
+export async function puxaEvento(id: number, setImagem: React.Dispatch<React.SetStateAction<string>>, back_url: string) {
     try {
         const resp = await fetch(`${back_url}/evento/${id}`);
         const resp2 = await resp.json();
@@ -28,6 +29,8 @@ export async function puxaEvento(id: number, setImagem: React.Dispatch<React.Set
 }
 
 export default function Evento() {
+    const { back_url } = useContext(BackendContext)
+
     const params = useLocalSearchParams();
 
     const [dados, setDados] = useState<EventoDTO>()
@@ -95,10 +98,10 @@ export default function Evento() {
     useEffect(() => {
         try {
             // Requisição do evento
-            puxaEvento(params.id as unknown as number, setImagem).then(async (resp) => {
+            puxaEvento(params.id as unknown as number, setImagem, back_url).then(async (resp) => {
                 setDados(resp);
                 // Requisição do Criador do Evento
-                setProf(await professor(resp.professor_evento));
+                setProf(await professor(resp.professor_evento, back_url));
                 // Requisição das informações do usuário para verificar se ele esta inscrito no evento
                 AsyncStorage.getItem('login').then(async (resp2) => {
                     let _dados = JSON.parse(resp2)

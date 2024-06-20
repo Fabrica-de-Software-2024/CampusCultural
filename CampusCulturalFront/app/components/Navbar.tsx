@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flexDirection: "row",
     backgroundColor: "#8A60FF",
+    paddingTop: window.height / 40,
     width: window.width
   },
   imagem: {

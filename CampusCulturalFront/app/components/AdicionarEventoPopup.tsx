@@ -5,12 +5,12 @@
 //
 import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import EventoCard, { Evento, professor } from './EventoCard';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import DateTimePicker from 'react-native-ui-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
-import { back_url } from '../../api_link';
+import { BackendContext } from '../contexts/BackendContext';
 
 //  Tradução do Calendario de selecionar data
 export const locale = {
@@ -52,6 +52,7 @@ export const locale = {
 }
 
 export default function AdicionarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>> }) {
+	const { back_url } = useContext(BackendContext)
 
     const iconBanner = require("../../assets/escolher_imagem.png")
 

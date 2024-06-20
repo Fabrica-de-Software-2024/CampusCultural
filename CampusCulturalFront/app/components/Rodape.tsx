@@ -4,7 +4,7 @@
 //  Ele possui 3 botões que podem ser usados para navegar entre as telas
 //  
 import { router } from "expo-router";
-import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { Image, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 
 export default function Rodape(props: { selecionado: number }) {
   const home = require("../../assets/casa.png");

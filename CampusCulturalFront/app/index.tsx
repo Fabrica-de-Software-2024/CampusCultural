@@ -1,18 +1,24 @@
- //  Tela Inicial do React Native
+//  Tela Inicial do React Native
 //
 //  No momento ela redireciona para a tela de login, mas pode redirecionar usuário
 //  para a tela de Home caso o usuário ja tenha logado antes
 //
 import { router } from "expo-router"
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View, ActivityIndicator } from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BackendContext } from "./contexts/BackendContext";
 
 
 export default function Index() {
+    const {back_url, setBack_url }= useContext(BackendContext)
 
     useEffect(() => {
         AsyncStorage.getItem('login').then(async (resp) => {
+            const resp2 = await fetch("https://campus-cultural-backend-link.vercel.app")
+            const resp3 = await resp2.text()
+            setBack_url(resp3)
+            console.log(back_url)
             {/* Codigo comentado: manter login na proxima vez que abrir o app */ }
             /*if (resp != null) {
                 const resp2 = await JSON.parse(resp);
@@ -25,26 +31,26 @@ export default function Index() {
                     console.log(err);
                 }
             }
-            else*/ router.replace("/login"); {/*Enviar para tela de login*/}
-        });
-    })
+            else*/ router.replace("/login"); {/*Enviar para tela de login*/ }
+    });
+})
 
-    return (
-        <>
-            {/*Código comentado: botoes de debug para acessar telas sem precisar de login*/}
-            {/*
+return (
+    <>
+        {/*Código comentado: botoes de debug para acessar telas sem precisar de login*/}
+        {/*
         <ScrollView style={styles.container}>
             <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/login")}><Text style={styles.texto}>Login</Text></TouchableOpacity>
             <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/cadastro")}><Text style={styles.texto}>Cadastro</Text></TouchableOpacity>
             <TouchableOpacity style={styles.botao} onPress={() => router.navigate("/home")}><Text style={styles.texto}>Home</Text></TouchableOpacity>
         </ScrollView>
         */}
-            {/*Carregamento*/}
-            < View style={styles.carregando} >
-                <ActivityIndicator size={"large"} color={"#8A60FF"} />
-            </View >
-        </>
-    )
+        {/*Carregamento*/}
+        < View style={styles.carregando} >
+            <ActivityIndicator size={"large"} color={"#8A60FF"} />
+        </View >
+    </>
+)
 }
 
 // Estilização dos Componentes

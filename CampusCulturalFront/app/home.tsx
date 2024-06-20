@@ -6,16 +6,16 @@
 import { router } from "expo-router"
 import { Button, ScrollView, StatusBar, Text, TouchableOpacity, Image, View, ActivityIndicator, Dimensions } from "react-native"
 import Navbar from "./components/Navbar"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { BackendContext } from "./contexts/BackendContext";
 import Rodape from "./components/Rodape";
 import EventoCard, { Evento } from "./components/EventoCard";
 import BotaoAddEvento from "./components/BotaoAddEvento";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Usuario } from "./perfil";
-import { back_url } from "../api_link";
 
 // Requisição dos eventos
-export async function puxaEventos() {
+export async function puxaEventos(back_url) {
     const resp = await fetch(`${back_url}/evento`);
     const resp2 = await resp.json();
     console.log(resp2)
@@ -23,7 +23,7 @@ export async function puxaEventos() {
 }
 
 // Requisição das inscrições do Usuário
-export async function puxaInscricoes(id: string) {
+export async function puxaInscricoes(id: string, back_url) {
     const resp = await fetch(`${back_url}/inscricao/usuario/${id}`);
     const resp2 = await resp.json();
     console.log(resp2)
@@ -31,7 +31,7 @@ export async function puxaInscricoes(id: string) {
 }
 
 export default function Home() {
-
+    const { back_url } = useContext(BackendContext)
     const [carregado, setCarregado] = useState(false)
     const [dados, setDados] = useState<Usuario>()
     const [eventosSelecionado, setEventosSelecionado] = useState(0);
@@ -51,9 +51,9 @@ export default function Home() {
                 "imagem": _dados?.imagem,
                 "atributo": _dados?.atributo_usuario
             });
-            puxaInscricoes(_dados?.id_usuario).then((resp) => setinscricoes(resp));
+            puxaInscricoes(_dados?.id_usuario, back_url).then((resp) => setinscricoes(resp));
         })
-        puxaEventos().then((resp) => setEventos(resp)).finally(() => setCarregado(true));
+        puxaEventos(back_url).then((resp) => setEventos(resp)).finally(() => setCarregado(true));
 
     }, [])
 

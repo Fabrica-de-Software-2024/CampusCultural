@@ -6,17 +6,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Touchable, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import EventoCard, { Evento, professor } from './EventoCard';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { router } from 'expo-router';
-import { back_url } from '../../api_link';
 import { locale } from './AdicionarEventoPopup';
+import { BackendContext } from '../contexts/BackendContext';
 
 const window = Dimensions.get('window');
 
 export default function EditarEvento(props: { setModal: React.Dispatch<React.SetStateAction<boolean>>, evento: Evento }) {
+
+    const { back_url } = useContext(BackendContext)
 
     const iconBanner = require("../../assets/escolher_imagem.png")
 

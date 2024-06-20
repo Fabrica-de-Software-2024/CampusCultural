@@ -4,11 +4,11 @@
 //  A ideia inicial era usa-la para cadastrar um novo usuário
 //
 import { router } from "expo-router"
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Image, View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
-import { back_url } from "../api_link";
+import { BackendContext } from "./contexts/BackendContext";
 
-async function cadastrar(data) {
+async function cadastrar(data, back_url) {
     fetch(`${back_url}/usuario/register`, {
         method: "POST",
         headers: {
@@ -20,6 +20,7 @@ async function cadastrar(data) {
 }
 
 export default function Cadastro() {
+    
     const cadastro = require("../assets/cadastro.png");
     const logo = require("../assets/logo.png");
     const figura2 = require("../assets/figura2.png");

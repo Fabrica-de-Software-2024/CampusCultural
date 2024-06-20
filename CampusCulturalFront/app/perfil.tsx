@@ -3,7 +3,7 @@
 //	Essa tela exibe informações do usuario e permite que ele altere sua imagem de perfil
 //	e configurações basicas
 //
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -25,7 +25,8 @@ import BotaoAddEvento from "./components/BotaoAddEvento";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
-import { back_url } from "../api_link";
+import { BackendContext } from "./contexts/BackendContext";
+
 
 {/*Definição do Tipo: Usuário*/ }
 export type Usuario = {
@@ -37,6 +38,7 @@ export type Usuario = {
 }
 
 export default function Perfil() {
+	const { back_url } = useContext(BackendContext)
 	const lapis = require("../assets/lapis.png");
 	const sino = require("../assets/sino.png");
 	const engrenagem = require("../assets/engrenagem.png");

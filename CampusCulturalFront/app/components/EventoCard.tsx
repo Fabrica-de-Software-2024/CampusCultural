@@ -4,10 +4,9 @@
 //  Na tela de Home quando é pressionado redireciona para o Evento
 //
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions } from "react-native";
-import { back_url } from "../../api_link";
-
+import { BackendContext } from "../contexts/BackendContext";
 // Declaração do Tipo Evento
 export type Evento = {
   "id_evento"?: number,
@@ -21,14 +20,14 @@ export type Evento = {
 }
 
 // Requisição do Banner do Evento
-export async function pegaBanner(id: number) {
+export async function pegaBanner(id: number, back_url) {
   const respbanner = await fetch(`${back_url}/imagem/${id}`);
   const respbanner2 = await respbanner.json();
   return respbanner2.imagem;
 }
 
 // Requisição do Criador do Evento
-export async function professor(id: string) {
+export async function professor(id: string, back_url) {
   const respprof = await fetch(`${back_url}/usuario/${id}`);
   const respprof2 = await respprof.json();
   const respimg = await fetch(`${back_url}/imagem/${respprof2.imagem}`);
@@ -37,6 +36,7 @@ export async function professor(id: string) {
 }
 
 export default function EventoCard(props: { data: Evento, previa: boolean, image?: string }) {
+  const { back_url } = useContext(BackendContext)
   const icone = require("../../assets/icone_evento.png");
   const calendario = require("../../assets/mini_calendario.png");
   const banner = require(`../../assets/evento_card_1.png`);
@@ -53,9 +53,9 @@ export default function EventoCard(props: { data: Evento, previa: boolean, image
   // Chamada das Requisições
   useEffect(() => {
     setCarregado(false);
-    pegaBanner(props.data.imagem)
+    pegaBanner(props.data.imagem, back_url)
       .then((resp) => setImagem(resp))
-      .then(() => professor(props.data.professor_evento)
+      .then(() => professor(props.data.professor_evento, back_url)
         .then((resp) => setProf(resp)))
       .finally(() => setCarregado(true));
   }, [props])

@@ -4,19 +4,21 @@
 //  Os eventos tambem podem ser filtrados pelo nome ao clicar na lupa
 //
 import { router } from "expo-router"
-import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, ActivityIndicator, Dimensions } from "react-native"
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, ActivityIndicator, Dimensions, BackHandler } from "react-native"
 import Navbar from "./components/Navbar"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Rodape from "./components/Rodape";
 import { puxaEventos } from "./home";
 import { Evento } from "./components/EventoCard";
 import BotaoAddEvento from "./components/BotaoAddEvento";
 import { Usuario } from "./perfil";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BackendContext } from "./contexts/BackendContext";
 
 
 export default function Calendario() {
-
+	const { back_url } = useContext(BackendContext)
+    
     const risco = require("../assets/risco_eventos_calendario.png");
 
     const figura5 = require("../assets/figura5.png");
@@ -54,7 +56,7 @@ export default function Calendario() {
             });
         })
         // Requisição dos Eventos
-        puxaEventos().then((e) => setEventos(e)).finally(() => setCarregado(true))
+        puxaEventos(back_url).then((e) => setEventos(e)).finally(() => setCarregado(true))
 
         // Logica de Construção do Calendário
         var _mes = new Date(data).getMonth()
