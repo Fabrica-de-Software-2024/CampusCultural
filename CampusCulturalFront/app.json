@@ -22,7 +22,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.caiki.CampusCulturalFront"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,6 +34,14 @@
     "plugins": [
       "expo-router",
       "expo-image-picker"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5a7adaf6-4544-460d-afb6-74d7db717954"
+      }
+    }
   }
 }

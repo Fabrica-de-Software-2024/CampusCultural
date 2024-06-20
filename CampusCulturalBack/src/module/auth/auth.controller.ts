@@ -47,4 +47,14 @@ export class AuthController {
   async profile(@Req() req) {
     return req.user;
   }
+
+  @ApiOperation({
+    summary: 'Dev Backend',
+    description:
+      'Retorna o link para o Backend de Debug',
+  })
+  @Get('backend')
+  async Backend() {
+    return process.env.BACKEND_URL;
+  }
 }
